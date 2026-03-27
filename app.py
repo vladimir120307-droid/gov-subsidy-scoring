@@ -62,7 +62,7 @@ from plotly.subplots import make_subplots
 # ---------------------------------------------------------------------------
 st.set_page_config(
     page_title="Скоринг субсидий -- МСХ РК",
-    page_icon="",
+    page_icon=None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -160,9 +160,9 @@ def inject_css():
     --bg: #f0f2f6;
     --text-primary: #1a1f36;
     --text-secondary: #4a5568;
-    --glass-bg: rgba(255, 255, 255, 0.72);
-    --glass-border: rgba(255, 255, 255, 0.35);
-    --glass-shadow: 0 8px 32px rgba(15, 43, 70, 0.10);
+    --glass-bg: rgba(255, 255, 255, 0.88);
+    --glass-border: rgba(200, 210, 225, 0.6);
+    --glass-shadow: 0 4px 20px rgba(15, 43, 70, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
     --radius: 16px;
     --radius-sm: 10px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -177,7 +177,7 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stAppViewContainer"] {
     background:
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d7377' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(160deg, #e8ecf2 0%, #f0f2f6 40%, #e6f0f0 100%);
+        linear-gradient(160deg, #e4e9f0 0%, #eef1f5 35%, #e8f0ef 65%, #f0f2f6 100%);
 }
 
 /* ===== PAGE CONTENT FADE-IN ===== */
@@ -396,7 +396,7 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .glass-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.15);
+    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06);
     border-color: rgba(13, 115, 119, 0.3);
 }
 .glass-card::before {
@@ -971,7 +971,7 @@ def render_divider():
 def render_footer():
     st.markdown(
         '<div class="gov-footer">'
-        'Министерство сельского хозяйства РК | Decentrathon 5.0'
+        'Decentrathon 5.0 | AI inDrive Track | Кейс: Скоринг сельхозпроизводителей'
         '</div>',
         unsafe_allow_html=True,
     )
@@ -1066,6 +1066,7 @@ def main():
         "НАВИГАЦИЯ",
         [
             "Главная панель",
+            "Текущий процесс (AS IS)",
             "Обзор данных",
             "Скоринг производителей",
             "Профиль производителя",
@@ -1077,10 +1078,32 @@ def main():
         ],
     )
 
+    # Page descriptions
+    page_descriptions = {
+        "Главная панель": "Ключевые метрики и топ производителей",
+        "Текущий процесс (AS IS)": "Диаграмма текущего бизнес-процесса",
+        "Обзор данных": "Статистика и качество исходных данных",
+        "Скоринг производителей": "Ранжирование всех производителей",
+        "Профиль производителя": "Детальный анализ одного производителя",
+        "Сравнение производителей": "Сопоставление 2-3 производителей",
+        "Шортлист": "Формирование списка получателей",
+        "Анализ справедливости": "Проверка на предвзятость модели",
+        "Аналитика": "Корреляции, валидация, базовые модели",
+        "Настройки модели": "Настройка весов и параметров",
+    }
+    desc = page_descriptions.get(page, "")
+    if desc:
+        st.sidebar.markdown(
+            f"<div style='font-size:12px; opacity:0.7; padding:4px 8px; "
+            f"background:rgba(255,255,255,0.06); border-radius:8px; margin-bottom:8px;'>"
+            f"{desc}</div>",
+            unsafe_allow_html=True,
+        )
+
     st.sidebar.markdown("---")
     st.sidebar.markdown(
         "<div style='font-size:11px; opacity:0.5; text-align:center; padding:8px 0;'>"
-        "Система скоринга v2.0<br>МСХ Республики Казахстан</div>",
+        "Система скоринга v2.0<br>Decentrathon 5.0 | AI inDrive Track</div>",
         unsafe_allow_html=True,
     )
 
@@ -1132,6 +1155,8 @@ def main():
     # ----- Routing -----
     if page == "Главная панель":
         render_dashboard(df, scored)
+    elif page == "Текущий процесс (AS IS)":
+        render_as_is_process()
     elif page == "Обзор данных":
         render_overview(df, producer_features)
     elif page == "Скоринг производителей":
@@ -1151,6 +1176,85 @@ def main():
 
     # Footer on every page
     render_footer()
+
+
+# ===========================================================================
+# PAGE: AS IS PROCESS
+# ===========================================================================
+def render_as_is_process():
+    render_page_header(
+        "Текущий процесс (AS IS)",
+        "Действующая схема распределения субсидий на приобретение маточного поголовья КРС"
+    )
+
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
+            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+                Принцип очередности (FCFS)
+            </p>
+            <p>
+                Текущий процесс распределения субсидий на приобретение маточного поголовья КРС
+                работает по принципу очередности. Наша система заменяет этот подход merit-based
+                скорингом.
+            </p>
+            <p style="margin-top:12px;">
+                Диаграмма ниже описывает бизнес-процесс AS IS по стандарту BPMN.
+                Заявки обрабатываются в порядке поступления, без оценки качества заявителя.
+                Это приводит к неэффективному распределению бюджетных средств.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
+    render_section_header("Диаграмма бизнес-процесса (BPMN)", "AS IS")
+
+    image_path = Path(__file__).parent / "assets" / "as_is_process.png"
+    if image_path.exists():
+        st.image(str(image_path), use_container_width=True,
+                 caption="AS IS: Приобретение маточного поголовья КРС, овец, баранов-производителей")
+    else:
+        st.warning("Файл диаграммы не найден: assets/as_is_process.png")
+
+    render_divider()
+
+    render_section_header("Проблемы текущего подхода", "Анализ")
+
+    problems = [
+        ("Принцип очередности (FCFS)", "Субсидии распределяются по принципу 'первый пришёл -- первый получил', без учёта качества заявителя."),
+        ("Отсутствие объективной оценки", "Нет формализованных критериев оценки эффективности производителя."),
+        ("Неэффективное распределение бюджета", "Средства могут получать производители с низкой историей освоения субсидий."),
+        ("Непрозрачность", "Отсутствие объяснимых критериев снижает доверие к системе распределения."),
+    ]
+
+    for i, (title, desc) in enumerate(problems, 1):
+        st.markdown(
+            f'<div class="sw-item sw-weakness" style="margin-bottom:8px;">'
+            f'<span class="sw-icon">{i}.</span> '
+            f'<div><span style="font-weight:700;">{title}.</span> {desc}</div></div>',
+            unsafe_allow_html=True,
+        )
+
+    render_divider()
+
+    render_section_header("Наше решение: Merit-based скоринг", "TO BE")
+
+    solutions = [
+        ("Объективный скоринг", "Комбинированная модель (ML + правила) оценивает каждого производителя по 14 факторам."),
+        ("Прозрачность", "Каждый балл объясним: производитель видит свои сильные и слабые стороны."),
+        ("Эффективность бюджета", "Приоритет получают производители с высокой историей освоения и исполнения."),
+        ("Анализ справедливости", "Встроенные проверки на региональную и направленческую предвзятость."),
+    ]
+
+    for i, (title, desc) in enumerate(solutions, 1):
+        st.markdown(
+            f'<div class="sw-item sw-strength" style="margin-bottom:8px;">'
+            f'<span class="sw-icon">{i}.</span> '
+            f'<div><span style="font-weight:700;">{title}.</span> {desc}</div></div>',
+            unsafe_allow_html=True,
+        )
 
 
 # ===========================================================================
@@ -1186,6 +1290,48 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
             "РЕГИОНЫ", f"{stats['unique_regions']}",
             f"Районов: {stats['unique_districts']}", delay=4
         )
+
+    render_divider()
+
+    # --- Value proposition: Merit-based vs FCFS ---
+    render_section_header("Ценность системы", "Merit-based скоринг")
+    val1, val2, val3 = st.columns(3)
+    with val1:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                Вместо FCFS
+            </div>
+            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+                Текущая система: заявки по очереди (FCFS).
+                Наш подход: <b>ранжирование по заслугам</b> на основе 14 объективных факторов.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with val2:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                Гибридная модель
+            </div>
+            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+                <b>60% ML</b> (GradientBoosting, нелинейные зависимости) +
+                <b>40% правила</b> (экспертные веса, полная объяснимость).
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with val3:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+                Результат
+            </div>
+            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+                Приоритет -- производителям с высоким исполнением, одобрением и освоением средств.
+                <b>Каждый балл объясним.</b>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     render_divider()
 
@@ -1277,6 +1423,38 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     )
     st.plotly_chart(fig, use_container_width=True)
 
+    render_divider()
+
+    # --- Quantified impact metrics ---
+    render_section_header("Количественный эффект", "Влияние")
+    top100 = scored.nsmallest(100, "rank")
+    overall_approval = float(scored["approval_rate"].mean())
+    top100_approval = float(top100["approval_rate"].mean())
+    overall_completion = float(scored["completion_rate"].mean())
+    top100_completion = float(top100["completion_rate"].mean())
+    overall_utilization = float(scored["utilization_rate"].mean())
+    top100_utilization = float(top100["utilization_rate"].mean())
+
+    imp1, imp2, imp3 = st.columns(3)
+    with imp1:
+        delta_a = ((top100_approval - overall_approval) / max(overall_approval, 0.01)) * 100
+        render_metric_card(
+            "ОДОБРЕНИЕ (ТОП-100)", f"{top100_approval:.0%}",
+            f"+{delta_a:.0f}% vs среднее ({overall_approval:.0%})", gold=True, delay=1
+        )
+    with imp2:
+        delta_c = ((top100_completion - overall_completion) / max(overall_completion, 0.01)) * 100
+        render_metric_card(
+            "ИСПОЛНЕНИЕ (ТОП-100)", f"{top100_completion:.0%}",
+            f"+{delta_c:.0f}% vs среднее ({overall_completion:.0%})", gold=True, delay=2
+        )
+    with imp3:
+        delta_u = ((top100_utilization - overall_utilization) / max(overall_utilization, 0.01)) * 100
+        render_metric_card(
+            "ОСВОЕНИЕ (ТОП-100)", f"{top100_utilization:.0%}",
+            f"+{delta_u:.0f}% vs среднее ({overall_utilization:.0%})", gold=True, delay=3
+        )
+
 
 # ===========================================================================
 # PAGE 2: DATA OVERVIEW
@@ -1348,6 +1526,46 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
 
     render_divider()
 
+    # --- Feature Engineering explanation ---
+    render_section_header("Feature Engineering", "14 признаков")
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
+            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+                Извлечение признаков из сырых данных
+            </p>
+            <p>
+                Из исходных заявок (строка = одна заявка) мы агрегируем данные по каждому
+                производителю (producer_id) и формируем <b>14 признаков</b>, которые используются
+                в скоринговой модели:
+            </p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px;">
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">1.</span> Количество заявок (total_apps)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">2.</span> Доля одобренных (approval_rate)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">3.</span> Доля исполненных (completion_rate)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">4.</span> Доля отклонённых (rejection_rate)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">5.</span> Средняя сумма log (avg_amount_log)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">6.</span> Вариативность сумм (amount_cv)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">7.</span> Диверсификация направлений</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">8.</span> Виды субсидий (subsidy_type_count)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">9.</span> Освоение средств (utilization_rate)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">10.</span> Активность подачи (apps_per_month)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">11.</span> Рабочее время (working_hours_ratio)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">12.</span> Регулярность подачи (month_regularity)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">13.</span> Охват районов (unique_districts)</div>
+                <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">14.</span> Период активности (activity_span_days)</div>
+            </div>
+            <p style="margin-top:16px; padding:12px 16px; background:rgba(13,115,119,0.06); border-radius:8px; font-weight:600;">
+                Все признаки нормализуются в диапазон [0, 1] с помощью MinMaxScaler перед подачей в модели.
+                Целевая переменная для ML формируется как взвешенная комбинация:
+                исполнение (35%) + одобрение (25%) + освоение (20%) + диверсификация (10%) + (1 - отклонения) (10%).
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
     # --- Charts ---
     col_left, col_right = st.columns(2)
     with col_left:
@@ -1401,6 +1619,54 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
     with c4:
         top100_threshold = scored.nsmallest(100, "rank")["combined_score"].min()
         render_metric_card("ТОП-100 ПОРОГ", f"{top100_threshold:.1f}", "Минимальный балл", gold=True, delay=4)
+
+    render_divider()
+
+    # --- Model architecture explanation ---
+    render_section_header("Архитектура модели", "60% ML + 40% Правила")
+    arch1, arch2, arch3 = st.columns([2, 1, 2])
+    with arch1:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:10px;">ML-модель (60%)</div>
+            <div style="font-size:13px; color:var(--text-primary); line-height:1.7;">
+                <b>GradientBoostingRegressor</b><br>
+                200 деревьев, глубина 5, learning_rate 0.1<br>
+                Обучение на 14 нормализованных признаках<br>
+                Кросс-валидация 5-fold<br>
+                Выявляет нелинейные зависимости
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with arch2:
+        st.markdown("""
+        <div style="display:flex; align-items:center; justify-content:center; height:100%;">
+            <div style="text-align:center;">
+                <div style="font-size:28px; font-weight:800; color:var(--gold);">+</div>
+                <div style="font-size:11px; color:var(--text-secondary); font-weight:600; margin-top:4px;">КОМБИНАЦИЯ</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with arch3:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center;">
+            <div style="font-size:15px; font-weight:700; color:var(--gold); margin-bottom:10px;">Правила (40%)</div>
+            <div style="font-size:13px; color:var(--text-primary); line-height:1.7;">
+                <b>Взвешенная сумма</b><br>
+                Экспертные веса для каждого фактора<br>
+                Одобрение (20%), Исполнение (15%)<br>
+                Освоение (15%), Отклонения (-10%)<br>
+                Полная прозрачность формулы
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="text-align:center; margin:16px 0 24px 0; padding:12px 24px; background:rgba(13,115,119,0.06);
+        border-radius:10px; font-size:14px; font-weight:600; color:var(--navy);">
+        Итоговый балл = 0.6 x ML_балл + 0.4 x Правила_балл (диапазон 0--100)
+    </div>
+    """, unsafe_allow_html=True)
 
     render_divider()
 
