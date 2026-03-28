@@ -121,19 +121,21 @@ def apply_chart_theme(fig, height=450, transparent=True):
         fig.update_layout(
             template="plotly_white",
             height=height,
-            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#2c3e50"),
+            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#1a202c"),
             paper_bgcolor=bg,
             plot_bgcolor=bg,
             title_font=dict(size=17, color=NAVY, family="Inter, system-ui, sans-serif"),
             legend=dict(
-                bgcolor="rgba(255,255,255,0.7)",
+                bgcolor="rgba(255,255,255,0.9)",
                 bordercolor="rgba(0,0,0,0.08)",
                 borderwidth=1,
-                font=dict(size=11),
+                font=dict(size=11, color="#1a202c"),
             ),
             margin=dict(t=55, b=40, l=40, r=20),
-            xaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)"),
-            yaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)"),
+            xaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
+                       tickfont=dict(color="#4a5568"), title_font=dict(color="#1a202c")),
+            yaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
+                       tickfont=dict(color="#4a5568"), title_font=dict(color="#1a202c")),
         )
     return fig
 
@@ -157,12 +159,14 @@ def inject_css():
     --gold: #c9a227;
     --gold-light: #dbb94a;
     --white: #ffffff;
-    --bg: #f0f2f6;
-    --text-primary: #1a1f36;
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --bg: #f5f7fa;
+    --text-primary: #1a202c;
     --text-secondary: #4a5568;
-    --glass-bg: rgba(255, 255, 255, 0.88);
-    --glass-border: rgba(200, 210, 225, 0.6);
-    --glass-shadow: 0 4px 20px rgba(15, 43, 70, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(200, 210, 225, 0.5);
+    --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
     --radius: 16px;
     --radius-sm: 10px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -176,8 +180,8 @@ html, body, [data-testid="stAppViewContainer"] {
 
 [data-testid="stAppViewContainer"] {
     background:
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d7377' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(160deg, #e4e9f0 0%, #eef1f5 35%, #e8f0ef 65%, #f0f2f6 100%);
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d7377' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(160deg, #f5f7fa 0%, #fafbfc 35%, #f5f8f7 65%, #f5f7fa 100%);
 }
 
 /* ===== PAGE CONTENT FADE-IN ===== */
@@ -189,6 +193,288 @@ html, body, [data-testid="stAppViewContainer"] {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== Force all text dark in light mode ===== */
+.stApp, .stApp p, .stApp span, .stApp label, .stApp div, .stApp li, .stApp td, .stApp th {
+    color: #1a202c !important;
+}
+
+/* Streamlit markdown elements */
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] h1,
+[data-testid="stMarkdownContainer"] h2,
+[data-testid="stMarkdownContainer"] h3,
+[data-testid="stMarkdownContainer"] h4 {
+    color: #1a202c !important;
+}
+
+/* Expander headers */
+[data-testid="stExpander"] summary span {
+    color: #1a202c !important;
+}
+
+/* Selectbox, multiselect labels */
+[data-testid="stWidgetLabel"] label,
+[data-testid="stWidgetLabel"] p {
+    color: #1a202c !important;
+}
+
+/* Radio labels */
+[data-testid="stRadio"] label {
+    color: #1a202c !important;
+}
+
+/* Metric values and labels */
+[data-testid="stMetricValue"] {
+    color: #1a202c !important;
+}
+[data-testid="stMetricLabel"] {
+    color: #1a202c !important;
+}
+
+/* Dataframe/table text */
+[data-testid="stDataFrame"],
+[data-testid="stDataFrame"] td,
+[data-testid="stDataFrame"] th {
+    color: #1a202c !important;
+}
+
+/* Caption text */
+[data-testid="stCaption"] {
+    color: #4a5568 !important;
+}
+
+/* Toggle labels */
+.stToggle label span {
+    color: #1a202c !important;
+}
+
+/* Tabs labels */
+.stTabs [data-baseweb="tab"] {
+    color: #1a202c !important;
+}
+
+/* Info/Warning/Success/Error messages */
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] span,
+.stAlert p, .stAlert span {
+    color: #1a202c !important;
+}
+
+/* Selectbox dropdown text and selected values */
+[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+[data-testid="stSelectbox"] div[data-baseweb="select"] div,
+[data-testid="stMultiSelect"] div[data-baseweb="select"] span,
+[data-testid="stMultiSelect"] div[data-baseweb="select"] div {
+    color: #1a202c !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    color: #1a202c !important;
+}
+[data-testid="stFileUploader"] label {
+    color: #1a202c !important;
+}
+[data-testid="stFileUploader"] small {
+    color: #4a5568 !important;
+}
+
+/* Slider and input elements */
+[data-testid="stSlider"] label,
+[data-testid="stSlider"] [data-testid="stTickBarMin"],
+[data-testid="stSlider"] [data-testid="stTickBarMax"] {
+    color: #1a202c !important;
+}
+
+/* Number input */
+[data-testid="stNumberInput"] label {
+    color: #1a202c !important;
+}
+[data-testid="stNumberInput"] input {
+    color: #1a202c !important;
+}
+
+/* Text input */
+[data-testid="stTextInput"] input {
+    color: #1a202c !important;
+}
+
+/* Checkbox */
+[data-testid="stCheckbox"] label {
+    color: #1a202c !important;
+}
+
+/* ===== LIGHT MODE OVERRIDES FOR COMMON ELEMENTS ===== */
+
+/* Sidebar: light gray background instead of dark navy */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #f0f2f5 0%, #e8ecf1 50%, #edf0f4 100%) !important;
+}
+[data-testid="stSidebar"] * {
+    color: #1a202c !important;
+}
+[data-testid="stSidebar"] .stButton > button {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    border-left: 3px solid transparent !important;
+    color: #1a202c !important;
+}
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(13, 115, 119, 0.08) !important;
+    border-color: rgba(13, 115, 119, 0.2) !important;
+    border-left: 3px solid #0d7377 !important;
+    color: #1a202c !important;
+}
+[data-testid="stSidebar"] hr {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+[data-testid="stSidebar"] img {
+    filter: none !important;
+}
+
+/* Header banner: light gradient instead of dark navy */
+.gov-header {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 50%, #e8f4f5 100%) !important;
+    color: #1a202c !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+}
+.gov-header h1 {
+    color: #0f2b46 !important;
+    text-shadow: none !important;
+}
+.gov-header p {
+    color: #4a5568 !important;
+    opacity: 1 !important;
+}
+.gov-header::before {
+    background: radial-gradient(circle, rgba(13, 115, 119, 0.06) 0%, transparent 70%) !important;
+}
+.gov-header-wrapper {
+    background: linear-gradient(90deg, #0d7377, #c9a227, #1a4a6e, #c9a227, #0d7377) !important;
+}
+
+/* Glass cards: white background */
+.glass-card {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+.glass-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(13, 115, 119, 0.3) !important;
+}
+
+/* Metric cards: white background */
+.metric-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+}
+.metric-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important;
+}
+.metric-card .metric-icon {
+    color: #0d7377 !important;
+}
+.metric-card .metric-value {
+    background: linear-gradient(135deg, #0f2b46, #0d7377) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+.metric-card .metric-sub {
+    color: #4a5568 !important;
+}
+
+/* Table: white bg, light alternating rows */
+.styled-table thead th {
+    background: linear-gradient(135deg, #0f2b46, #1a4a6e) !important;
+    color: white !important;
+}
+.styled-table tbody tr {
+    background: #ffffff !important;
+}
+.styled-table tbody tr:nth-child(even) {
+    background: #f8f9fa !important;
+}
+.styled-table tbody tr:hover {
+    background: rgba(13, 115, 119, 0.06) !important;
+}
+.styled-table tbody td {
+    color: #1a202c !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Buttons: keep teal gradient, white text */
+.stDownloadButton > button,
+.stButton > button {
+    background: linear-gradient(135deg, #0d7377, #0f8a8e) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(13, 115, 119, 0.2) !important;
+}
+.stDownloadButton > button:hover,
+.stButton > button:hover {
+    background: linear-gradient(135deg, #0a6063, #0d7377) !important;
+    box-shadow: 0 6px 20px rgba(13, 115, 119, 0.3) !important;
+}
+
+/* Filter panel: white */
+.filter-panel {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+}
+
+/* Expanders: white bg */
+details[data-testid="stExpander"] {
+    background: #ffffff !important;
+    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+    border-left: 3px solid #0d7377 !important;
+}
+
+/* Footer: medium gray text */
+.gov-footer {
+    color: #718096 !important;
+}
+
+/* Tabs: dark text */
+.stTabs [data-baseweb="tab"] {
+    color: #1a202c !important;
+}
+.stTabs [aria-selected="true"] {
+    background: rgba(13, 115, 119, 0.06) !important;
+}
+
+/* Streamlit default metrics */
+[data-testid="stMetricValue"] {
+    color: #0f2b46 !important;
+}
+[data-testid="stMetricLabel"] {
+    color: #1a202c !important;
+}
+
+/* Section headers */
+.section-header h2 {
+    color: #0f2b46 !important;
+}
+
+/* Breadcrumbs / navigation text */
+.stApp a {
+    color: #0d7377 !important;
+}
+
+/* Score bar labels */
+.score-bar {
+    color: white !important;
+}
+
+/* Scrollbar light mode */
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.03) !important; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0d7377, #4a90a4) !important; }
+::-webkit-scrollbar-thumb:hover { background: #0a6063 !important; }
 """
 
     # --- Dark theme CSS ---
@@ -249,6 +535,151 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stAppViewContainer"] .stDataFrame th {
     color: var(--text-primary) !important;
 }
+
+/* ===== Force all text light in dark mode ===== */
+.stApp, .stApp p, .stApp span, .stApp label, .stApp div, .stApp li, .stApp td, .stApp th {
+    color: var(--text-primary) !important;
+}
+
+/* Streamlit markdown elements */
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] h1,
+[data-testid="stMarkdownContainer"] h2,
+[data-testid="stMarkdownContainer"] h3,
+[data-testid="stMarkdownContainer"] h4 {
+    color: var(--text-primary) !important;
+}
+
+/* Expander headers */
+[data-testid="stExpander"] summary span {
+    color: var(--text-primary) !important;
+}
+
+/* Selectbox, multiselect, text input labels */
+[data-testid="stWidgetLabel"] label,
+[data-testid="stWidgetLabel"] p {
+    color: var(--text-primary) !important;
+}
+
+/* Radio labels */
+[data-testid="stRadio"] label {
+    color: var(--text-primary) !important;
+}
+
+/* Metric values and labels */
+[data-testid="stMetricValue"] {
+    color: var(--text-primary) !important;
+}
+[data-testid="stMetricLabel"] {
+    color: var(--text-primary) !important;
+}
+
+/* Dataframe/table text */
+[data-testid="stDataFrame"] {
+    color: var(--text-primary) !important;
+}
+
+/* Caption text */
+[data-testid="stCaption"] {
+    color: var(--text-secondary) !important;
+}
+
+/* Toggle labels */
+.stToggle label span {
+    color: var(--text-primary) !important;
+}
+
+/* ===== Style ALL Streamlit buttons in dark mode ===== */
+.stButton > button {
+    background: linear-gradient(135deg, #0d7377, #0f2b46) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+.stButton > button:hover {
+    filter: brightness(1.15) !important;
+    box-shadow: 0 4px 15px rgba(13,115,119,0.3) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Download buttons */
+.stDownloadButton > button {
+    background: linear-gradient(135deg, #0d7377, #0f2b46) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    color: var(--text-primary) !important;
+}
+[data-testid="stFileUploader"] label {
+    color: var(--text-primary) !important;
+}
+[data-testid="stFileUploader"] small {
+    color: var(--text-secondary) !important;
+}
+
+/* ===== Sidebar text in dark mode ===== */
+[data-testid="stSidebar"] * {
+    color: var(--text-primary) !important;
+}
+[data-testid="stSidebar"] .stButton > button {
+    color: white !important;
+}
+
+/* ===== Slider and input elements ===== */
+[data-testid="stSlider"] label,
+[data-testid="stSlider"] [data-testid="stTickBarMin"],
+[data-testid="stSlider"] [data-testid="stTickBarMax"] {
+    color: var(--text-primary) !important;
+}
+
+/* Number input */
+[data-testid="stNumberInput"] label {
+    color: var(--text-primary) !important;
+}
+[data-testid="stNumberInput"] input {
+    color: var(--text-primary) !important;
+    background: var(--glass-bg) !important;
+}
+
+/* Text input */
+[data-testid="stTextInput"] input {
+    color: var(--text-primary) !important;
+    background: var(--glass-bg) !important;
+}
+
+/* Checkbox */
+[data-testid="stCheckbox"] label {
+    color: var(--text-primary) !important;
+}
+
+/* Tabs labels */
+.stTabs [data-baseweb="tab"] {
+    color: var(--text-primary) !important;
+}
+
+/* Info/Warning/Success/Error messages */
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] span,
+.stAlert p, .stAlert span {
+    color: var(--text-primary) !important;
+}
+
+/* Selectbox dropdown text and selected values */
+[data-testid="stSelectbox"] div[data-baseweb="select"] span,
+[data-testid="stSelectbox"] div[data-baseweb="select"] div,
+[data-testid="stMultiSelect"] div[data-baseweb="select"] span,
+[data-testid="stMultiSelect"] div[data-baseweb="select"] div {
+    color: var(--text-primary) !important;
+}
 """
 
     theme_css = dark_css if dark else light_css
@@ -268,37 +699,29 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSidebar"] * {
     color: rgba(255,255,255,0.92) !important;
 }
-[data-testid="stSidebar"] .stRadio > label {
-    color: rgba(255,255,255,0.6) !important;
-    font-size: 12px !important;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 600;
-}
-[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-sm);
-    padding: 10px 16px;
-    margin-bottom: 4px;
-    transition: var(--transition);
-    font-weight: 500;
+/* Sidebar navigation buttons */
+[data-testid="stSidebar"] .stButton > button {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-left: 3px solid transparent !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 10px 16px !important;
+    margin-bottom: 4px !important;
+    font-weight: 500 !important;
     font-size: 14px !important;
+    text-align: left !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    color: rgba(255,255,255,0.92) !important;
+    box-shadow: none !important;
+    transition: var(--transition) !important;
 }
-[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:hover {
-    background: rgba(255,255,255,0.12);
-    border-color: var(--gold);
-    transform: translateX(4px);
-}
-[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label[data-checked="true"],
-[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label[aria-checked="true"] {
-    background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(13,115,119,0.25)) !important;
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(255,255,255,0.12) !important;
     border-color: var(--gold) !important;
     border-left: 3px solid var(--gold) !important;
-    box-shadow: 0 0 12px rgba(201,162,39,0.15);
-}
-[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
-    border-left: 3px solid transparent;
+    transform: translateX(4px) !important;
+    box-shadow: none !important;
 }
 [data-testid="stSidebar"] hr {
     border-color: rgba(255,255,255,0.12) !important;
@@ -1053,6 +1476,50 @@ def render_footer():
     )
 
 
+# ---------------------------------------------------------------------------
+# Navigation helpers
+# ---------------------------------------------------------------------------
+PAGE_LIST = [
+    ("dashboard",   "\u25A3 Главная панель",            "Главная панель"),
+    ("as_is",       "\u2192 Текущий процесс (AS IS)",   "Текущий процесс (AS IS)"),
+    ("overview",    "\u2261 Обзор данных",               "Обзор данных"),
+    ("scoring",     "\u2605 Скоринг производителей",     "Скоринг производителей"),
+    ("profile",     "\u2302 Профиль производителя",      "Профиль производителя"),
+    ("comparison",  "\u21C4 Сравнение производителей",   "Сравнение производителей"),
+    ("shortlist",   "\u2611 Шортлист",                   "Шортлист"),
+    ("fairness",    "\u2696 Анализ справедливости",      "Анализ справедливости"),
+    ("analytics",   "\u2318 Аналитика",                  "Аналитика"),
+    ("settings",    "\u2699 Настройки модели",           "Настройки модели"),
+]
+
+PAGE_KEY_TO_LABEL = {k: label for k, _, label in PAGE_LIST}
+
+
+def nav_to(page_key: str):
+    """Callback for navigation buttons."""
+    st.session_state["current_page"] = page_key
+
+
+def render_breadcrumb(current_label: str):
+    """Render breadcrumb: Главная > Текущая страница."""
+    st.markdown(
+        f'<div style="font-size:13px; margin-bottom:16px; color:var(--text-secondary);">'
+        f'<a href="#" style="color:var(--teal); text-decoration:none; font-weight:600;" '
+        f'onclick="return false;">Главная</a>'
+        f' &gt; <span style="font-weight:600; color:var(--text-primary);">{current_label}</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+    # Clickable "Главная" via st.button (HTML links can't trigger Streamlit state)
+    # We render a small inline button right after for real navigation
+    if current_label != "Главная панель":
+        cols = st.columns([1, 8])
+        with cols[0]:
+            if st.button("\u2190 Назад", key=f"back_{current_label}"):
+                nav_to("dashboard")
+                st.rerun()
+
+
 def get_score_bar_class(score):
     if score >= 65:
         return "high"
@@ -1108,6 +1575,10 @@ def train_scoring_engine(
 # MAIN
 # ===========================================================================
 def main():
+    # ----- Initialize navigation state -----
+    if "current_page" not in st.session_state:
+        st.session_state["current_page"] = "dashboard"
+
     # ----- Sidebar -----
     # Government emblem as styled element
     st.sidebar.markdown("""
@@ -1135,40 +1606,57 @@ def main():
 
     st.sidebar.markdown("---")
 
-    page = st.sidebar.radio(
-        "НАВИГАЦИЯ",
-        [
-            "Главная панель",
-            "Текущий процесс (AS IS)",
-            "Обзор данных",
-            "Скоринг производителей",
-            "Профиль производителя",
-            "Сравнение производителей",
-            "Шортлист",
-            "Анализ справедливости",
-            "Аналитика",
-            "Настройки модели",
-        ],
+    # Navigation label
+    st.sidebar.markdown(
+        "<div style='color:rgba(255,255,255,0.6); font-size:12px; text-transform:uppercase; "
+        "letter-spacing:1.5px; font-weight:600; margin-bottom:8px; padding:0 4px;'>НАВИГАЦИЯ</div>",
+        unsafe_allow_html=True,
     )
 
-    # Page descriptions
+    # Page descriptions for tooltip
     page_descriptions = {
-        "Главная панель": "Ключевые метрики и топ производителей",
-        "Текущий процесс (AS IS)": "Диаграмма текущего бизнес-процесса",
-        "Обзор данных": "Статистика и качество исходных данных",
-        "Скоринг производителей": "Ранжирование всех производителей",
-        "Профиль производителя": "Детальный анализ одного производителя",
-        "Сравнение производителей": "Сопоставление 2-3 производителей",
-        "Шортлист": "Формирование списка получателей",
-        "Анализ справедливости": "Проверка на предвзятость модели",
-        "Аналитика": "Корреляции, валидация, базовые модели",
-        "Настройки модели": "Настройка весов и параметров",
+        "dashboard": "Ключевые метрики и топ производителей",
+        "as_is": "Диаграмма текущего бизнес-процесса",
+        "overview": "Статистика и качество исходных данных",
+        "scoring": "Ранжирование всех производителей",
+        "profile": "Детальный анализ одного производителя",
+        "comparison": "Сопоставление 2-3 производителей",
+        "shortlist": "Формирование списка получателей",
+        "fairness": "Проверка на предвзятость модели",
+        "analytics": "Корреляции, валидация, базовые модели",
+        "settings": "Настройка весов и параметров",
     }
-    desc = page_descriptions.get(page, "")
+
+    current_page = st.session_state["current_page"]
+
+    # Render navigation buttons
+    for page_key, icon_label, _display_label in PAGE_LIST:
+        is_active = (current_page == page_key)
+        if is_active:
+            # Active page: highlighted styling via custom HTML + button
+            st.sidebar.markdown(
+                f"<div style='background:linear-gradient(135deg, rgba(201,162,39,0.25), rgba(13,115,119,0.25)); "
+                f"border:1px solid #c9a227; border-left:3px solid #c9a227; border-radius:10px; "
+                f"padding:10px 16px; margin-bottom:4px; font-weight:600; font-size:14px; "
+                f"color:rgba(255,255,255,0.95); box-shadow:0 0 12px rgba(201,162,39,0.15);'>"
+                f"{icon_label}</div>",
+                unsafe_allow_html=True,
+            )
+        else:
+            st.sidebar.button(
+                icon_label,
+                key=f"nav_{page_key}",
+                on_click=nav_to,
+                args=(page_key,),
+                use_container_width=True,
+            )
+
+    # Show description of current page
+    desc = page_descriptions.get(current_page, "")
     if desc:
         st.sidebar.markdown(
             f"<div style='font-size:12px; opacity:0.7; padding:4px 8px; "
-            f"background:rgba(255,255,255,0.06); border-radius:8px; margin-bottom:8px;'>"
+            f"background:rgba(255,255,255,0.06); border-radius:8px; margin-bottom:8px; margin-top:8px;'>"
             f"{desc}</div>",
             unsafe_allow_html=True,
         )
@@ -1183,24 +1671,58 @@ def main():
     # Inject CSS after dark_mode toggle is set
     inject_css()
 
+    page = current_page
+
     # ----- Data loading -----
+    # Sidebar: upload custom Excel
+    with st.sidebar.expander("Загрузить свой датасет", expanded=False):
+        st.caption("Загрузите Excel (.xlsx) в формате датасета субсидий")
+        custom_upload = st.file_uploader(
+            "Файл Excel", type=["xlsx"], key="sidebar_custom_xlsx",
+            label_visibility="collapsed",
+        )
+        if custom_upload:
+            # Only process the upload if file changed (avoid infinite rerun loop)
+            upload_id = f"{custom_upload.name}_{custom_upload.size}"
+            if st.session_state.get("_last_upload_id") != upload_id:
+                import tempfile as _tf
+                with _tf.NamedTemporaryFile(delete=False, suffix=".xlsx") as _tmp:
+                    _tmp.write(custom_upload.read())
+                    st.session_state["custom_data_path"] = _tmp.name
+                st.session_state["_last_upload_id"] = upload_id
+                # Clear cached data so the new file is loaded
+                load_data.clear()
+                st.rerun()
+
+        # Sample data links
+        import os as _os
+        sample_dir = _os.path.join(_os.path.dirname(__file__), "sample_data")
+        if _os.path.isdir(sample_dir):
+            st.caption("Примеры данных:")
+            for fname in sorted(_os.listdir(sample_dir)):
+                if fname.endswith(".xlsx"):
+                    fpath = _os.path.join(sample_dir, fname)
+                    size_kb = _os.path.getsize(fpath) // 1024
+                    with open(fpath, "rb") as _f:
+                        st.download_button(
+                            f"{fname} ({size_kb} KB)",
+                            _f.read(),
+                            file_name=fname,
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            key=f"dl_sample_{fname}",
+                        )
+
+    custom_path = st.session_state.get("custom_data_path", None)
+    data_source = custom_path if custom_path else DATA_FILE
+
     try:
-        df = load_data(DATA_FILE)
+        df = load_data(data_source)
     except FileNotFoundError:
         st.error(
             f"Файл данных не найден: `{DATA_FILE}`\n\n"
-            "Укажите путь через переменную окружения `SUBSIDY_DATA_PATH` "
-            "или поместите файл в папку `data/subsidies_2025.xlsx`."
+            "Загрузите файл через боковую панель или поместите в `data/subsidies_2025.xlsx`."
         )
-        uploaded = st.file_uploader("Или загрузите файл Excel", type=["xlsx"])
-        if uploaded:
-            import tempfile
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".xlsx") as tmp:
-                tmp.write(uploaded.read())
-                tmp_path = tmp.name
-            df = load_data(tmp_path)
-        else:
-            return
+        return
 
     df_hash = hash(len(df))
     producer_features = compute_features(df_hash, df)
@@ -1226,25 +1748,25 @@ def main():
     scored = engine.score(producer_features)
 
     # ----- Routing -----
-    if page == "Главная панель":
+    if page == "dashboard":
         render_dashboard(df, scored)
-    elif page == "Текущий процесс (AS IS)":
+    elif page == "as_is":
         render_as_is_process()
-    elif page == "Обзор данных":
+    elif page == "overview":
         render_overview(df, producer_features)
-    elif page == "Скоринг производителей":
+    elif page == "scoring":
         render_scoring(scored, producer_features)
-    elif page == "Профиль производителя":
+    elif page == "profile":
         render_profile(df, scored, producer_features, engine)
-    elif page == "Сравнение производителей":
+    elif page == "comparison":
         render_comparison(scored, producer_features)
-    elif page == "Шортлист":
+    elif page == "shortlist":
         render_shortlist(scored)
-    elif page == "Анализ справедливости":
+    elif page == "fairness":
         render_fairness(scored)
-    elif page == "Аналитика":
+    elif page == "analytics":
         render_analytics(df, scored, engine)
-    elif page == "Настройки модели":
+    elif page == "settings":
         render_settings(scored)
 
     # Footer on every page
@@ -1255,6 +1777,7 @@ def main():
 # PAGE: AS IS PROCESS
 # ===========================================================================
 def render_as_is_process():
+    render_breadcrumb("Текущий процесс (AS IS)")
     render_page_header(
         "Текущий процесс (AS IS)",
         "Действующая схема распределения субсидий на приобретение маточного поголовья КРС"
@@ -1329,11 +1852,51 @@ def render_as_is_process():
             unsafe_allow_html=True,
         )
 
+    render_divider()
+
+    # --- Visual comparison: AS IS vs TO BE ---
+    render_section_header("Сравнение подходов", "AS IS vs TO BE")
+
+    cmp1, cmp_arrow, cmp2 = st.columns([5, 1, 5])
+    with cmp1:
+        st.markdown("""
+        <div class="baseline-card baseline-old">
+            <h3 style="color:#8a3030;">AS IS: Текущий процесс</h3>
+            <div style="text-align:left; font-size:14px; line-height:1.8; color:var(--text-primary);">
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Принцип очередности (FCFS)</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Нет объективной оценки</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Непрозрачное распределение</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Низкая эффективность бюджета</div>
+                <div><span style="font-weight:700; color:#b84c4c;">\u2717</span> Нет проверки справедливости</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with cmp_arrow:
+        st.markdown("""
+        <div class="improvement-arrow" style="height:100%; display:flex; align-items:center; justify-content:center;">
+            \u21D2
+        </div>
+        """, unsafe_allow_html=True)
+    with cmp2:
+        st.markdown("""
+        <div class="baseline-card baseline-new">
+            <h3 style="color:var(--teal);">TO BE: Наше решение</h3>
+            <div style="text-align:left; font-size:14px; line-height:1.8; color:var(--text-primary);">
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Merit-based скоринг</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> 14 объективных факторов</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Полная прозрачность (XAI)</div>
+                <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Приоритет эффективным</div>
+                <div><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Встроенный анализ справедливости</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
 
 # ===========================================================================
 # PAGE 1: DASHBOARD
 # ===========================================================================
 def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
+    render_breadcrumb("Главная панель")
     render_page_header(
         "Главная панель",
         "Система скоринга сельскохозяйственных субсидий Республики Казахстан"
@@ -1363,6 +1926,64 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
             "РЕГИОНЫ", f"{stats['unique_regions']}",
             f"Районов: {stats['unique_districts']}", delay=4
         )
+
+    render_divider()
+
+    # --- Action buttons (glass cards) ---
+    render_section_header("Быстрый доступ", "Действия")
+    ac1, ac2, ac3, ac4 = st.columns(4)
+    with ac1:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center; cursor:pointer;">
+            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2605</div>
+            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Скоринг производителей</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                Ранжирование всех производителей по комбинированному баллу
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Перейти к скорингу", key="dash_action_scoring"):
+            nav_to("scoring")
+            st.rerun()
+    with ac2:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center; cursor:pointer;">
+            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2302</div>
+            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Профиль производителя</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                Детальный анализ скорингового профиля конкретного производителя
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Перейти к профилю", key="dash_action_profile"):
+            nav_to("profile")
+            st.rerun()
+    with ac3:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center; cursor:pointer;">
+            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2696</div>
+            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Справедливость</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                Проверка модели на предвзятость по регионам и направлениям
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Перейти к анализу", key="dash_action_fairness"):
+            nav_to("fairness")
+            st.rerun()
+    with ac4:
+        st.markdown("""
+        <div class="glass-card" style="text-align:center; cursor:pointer;">
+            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2318</div>
+            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Аналитика</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+                Корреляции, валидация модели, сравнение с базовыми подходами
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Перейти к аналитике", key="dash_action_analytics"):
+            nav_to("analytics")
+            st.rerun()
 
     render_divider()
 
@@ -1464,7 +2085,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
             showlegend=False,
             margin=dict(t=20, b=20, l=20, r=20),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_dash_status_pie")
 
     render_divider()
 
@@ -1495,7 +2116,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
         xaxis_title="Количество производителей",
         margin=dict(l=250, t=20),
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_dash_region_bar")
 
     render_divider()
 
@@ -1534,6 +2155,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
 # PAGE 2: DATA OVERVIEW
 # ===========================================================================
 def render_overview(df: pd.DataFrame, features: pd.DataFrame):
+    render_breadcrumb("Обзор данных")
     render_page_header(
         "Обзор данных реестра субсидий",
         "Источник: Реестр заявок ИСС (subsidy.plem.kz), 2025 год"
@@ -1645,38 +2267,39 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
     with col_left:
         fig = plot_status_distribution(df)
         apply_chart_theme(fig, height=400)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_overview_status_dist")
     with col_right:
         fig = plot_direction_pie(df)
         apply_chart_theme(fig, height=400)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_overview_direction_pie")
 
     fig = plot_monthly_trend(df)
     apply_chart_theme(fig, height=420)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_overview_monthly_trend")
 
     col_left, col_right = st.columns(2)
     with col_left:
         fig = plot_region_distribution(df)
         apply_chart_theme(fig, height=600)
         fig.update_layout(margin=dict(l=250))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_overview_region_dist")
     with col_right:
         fig = plot_region_amounts(df)
         apply_chart_theme(fig, height=600)
         fig.update_layout(margin=dict(l=250))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_overview_region_amounts")
 
     fig = plot_approval_rate_by_direction(df)
     apply_chart_theme(fig, height=400)
     fig.update_layout(margin=dict(l=200))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_overview_approval_by_dir")
 
 
 # ===========================================================================
 # PAGE 3: SCORING
 # ===========================================================================
 def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
+    render_breadcrumb("Скоринг производителей")
     render_page_header(
         "Скоринг сельхозпроизводителей",
         "Ранжирование на основе комбинированной модели (ML + правила)"
@@ -1830,29 +2453,54 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
     </table>
     """, unsafe_allow_html=True)
 
-    # Pagination controls
-    pcol1, pcol2, pcol3 = st.columns([1, 2, 1])
+    # Pagination controls (prominent)
+    st.markdown("<br>", unsafe_allow_html=True)
+    pcol1, pcol2, pcol3, pcol4, pcol5 = st.columns([1, 1, 3, 1, 1])
     with pcol1:
-        if st.button("Назад", disabled=(display_page <= 1), key="pg_prev"):
-            st.session_state.scoring_page = max(1, display_page - 1)
+        if st.button("\u2190 Первая", disabled=(display_page <= 1), key="pg_first"):
+            st.session_state.scoring_page = 1
             st.rerun()
     with pcol2:
+        if st.button("\u2190 Назад", disabled=(display_page <= 1), key="pg_prev"):
+            st.session_state.scoring_page = max(1, display_page - 1)
+            st.rerun()
+    with pcol3:
         st.markdown(
-            f'<div style="text-align:center; padding:8px; font-weight:600; color:var(--navy);">'
-            f'Страница {display_page} из {total_pages} | '
+            f'<div style="text-align:center; padding:10px; font-weight:700; font-size:16px; color:var(--navy); '
+            f'background:var(--glass-bg); border-radius:10px; border:1px solid var(--glass-border);">'
+            f'Страница {display_page} из {total_pages} &nbsp;|&nbsp; '
             f'Записи {start_idx+1}--{end_idx} из {len(filtered)}</div>',
             unsafe_allow_html=True
         )
-    with pcol3:
-        if st.button("Вперёд", disabled=(display_page >= total_pages), key="pg_next"):
+    with pcol4:
+        if st.button("Вперёд \u2192", disabled=(display_page >= total_pages), key="pg_next"):
             st.session_state.scoring_page = min(total_pages, display_page + 1)
             st.rerun()
+    with pcol5:
+        if st.button("Последняя \u2192", disabled=(display_page >= total_pages), key="pg_last"):
+            st.session_state.scoring_page = total_pages
+            st.rerun()
+
+    render_divider()
+
+    # Export button
+    export_cols = ["rank", "producer_id", "region", "main_direction", "combined_score",
+                   "rule_score", "ml_score", "approval_rate"]
+    export_df = filtered[[c for c in export_cols if c in filtered.columns]]
+    csv_export = export_df.to_csv(index=False).encode("utf-8-sig")
+    st.download_button(
+        label="\u21E9 Экспорт таблицы (CSV)",
+        data=csv_export,
+        file_name="scoring_table.csv",
+        mime="text/csv",
+        key="scoring_export_csv",
+    )
 
     render_divider()
 
     fig = plot_score_distribution(filtered)
     apply_chart_theme(fig, height=380)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_scoring_score_dist")
 
 
 # ===========================================================================
@@ -1864,10 +2512,24 @@ def render_profile(
     features: pd.DataFrame,
     engine: ScoringEngine,
 ):
+    render_breadcrumb("Профиль производителя")
     render_page_header(
         "Профиль производителя",
         "Детальный анализ скорингового профиля"
     )
+
+    # Top action row: back to scoring + compare
+    top_c1, top_c2, top_c3 = st.columns([2, 2, 6])
+    with top_c1:
+        if st.button("\u2190 Вернуться к скорингу", key="profile_back_scoring"):
+            nav_to("scoring")
+            st.rerun()
+    with top_c2:
+        if st.button("\u21C4 Сравнить с другим", key="profile_compare"):
+            nav_to("comparison")
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # Searchable dropdown
     sorted_scored = scored.sort_values("rank")
@@ -1875,12 +2537,33 @@ def render_profile(
         f"{pid} (ранг {int(sorted_scored[sorted_scored['producer_id']==pid]['rank'].values[0])})"
         for pid in sorted_scored["producer_id"].head(300)
     ]
+
+    # Initialize profile index for prev/next navigation
+    if "profile_idx" not in st.session_state:
+        st.session_state["profile_idx"] = 0
+
     selected_display = st.selectbox(
         "Выберите производителя",
         display_options,
+        index=st.session_state.get("profile_idx", 0),
         key="profile_producer",
     )
+    # Update index to match selection
+    current_idx = display_options.index(selected_display) if selected_display in display_options else 0
+    st.session_state["profile_idx"] = current_idx
+
     selected_id = selected_display.split(" (")[0]
+
+    # Prev / Next producer navigation
+    nav_c1, nav_c2, nav_c3 = st.columns([1, 6, 1])
+    with nav_c1:
+        if st.button("\u2190 Предыдущий", disabled=(current_idx <= 0), key="profile_prev"):
+            st.session_state["profile_idx"] = max(0, current_idx - 1)
+            st.rerun()
+    with nav_c3:
+        if st.button("Следующий \u2192", disabled=(current_idx >= len(display_options) - 1), key="profile_next"):
+            st.session_state["profile_idx"] = min(len(display_options) - 1, current_idx + 1)
+            st.rerun()
 
     prod_scored = scored[scored["producer_id"] == selected_id]
     if prod_scored.empty:
@@ -1994,11 +2677,11 @@ def render_profile(
         return fig
 
     with gc1:
-        st.plotly_chart(make_gauge(score_val, "Комбинированный", None), use_container_width=True)
+        st.plotly_chart(make_gauge(score_val, "Комбинированный", None), use_container_width=True, key="chart_profile_gauge_combined")
     with gc2:
-        st.plotly_chart(make_gauge(ml_val, "ML-модель", None), use_container_width=True)
+        st.plotly_chart(make_gauge(ml_val, "ML-модель", None), use_container_width=True, key="chart_profile_gauge_ml")
     with gc3:
-        st.plotly_chart(make_gauge(rule_val, "Правиловая модель", None), use_container_width=True)
+        st.plotly_chart(make_gauge(rule_val, "Правиловая модель", None), use_container_width=True, key="chart_profile_gauge_rule")
 
     render_divider()
 
@@ -2034,7 +2717,7 @@ def render_profile(
         fig = plot_producer_breakdown(row, combined_descs)
         apply_chart_theme(fig, height=max(350, len(combined_descs) * 32))
         fig.update_layout(margin=dict(l=200))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_profile_factor_breakdown")
 
     with tab2:
         # "Что улучшить" section with actionable recommendations
@@ -2189,6 +2872,7 @@ def render_profile(
 # PAGE 5: COMPARISON
 # ===========================================================================
 def render_comparison(scored: pd.DataFrame, features: pd.DataFrame):
+    render_breadcrumb("Сравнение производителей")
     render_page_header(
         "Сравнение производителей",
         "Детальное сопоставление показателей двух или трёх производителей"
@@ -2291,13 +2975,14 @@ def render_comparison(scored: pd.DataFrame, features: pd.DataFrame):
     for i, trace in enumerate(fig.data):
         trace.line = dict(color=CHART_COLORS[i % len(CHART_COLORS)], width=2)
         trace.fillcolor = CHART_COLORS[i % len(CHART_COLORS)].replace(")", ",0.15)").replace("rgb", "rgba") if "rgb" in CHART_COLORS[i % len(CHART_COLORS)] else None
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_compare_radar")
 
 
 # ===========================================================================
 # PAGE 6: SHORTLIST
 # ===========================================================================
 def render_shortlist(scored: pd.DataFrame):
+    render_breadcrumb("Шортлист")
     render_page_header(
         "Генератор шортлиста",
         "Формирование списка приоритетных получателей субсидий"
@@ -2400,15 +3085,51 @@ def render_shortlist(scored: pd.DataFrame):
     </table>
     """, unsafe_allow_html=True)
 
-    # Export
+    # Export (styled)
     st.markdown("<br>", unsafe_allow_html=True)
     csv_data = export_shortlist_csv(shortlist)
-    st.download_button(
-        label="Скачать шортлист (CSV)",
-        data=csv_data.encode("utf-8-sig"),
-        file_name="shortlist_subsidies.csv",
-        mime="text/csv",
-    )
+    exp_c1, exp_c2 = st.columns([2, 6])
+    with exp_c1:
+        st.download_button(
+            label="\u21E9 Экспорт CSV",
+            data=csv_data.encode("utf-8-sig"),
+            file_name="shortlist_subsidies.csv",
+            mime="text/csv",
+            key="shortlist_export_csv",
+        )
+
+    render_divider()
+
+    # --- Budget impact summary card ---
+    total_budget_est = scored["total_amount"].sum()
+    shortlist_budget_est = shortlist["total_amount"].sum()
+    budget_share = shortlist_budget_est / total_budget_est * 100 if total_budget_est > 0 else 0
+    avg_score_shortlist = shortlist["combined_score"].mean() if len(shortlist) > 0 else 0
+    st.markdown(f"""
+    <div class="glass-card" style="margin-bottom:24px; border-left:4px solid var(--gold);">
+        <div style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:12px;">
+            Оценка бюджетного воздействия
+        </div>
+        <div style="display:flex; gap:32px; flex-wrap:wrap; font-size:14px; line-height:1.7; color:var(--text-primary);">
+            <div>
+                <span style="font-weight:600; color:var(--text-secondary);">Производителей в шортлисте:</span>
+                <span style="font-weight:700;"> {len(shortlist)}</span>
+            </div>
+            <div>
+                <span style="font-weight:600; color:var(--text-secondary);">Объём субсидий:</span>
+                <span style="font-weight:700; color:var(--gold);"> {format_tenge(shortlist_budget_est)}</span>
+            </div>
+            <div>
+                <span style="font-weight:600; color:var(--text-secondary);">Доля от общего бюджета:</span>
+                <span style="font-weight:700;"> {budget_share:.1f}%</span>
+            </div>
+            <div>
+                <span style="font-weight:600; color:var(--text-secondary);">Средний балл шортлиста:</span>
+                <span style="font-weight:700; color:var(--teal);"> {avg_score_shortlist:.1f}</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     render_divider()
 
@@ -2444,7 +3165,7 @@ def render_shortlist(scored: pd.DataFrame):
         ))
         apply_chart_theme(fig, height=max(350, len(region_counts) * 30))
         fig.update_layout(margin=dict(l=250), xaxis_title="Количество")
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_shortlist_region_bar")
     else:
         st.info("Нет данных для отображения графика.")
 
@@ -2453,6 +3174,7 @@ def render_shortlist(scored: pd.DataFrame):
 # PAGE 7: FAIRNESS
 # ===========================================================================
 def render_fairness(scored: pd.DataFrame):
+    render_breadcrumb("Анализ справедливости")
     render_page_header(
         "Анализ справедливости",
         "Проверка наличия предвзятости в скоринговой модели по регионам и направлениям"
@@ -2528,12 +3250,12 @@ def render_fairness(scored: pd.DataFrame):
         fig = plot_fairness_overview(scored)
         apply_chart_theme(fig, height=600)
         fig.update_layout(margin=dict(l=250))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_fairness_overview")
 
         fig = plot_score_violin_by_region(scored)
         apply_chart_theme(fig, height=500)
         fig.update_layout(margin=dict(b=150))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_fairness_violin_region")
 
         render_section_header("Таблица региональной справедливости", "Данные")
         regional = compute_regional_fairness(scored)
@@ -2577,7 +3299,7 @@ def render_fairness(scored: pd.DataFrame):
     with tab3:
         fig = plot_lorenz_curve(scored)
         apply_chart_theme(fig, height=450)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_fairness_lorenz")
 
     with tab4:
         render_section_header("Рекомендации по обеспечению справедливости", "")
@@ -2622,6 +3344,7 @@ def render_fairness(scored: pd.DataFrame):
 # PAGE 8: ANALYTICS
 # ===========================================================================
 def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngine):
+    render_breadcrumb("Аналитика")
     render_page_header(
         "Аналитика и корреляции",
         "Углублённый анализ модели и данных"
@@ -2641,7 +3364,7 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         fig = plot_feature_importance(importance)
         apply_chart_theme(fig, height=max(350, len(importance) * 30))
         fig.update_layout(margin=dict(l=200))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_feature_importance")
 
         render_divider()
 
@@ -2653,7 +3376,7 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         fig = plot_feature_importance(perm_imp)
         apply_chart_theme(fig, height=max(350, len(perm_imp) * 30))
         fig.update_layout(margin=dict(l=200))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_perm_importance")
 
     with tab2:
         render_section_header("Корреляционная матрица", "Признаки")
@@ -2661,13 +3384,13 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         fig = plot_correlation_heatmap(scored, feature_cols)
         apply_chart_theme(fig, height=600, transparent=False)
         fig.update_layout(margin=dict(l=150, b=150))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_correlation")
 
     with tab3:
         render_section_header("Зависимость балла от суммы", "Scatter")
         fig = plot_amount_vs_score(scored)
         apply_chart_theme(fig, height=500)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_amount_vs_score")
 
         render_divider()
 
@@ -2675,7 +3398,7 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         fig = plot_score_by_region(scored)
         apply_chart_theme(fig, height=500)
         fig.update_layout(margin=dict(b=150))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_score_by_region")
 
         render_divider()
 
@@ -2683,14 +3406,14 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         fig = plot_approval_rate_by_direction(df)
         apply_chart_theme(fig, height=400)
         fig.update_layout(margin=dict(l=200))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_approval_by_dir")
 
         render_divider()
 
         render_section_header("Динамика по месяцам", "Тренд")
         fig = plot_monthly_trend(df)
         apply_chart_theme(fig, height=420)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_analytics_monthly_trend")
 
     with tab4:
         render_baseline_comparison(scored, engine, df)
@@ -2725,7 +3448,6 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
     fcfs_sample = scored.iloc[fcfs_indices]
 
     # 2. Rule-only baseline: rank by rule_score
-    rule_only_top = scored.nsmallest(n_top, scored["rule_score"].rank(ascending=False, method="min").name if False else "rank")
     if "rule_score" in scored.columns:
         rule_sorted = scored.sort_values("rule_score", ascending=False)
         rule_only_top = rule_sorted.head(n_top)
@@ -2799,7 +3521,7 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
                          marker=dict(color=NAVY_LIGHT, cornerradius=4), text=[f"{v:.1f}" for v in avg_utils], textposition="auto"))
     apply_chart_theme(fig, height=450)
     fig.update_layout(barmode="group", legend=dict(orientation="h", y=1.05))
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="chart_baseline_comparison")
 
     render_divider()
 
@@ -2881,7 +3603,7 @@ def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.
         fig = plot_feature_importance(named_importances)
         apply_chart_theme(fig, height=max(350, len(named_importances) * 30))
         fig.update_layout(margin=dict(l=200))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_validation_feature_imp")
     else:
         st.info("Модель ещё не обучена.")
 
@@ -2970,7 +3692,7 @@ def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.
             yaxis_title="Количество",
             legend=dict(orientation="h", y=1.05),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_validation_score_dist")
 
     render_divider()
 
@@ -3003,7 +3725,7 @@ def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.
             xaxis_title="Целевая переменная (фактическая)",
             yaxis_title="Предсказание модели",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="chart_validation_pred_vs_actual")
     except Exception:
         st.warning("Не удалось построить график предсказание vs факт.")
 
@@ -3012,6 +3734,7 @@ def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.
 # PAGE 9: SETTINGS
 # ===========================================================================
 def render_settings(scored: pd.DataFrame):
+    render_breadcrumb("Настройки модели")
     render_page_header(
         "Настройки скоринговой модели",
         "Настройка весов факторов для адаптации скоринга под приоритеты государственной политики"
@@ -3128,7 +3851,16 @@ def render_settings(scored: pd.DataFrame):
     render_divider()
 
     # --- Reset ---
-    if st.button("Сбросить настройки по умолчанию"):
+    render_section_header("Сброс настроек", "Действие")
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:16px; padding:16px 20px;">
+        <div style="font-size:14px; color:var(--text-secondary); line-height:1.6;">
+            Сбросить все веса факторов и баланс моделей к значениям по умолчанию
+            (ML 60% / Правила 40%, стандартные веса).
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    if st.button("\u21BA Сбросить настройки", key="reset_settings_btn"):
         st.session_state.ml_weight = 0.6
         st.session_state.rule_weight = 0.4
         st.session_state.feature_weights = get_feature_weights_default()
@@ -3201,6 +3933,88 @@ def render_settings(scored: pd.DataFrame):
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    render_divider()
+
+    # --- Scalable Architecture ---
+    render_section_header("Масштабируемая архитектура", "Scalability")
+    st.markdown("""
+    <div class="glass-card">
+        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
+            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+                Принципы масштабируемости
+            </p>
+            <p>
+                <span style="font-weight:700; color:var(--teal);">1. Модульная архитектура:</span>
+                Каждый компонент (загрузка данных, инженерия признаков, скоринг, аналитика,
+                справедливость) реализован как отдельный модуль Python с чётко определённым API.
+                Модули могут быть заменены или расширены независимо.
+            </p>
+            <p>
+                <span style="font-weight:700; color:var(--teal);">2. Кэширование:</span>
+                Streamlit-кэш (@st.cache_data, @st.cache_resource) обеспечивает мгновенный
+                отклик при повторных обращениях. Данные загружаются и модель обучается один раз за сессию.
+            </p>
+            <p>
+                <span style="font-weight:700; color:var(--teal);">3. Горизонтальное масштабирование:</span>
+                Приложение не хранит состояние на сервере (stateless). Может быть развёрнуто
+                за балансировщиком нагрузки с несколькими экземплярами.
+            </p>
+            <p>
+                <span style="font-weight:700; color:var(--teal);">4. Поддержка больших данных:</span>
+                Pandas-пайплайн оптимизирован для агрегации десятков тысяч заявок. При необходимости
+                может быть переведён на Dask/Spark для миллионов записей.
+            </p>
+            <p>
+                <span style="font-weight:700; color:var(--teal);">5. Расширяемость модели:</span>
+                Новые признаки добавляются в feature_engineering.py, новые модели -- в scoring_engine.py.
+                Структура позволяет добавить нейронные сети, ансамбли или онлайн-обучение.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
+    # --- Limitations ---
+    render_section_header("Ограничения системы", "Limitations")
+    limitations = [
+        ("Cold-start проблема",
+         "Новые производители без истории заявок не могут получить корректный скоринг. "
+         "Система опирается на накопленную статистику."),
+        ("Данные за один год",
+         "Модель обучена на данных 2025 года. Сезонные и годовые тренды могут измениться."),
+        ("Только животноводство",
+         "Текущая модель адаптирована под направления животноводства. "
+         "Для растениеводства потребуется адаптация признаков."),
+        ("Синтетическая целевая переменная",
+         "ML-модель обучена на комбинации метрик, а не на внешней независимой оценке "
+         "качества производителя."),
+        ("Нет учёта внешних факторов",
+         "Погодные условия, эпизоотическая обстановка, рыночные цены не учитываются."),
+        ("Качество исходных данных",
+         "Система зависит от полноты и корректности данных ИСС. "
+         "Пропуски и ошибки в реестре влияют на скоринг."),
+        ("Статический анализ",
+         "Скоринг вычисляется на момент запуска. Для промышленной эксплуатации "
+         "нужен механизм регулярного обновления."),
+        ("Отсутствие A/B-тестирования",
+         "Эффективность скоринговой системы по сравнению с FCFS "
+         "не проверена в реальных условиях."),
+        ("Producer ID -- приближение",
+         "ID производителя извлекается из первых 11 цифр номера заявки, "
+         "что может приводить к неточностям группировки."),
+        ("Региональные различия",
+         "Социально-экономические различия между регионами могут создавать "
+         "систематические смещения в оценке."),
+    ]
+    for i, (title, desc) in enumerate(limitations, 1):
+        st.markdown(
+            f'<div class="sw-item sw-weakness" style="margin-bottom:8px;">'
+            f'<span class="sw-icon">{i}.</span> '
+            f'<div><span style="font-weight:700;">{title}.</span> {desc}</div></div>',
+            unsafe_allow_html=True,
+        )
 
 
 def engine_cv_score(scored):
