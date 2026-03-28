@@ -70,13 +70,13 @@ st.set_page_config(
 # ---------------------------------------------------------------------------
 # Color palette
 # ---------------------------------------------------------------------------
-NAVY = "#0f2b46"
-NAVY_LIGHT = "#1a4a6e"
-TEAL = "#0d7377"
-GOLD = "#c9a227"
+NAVY = "#0F172A"
+NAVY_LIGHT = "#1E3A5F"
+TEAL = "#3B82F6"
+GOLD = "#3B82F6"
 WHITE = "#ffffff"
-CHART_COLORS = ["#0d7377", "#1a4a6e", "#c9a227", "#2d8f5e", "#b84c4c", "#6b5fa5",
-                "#3a9fbf", "#d4843e", "#5c8a4d", "#8b6caf"]
+CHART_COLORS = ["#3B82F6", "#1E3A5F", "#60A5FA", "#22C55E", "#b84c4c", "#6b5fa5",
+                "#0EA5E9", "#d4843e", "#1D4ED8", "#8b6caf"]
 
 DATA_FILE = os.environ.get(
     "SUBSIDY_DATA_PATH",
@@ -98,19 +98,19 @@ def apply_chart_theme(fig, height=450, transparent=True):
     """Apply consistent government premium theme to plotly figures."""
     dark = is_dark_mode()
     if dark:
-        bg = "rgba(0,0,0,0)" if transparent else "#0a1929"
+        bg = "rgba(0,0,0,0)" if transparent else "#0B1220"
         fig.update_layout(
             template="plotly_dark",
             height=height,
-            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#e0e6ed"),
+            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#E2E8F0"),
             paper_bgcolor=bg,
             plot_bgcolor=bg,
-            title_font=dict(size=17, color="#e0e6ed", family="Inter, system-ui, sans-serif"),
+            title_font=dict(size=17, color="#E2E8F0", family="Inter, system-ui, sans-serif"),
             legend=dict(
-                bgcolor="rgba(15,43,70,0.7)",
-                bordercolor="rgba(13,115,119,0.3)",
+                bgcolor="rgba(11,18,32,0.7)",
+                bordercolor="rgba(56,189,248,0.15)",
                 borderwidth=1,
-                font=dict(size=11, color="#e0e6ed"),
+                font=dict(size=11, color="#E2E8F0"),
             ),
             margin=dict(t=55, b=40, l=40, r=20),
             xaxis=dict(gridcolor="rgba(255,255,255,0.08)", zerolinecolor="rgba(255,255,255,0.12)"),
@@ -121,21 +121,21 @@ def apply_chart_theme(fig, height=450, transparent=True):
         fig.update_layout(
             template="plotly_white",
             height=height,
-            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#1a202c"),
+            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#0F172A"),
             paper_bgcolor=bg,
             plot_bgcolor=bg,
-            title_font=dict(size=17, color=NAVY, family="Inter, system-ui, sans-serif"),
+            title_font=dict(size=17, color="#0F172A", family="Inter, system-ui, sans-serif"),
             legend=dict(
                 bgcolor="rgba(255,255,255,0.9)",
-                bordercolor="rgba(0,0,0,0.08)",
+                bordercolor="rgba(59,130,246,0.15)",
                 borderwidth=1,
-                font=dict(size=11, color="#1a202c"),
+                font=dict(size=11, color="#0F172A"),
             ),
             margin=dict(t=55, b=40, l=40, r=20),
             xaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
-                       tickfont=dict(color="#4a5568"), title_font=dict(color="#1a202c")),
+                       tickfont=dict(color="#475569"), title_font=dict(color="#0F172A")),
             yaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
-                       tickfont=dict(color="#4a5568"), title_font=dict(color="#1a202c")),
+                       tickfont=dict(color="#475569"), title_font=dict(color="#0F172A")),
         )
     return fig
 
@@ -153,23 +153,30 @@ def inject_css():
 
 /* ===== ROOT VARIABLES ===== */
 :root {
-    --navy: #0f2b46;
-    --navy-light: #1a4a6e;
-    --teal: #0d7377;
-    --gold: #c9a227;
-    --gold-light: #dbb94a;
+    --navy: #0F172A;
+    --navy-light: #1E3A5F;
+    --teal: #3B82F6;
+    --gold: #3B82F6;
+    --gold-light: #60A5FA;
     --white: #ffffff;
-    --bg-primary: #f5f7fa;
+    --bg-primary: #F0F9FF;
     --bg-secondary: #ffffff;
-    --bg: #f5f7fa;
-    --text-primary: #1a202c;
-    --text-secondary: #4a5568;
+    --bg: #F0F9FF;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
     --glass-bg: rgba(255, 255, 255, 0.92);
-    --glass-border: rgba(200, 210, 225, 0.5);
-    --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+    --glass-border: rgba(59, 130, 246, 0.15);
+    --glass-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
     --radius: 16px;
     --radius-sm: 10px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --blue-primary: #3B82F6;
+    --blue-hover: #2563EB;
+    --blue-accent: #60A5FA;
+    --border-color: rgba(59, 130, 246, 0.15);
+    --shadow-color: rgba(59, 130, 246, 0.08);
+    --bg-surface: #FFFFFF;
+    --bg-card: #FFFFFF;
 }
 
 /* ===== GLOBAL ===== */
@@ -180,8 +187,8 @@ html, body, [data-testid="stAppViewContainer"] {
 
 [data-testid="stAppViewContainer"] {
     background:
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d7377' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(160deg, #f5f7fa 0%, #fafbfc 35%, #f5f8f7 65%, #f5f7fa 100%);
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233B82F6' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(160deg, #F0F9FF 0%, #f8fbff 35%, #F0F9FF 65%, #F0F9FF 100%);
 }
 
 /* ===== PAGE CONTENT FADE-IN ===== */
@@ -196,7 +203,7 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* ===== Force all text dark in light mode ===== */
 .stApp, .stApp p, .stApp span, .stApp label, .stApp div, .stApp li, .stApp td, .stApp th {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Streamlit markdown elements */
@@ -207,60 +214,60 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stMarkdownContainer"] h2,
 [data-testid="stMarkdownContainer"] h3,
 [data-testid="stMarkdownContainer"] h4 {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Expander headers */
 [data-testid="stExpander"] summary span {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Selectbox, multiselect labels */
 [data-testid="stWidgetLabel"] label,
 [data-testid="stWidgetLabel"] p {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Radio labels */
 [data-testid="stRadio"] label {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Metric values and labels */
 [data-testid="stMetricValue"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 [data-testid="stMetricLabel"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Dataframe/table text */
 [data-testid="stDataFrame"],
 [data-testid="stDataFrame"] td,
 [data-testid="stDataFrame"] th {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Caption text */
 [data-testid="stCaption"] {
-    color: #4a5568 !important;
+    color: #475569 !important;
 }
 
 /* Toggle labels */
 .stToggle label span {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Tabs labels */
 .stTabs [data-baseweb="tab"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Info/Warning/Success/Error messages */
 [data-testid="stAlert"] p,
 [data-testid="stAlert"] span,
 .stAlert p, .stAlert span {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Selectbox dropdown text and selected values */
@@ -268,171 +275,178 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSelectbox"] div[data-baseweb="select"] div,
 [data-testid="stMultiSelect"] div[data-baseweb="select"] span,
 [data-testid="stMultiSelect"] div[data-baseweb="select"] div {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* File uploader */
 [data-testid="stFileUploader"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 [data-testid="stFileUploader"] label {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 [data-testid="stFileUploader"] small {
-    color: #4a5568 !important;
+    color: #475569 !important;
 }
 
 /* Slider and input elements */
 [data-testid="stSlider"] label,
 [data-testid="stSlider"] [data-testid="stTickBarMin"],
 [data-testid="stSlider"] [data-testid="stTickBarMax"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Number input */
 [data-testid="stNumberInput"] label {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 [data-testid="stNumberInput"] input {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Text input */
 [data-testid="stTextInput"] input {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Checkbox */
 [data-testid="stCheckbox"] label {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* ===== LIGHT MODE OVERRIDES FOR COMMON ELEMENTS ===== */
 
-/* Sidebar: light gray background instead of dark navy */
+/* Sidebar: government dark blue */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #f0f2f5 0%, #e8ecf1 50%, #edf0f4 100%) !important;
+    background: linear-gradient(180deg, #1E3A5F 0%, #0F172A 100%) !important;
 }
 [data-testid="stSidebar"] * {
-    color: #1a202c !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stSidebar"] .stButton > button {
-    background: rgba(0, 0, 0, 0.04) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-left: 3px solid transparent !important;
-    color: #1a202c !important;
+    color: #E2E8F0 !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
 }
 [data-testid="stSidebar"] .stButton > button:hover {
-    background: rgba(13, 115, 119, 0.08) !important;
-    border-color: rgba(13, 115, 119, 0.2) !important;
-    border-left: 3px solid #0d7377 !important;
-    color: #1a202c !important;
+    background: rgba(59, 130, 246, 0.15) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
+    border-left: 3px solid #3B82F6 !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stSidebar"] hr {
-    border-color: rgba(0, 0, 0, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 [data-testid="stSidebar"] img {
-    filter: none !important;
+    filter: brightness(1.1) !important;
 }
 
-/* Header banner: light gradient instead of dark navy */
+/* Header banner: government blue gradient */
 .gov-header {
-    background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 50%, #e8f4f5 100%) !important;
-    color: #1a202c !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
-    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+    background: linear-gradient(135deg, #1E3A5F 0%, #3B82F6 50%, #0EA5E9 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08) !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
 }
 .gov-header h1 {
-    color: #0f2b46 !important;
-    text-shadow: none !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
 }
 .gov-header p {
-    color: #4a5568 !important;
+    color: rgba(255,255,255,0.85) !important;
     opacity: 1 !important;
+    font-weight: 500 !important;
 }
 .gov-header::before {
-    background: radial-gradient(circle, rgba(13, 115, 119, 0.06) 0%, transparent 70%) !important;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%) !important;
 }
 .gov-header-wrapper {
-    background: linear-gradient(90deg, #0d7377, #c9a227, #1a4a6e, #c9a227, #0d7377) !important;
+    background: linear-gradient(90deg, #1E3A5F, #3B82F6, #0EA5E9, #3B82F6, #1E3A5F) !important;
 }
 
 /* Glass cards: white background */
 .glass-card {
     background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(200, 210, 225, 0.5) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08) !important;
 }
 .glass-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
-    border-color: rgba(13, 115, 119, 0.3) !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Metric cards: white background */
 .metric-card {
     background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(200, 210, 225, 0.5) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08) !important;
 }
 .metric-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12) !important;
 }
 .metric-card .metric-icon {
-    color: #0d7377 !important;
+    color: #3B82F6 !important;
 }
 .metric-card .metric-value {
-    background: linear-gradient(135deg, #0f2b46, #0d7377) !important;
+    background: linear-gradient(135deg, #0F172A, #3B82F6) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
 }
 .metric-card .metric-sub {
-    color: #4a5568 !important;
+    color: #475569 !important;
+}
+.metric-card .metric-label {
+    color: #0F172A !important;
+    font-weight: 700 !important;
 }
 
 /* Table: white bg, light alternating rows */
 .styled-table thead th {
-    background: linear-gradient(135deg, #0f2b46, #1a4a6e) !important;
+    background: linear-gradient(135deg, #1E3A5F, #3B82F6) !important;
     color: white !important;
 }
 .styled-table tbody tr {
     background: #ffffff !important;
 }
 .styled-table tbody tr:nth-child(even) {
-    background: #f8f9fa !important;
+    background: #F0F9FF !important;
 }
 .styled-table tbody tr:hover {
-    background: rgba(13, 115, 119, 0.06) !important;
+    background: rgba(59, 130, 246, 0.06) !important;
 }
 .styled-table tbody td {
-    color: #1a202c !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    color: #0F172A !important;
+    border-bottom: 1px solid rgba(59, 130, 246, 0.08) !important;
 }
 
-/* Buttons: keep teal gradient, white text */
+/* Buttons: blue, white text */
 .stDownloadButton > button,
 .stButton > button {
-    background: linear-gradient(135deg, #0d7377, #0f8a8e) !important;
+    background: #3B82F6 !important;
     color: white !important;
-    box-shadow: 0 2px 8px rgba(13, 115, 119, 0.2) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
 }
 .stDownloadButton > button:hover,
 .stButton > button:hover {
-    background: linear-gradient(135deg, #0a6063, #0d7377) !important;
-    box-shadow: 0 6px 20px rgba(13, 115, 119, 0.3) !important;
+    background: #2563EB !important;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Filter panel: white */
 .filter-panel {
     background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(200, 210, 225, 0.5) !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
 }
 
 /* Expanders: white bg */
 details[data-testid="stExpander"] {
     background: #ffffff !important;
-    border: 1px solid rgba(200, 210, 225, 0.5) !important;
-    border-left: 3px solid #0d7377 !important;
+    border: 1px solid rgba(59, 130, 246, 0.15) !important;
+    border-left: 3px solid #3B82F6 !important;
 }
 
 /* Footer: medium gray text */
@@ -442,28 +456,28 @@ details[data-testid="stExpander"] {
 
 /* Tabs: dark text */
 .stTabs [data-baseweb="tab"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 .stTabs [aria-selected="true"] {
-    background: rgba(13, 115, 119, 0.06) !important;
+    background: rgba(59, 130, 246, 0.06) !important;
 }
 
 /* Streamlit default metrics */
 [data-testid="stMetricValue"] {
-    color: #0f2b46 !important;
+    color: #0F172A !important;
 }
 [data-testid="stMetricLabel"] {
-    color: #1a202c !important;
+    color: #0F172A !important;
 }
 
 /* Section headers */
 .section-header h2 {
-    color: #0f2b46 !important;
+    color: #0F172A !important;
 }
 
 /* Breadcrumbs / navigation text */
 .stApp a {
-    color: #0d7377 !important;
+    color: #3B82F6 !important;
 }
 
 /* Score bar labels */
@@ -473,8 +487,8 @@ details[data-testid="stExpander"] {
 
 /* Scrollbar light mode */
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.03) !important; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #0d7377, #4a90a4) !important; }
-::-webkit-scrollbar-thumb:hover { background: #0a6063 !important; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3B82F6, #60A5FA) !important; }
+::-webkit-scrollbar-thumb:hover { background: #2563EB !important; }
 """
 
     # --- Dark theme CSS ---
@@ -484,18 +498,26 @@ details[data-testid="stExpander"] {
 
 /* ===== ROOT VARIABLES ===== */
 :root {
-    --navy: #e0e6ed;
-    --navy-light: #b0c4d8;
-    --teal: #15b8bd;
-    --gold: #c9a227;
-    --gold-light: #dbb94a;
-    --white: #0a1929;
-    --bg: #0a1929;
-    --text-primary: #e0e6ed;
-    --text-secondary: #8fa3b8;
-    --glass-bg: rgba(15, 43, 70, 0.85);
-    --glass-border: rgba(13, 115, 119, 0.3);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.30);
+    --navy: #E2E8F0;
+    --navy-light: #94A3B8;
+    --teal: #38BDF8;
+    --gold: #38BDF8;
+    --gold-light: #0EA5E9;
+    --white: #0B1220;
+    --bg: #0B1220;
+    --bg-primary: #0B1220;
+    --bg-surface: rgba(17,24,39,0.85);
+    --bg-card: rgba(17,24,39,0.85);
+    --text-primary: #E2E8F0;
+    --text-secondary: #94A3B8;
+    --glass-bg: rgba(17, 24, 39, 0.85);
+    --glass-border: rgba(56, 189, 248, 0.15);
+    --glass-shadow: 0 8px 32px rgba(56, 189, 248, 0.06);
+    --blue-primary: #38BDF8;
+    --blue-hover: #0284C7;
+    --blue-accent: #0EA5E9;
+    --border-color: rgba(56, 189, 248, 0.15);
+    --shadow-color: rgba(56, 189, 248, 0.06);
     --radius: 16px;
     --radius-sm: 10px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -509,8 +531,8 @@ html, body, [data-testid="stAppViewContainer"] {
 
 [data-testid="stAppViewContainer"] {
     background:
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230d7377' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(160deg, #060e1a 0%, #0a1929 40%, #0b1e30 100%);
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2338BDF8' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(160deg, #0B1220 0%, #111827 40%, #0B1220 100%);
 }
 
 [data-testid="stMainBlockContainer"] {
@@ -593,7 +615,7 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* ===== Style ALL Streamlit buttons in dark mode ===== */
 .stButton > button {
-    background: linear-gradient(135deg, #0d7377, #0f2b46) !important;
+    background: #0EA5E9 !important;
     color: white !important;
     border: none !important;
     border-radius: 8px !important;
@@ -602,14 +624,14 @@ html, body, [data-testid="stAppViewContainer"] {
     transition: all 0.3s ease !important;
 }
 .stButton > button:hover {
-    filter: brightness(1.15) !important;
-    box-shadow: 0 4px 15px rgba(13,115,119,0.3) !important;
+    background: #0284C7 !important;
+    box-shadow: 0 4px 15px rgba(56,189,248,0.3) !important;
     transform: translateY(-1px) !important;
 }
 
 /* Download buttons */
 .stDownloadButton > button {
-    background: linear-gradient(135deg, #0d7377, #0f2b46) !important;
+    background: #0EA5E9 !important;
     color: white !important;
     border: none !important;
     border-radius: 8px !important;
@@ -680,6 +702,56 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stMultiSelect"] div[data-baseweb="select"] div {
     color: var(--text-primary) !important;
 }
+
+/* ===== DARK SIDEBAR ===== */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0B1220 0%, #111827 100%) !important;
+}
+[data-testid="stSidebar"] .stButton > button {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    color: #E2E8F0 !important;
+}
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: rgba(56,189,248,0.12) !important;
+    border-color: #38BDF8 !important;
+    border-left: 3px solid #38BDF8 !important;
+    transform: translateX(4px) !important;
+}
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255,255,255,0.12) !important;
+}
+[data-testid="stSidebar"] img {
+    filter: brightness(1.1);
+}
+
+/* ===== DARK HEADER ===== */
+.gov-header {
+    background: linear-gradient(135deg, #0B1220 0%, #0EA5E9 50%, #38BDF8 100%) !important;
+    color: white !important;
+    box-shadow: 0 12px 40px rgba(56, 189, 248, 0.06) !important;
+    border: 2px solid rgba(56, 189, 248, 0.15) !important;
+}
+.gov-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.gov-header h1 {
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
+}
+.gov-header p {
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 400 !important;
+}
 """
 
     theme_css = dark_css if dark else light_css
@@ -692,66 +764,26 @@ html, body, [data-testid="stAppViewContainer"] {
 ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--teal), var(--navy-light)); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--navy); }
 
-/* ===== SIDEBAR ===== */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #0a1f33 0%, #0f2b46 30%, #112d47 70%, #0d7377 100%) !important;
-}
-[data-testid="stSidebar"] * {
-    color: rgba(255,255,255,0.92) !important;
-}
-/* Sidebar navigation buttons */
+/* ===== SIDEBAR (structural only) ===== */
 [data-testid="stSidebar"] .stButton > button {
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(255,255,255,0.08) !important;
-    border-left: 3px solid transparent !important;
     border-radius: var(--radius-sm) !important;
     padding: 10px 16px !important;
     margin-bottom: 4px !important;
-    font-weight: 500 !important;
-    font-size: 14px !important;
     text-align: left !important;
     text-transform: none !important;
     letter-spacing: 0 !important;
-    color: rgba(255,255,255,0.92) !important;
     box-shadow: none !important;
     transition: var(--transition) !important;
 }
-[data-testid="stSidebar"] .stButton > button:hover {
-    background: rgba(255,255,255,0.12) !important;
-    border-color: var(--gold) !important;
-    border-left: 3px solid var(--gold) !important;
-    transform: translateX(4px) !important;
-    box-shadow: none !important;
-}
-[data-testid="stSidebar"] hr {
-    border-color: rgba(255,255,255,0.12) !important;
-}
-[data-testid="stSidebar"] img {
-    filter: brightness(1.1);
-}
 
-/* ===== HEADER BANNER ===== */
+/* ===== HEADER BANNER (structural only) ===== */
 .gov-header {
-    background: linear-gradient(135deg, #0f2b46 0%, #1a4a6e 50%, #0d7377 100%);
     padding: 28px 36px;
     border-radius: var(--radius);
     margin-bottom: 28px;
-    color: white;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.25);
-    border: 2px solid transparent;
     background-clip: padding-box;
-}
-.gov-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -20%;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(201,162,39,0.12) 0%, transparent 70%);
-    border-radius: 50%;
 }
 .gov-header::after {
     content: '';
@@ -760,7 +792,7 @@ html, body, [data-testid="stAppViewContainer"] {
     left: -100%;
     width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.04), transparent);
+    background: linear-gradient(90deg, transparent, rgba(59,130,246,0.04), transparent);
     animation: headerShimmer 8s ease-in-out infinite;
 }
 .gov-header h1 {
@@ -770,22 +802,18 @@ html, body, [data-testid="stAppViewContainer"] {
     letter-spacing: -0.5px;
     position: relative;
     z-index: 1;
-    color: white !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 .gov-header p {
     margin: 6px 0 0 0;
     font-size: 15px;
-    opacity: 0.85;
-    font-weight: 400;
+    font-weight: 500;
     position: relative;
     z-index: 1;
-    color: white !important;
 }
 .gov-header .gold-line {
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #c9a227, #dbb94a);
+    background: linear-gradient(90deg, #3B82F6, #60A5FA);
     border-radius: 2px;
     margin-top: 14px;
     position: relative;
@@ -797,7 +825,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border-radius: var(--radius);
     padding: 2px;
     margin-bottom: 28px;
-    background: linear-gradient(90deg, #0d7377, #c9a227, #1a4a6e, #c9a227, #0d7377);
+    background: linear-gradient(90deg, #1E3A5F, #3B82F6, #0EA5E9, #3B82F6, #1E3A5F);
     background-size: 300% 100%;
     animation: headerBorderGlow 4s ease-in-out infinite;
 }
@@ -813,8 +841,8 @@ html, body, [data-testid="stAppViewContainer"] {
     100% { left: 200%; }
 }
 @keyframes winnerPulseGov {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,39,0.3); }
-    50% { box-shadow: 0 0 0 6px rgba(201,162,39,0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(59,130,246,0); }
 }
 @keyframes miniCardSlide {
     from { opacity: 0; transform: translateX(-10px); }
@@ -836,7 +864,7 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 .glass-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(13, 115, 119, 0.06);
+    box-shadow: 0 12px 40px rgba(59, 130, 246, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(13, 115, 119, 0.06);
     border-color: rgba(13, 115, 119, 0.3);
 }
 .glass-card::before {
@@ -876,15 +904,15 @@ html, body, [data-testid="stAppViewContainer"] {
     height: 3px;
     border-radius: var(--radius) var(--radius) 0 0;
 }
-div[data-testid="stHorizontalBlock"] > div:nth-child(1) .metric-card::before { background: linear-gradient(90deg, #0d7377, #3a9fbf); }
-div[data-testid="stHorizontalBlock"] > div:nth-child(2) .metric-card::before { background: linear-gradient(90deg, #1a4a6e, #3a9fbf); }
-div[data-testid="stHorizontalBlock"] > div:nth-child(3) .metric-card::before { background: linear-gradient(90deg, #c9a227, #dbb94a); }
-div[data-testid="stHorizontalBlock"] > div:nth-child(4) .metric-card::before { background: linear-gradient(90deg, #2d8f5e, #5c8a4d); }
-div[data-testid="stHorizontalBlock"] > div:nth-child(5) .metric-card::before { background: linear-gradient(90deg, #6b5fa5, #8b6caf); }
-div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { background: linear-gradient(90deg, #b84c4c, #d4843e); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) .metric-card::before { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) .metric-card::before { background: linear-gradient(90deg, #2563EB, #3B82F6); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(3) .metric-card::before { background: linear-gradient(90deg, #60A5FA, #0EA5E9); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(4) .metric-card::before { background: linear-gradient(90deg, #0EA5E9, #38BDF8); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(5) .metric-card::before { background: linear-gradient(90deg, #1D4ED8, #3B82F6); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { background: linear-gradient(90deg, #22C55E, #3B82F6); }
 .metric-card:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 16px 48px rgba(15, 43, 70, 0.18);
+    box-shadow: 0 16px 48px rgba(59, 130, 246, 0.18);
 }
 .metric-card .metric-icon {
     font-size: 14px;
@@ -909,7 +937,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     margin-bottom: 4px;
 }
 .metric-card .metric-value.gold {
-    background: linear-gradient(135deg, var(--gold), #b8941f);
+    background: linear-gradient(135deg, var(--gold), #2563EB);
     -webkit-background-clip: text;
     background-clip: text;
 }
@@ -972,7 +1000,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     color: var(--navy);
 }
 .section-header .section-badge {
-    background: linear-gradient(135deg, var(--teal), #1a4a6e);
+    background: linear-gradient(135deg, var(--teal), #1E3A5F);
     color: white !important;
     padding: 4px 12px;
     border-radius: 20px;
@@ -1008,7 +1036,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .badge-blue {
     background: linear-gradient(135deg, rgba(26, 74, 110, 0.15), rgba(26, 74, 110, 0.08));
-    color: #1a4a6e !important;
+    color: #1E3A5F !important;
     border: 1px solid rgba(26, 74, 110, 0.25);
 }
 
@@ -1023,7 +1051,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 .styled-table thead th {
-    background: linear-gradient(135deg, #0f2b46, #1a4a6e);
+    background: linear-gradient(135deg, #0F172A, #1E3A5F);
     color: white !important;
     padding: 14px 16px;
     font-weight: 600;
@@ -1032,7 +1060,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     text-transform: uppercase;
     letter-spacing: 0.8px;
     white-space: nowrap;
-    border-bottom: 2px solid rgba(201,162,39,0.3);
+    border-bottom: 2px solid rgba(59,130,246,0.3);
 }
 .styled-table tbody tr {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1078,7 +1106,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 .score-bar.high { background: linear-gradient(90deg, #1a7a4a, #2d8f5e); }
-.score-bar.medium { background: linear-gradient(90deg, #b8941f, #c9a227); }
+.score-bar.medium { background: linear-gradient(90deg, #2563EB, #3B82F6); }
 .score-bar.low { background: linear-gradient(90deg, #b84c4c, #d46a6a); }
 
 /* ===== GAUGE CHART ===== */
@@ -1133,7 +1161,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 
 /* ===== COMPARISON WINNER ===== */
 .winner-highlight {
-    background: linear-gradient(135deg, rgba(201,162,39,0.12), rgba(13,115,119,0.08));
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(59,130,246,0.08));
     border: 2px solid var(--gold);
     border-radius: var(--radius);
     padding: 4px;
@@ -1172,9 +1200,9 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     border: 1px solid rgba(184,76,76,0.2);
 }
 .baseline-new {
-    background: linear-gradient(135deg, rgba(45,143,94,0.08), rgba(13,115,119,0.05));
+    background: linear-gradient(135deg, rgba(45,143,94,0.08), rgba(59,130,246,0.05));
     border: 2px solid var(--teal);
-    box-shadow: 0 8px 32px rgba(13,115,119,0.12);
+    box-shadow: 0 8px 32px rgba(59,130,246,0.12);
 }
 .baseline-card h3 {
     font-size: 16px;
@@ -1222,7 +1250,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .fairness-warn {
     background: rgba(201, 162, 39, 0.08);
     border: 1px solid rgba(201, 162, 39, 0.2);
-    border-left: 3px solid #c9a227;
+    border-left: 3px solid #3B82F6;
     color: #7a5f10 !important;
 }
 .fairness-danger {
@@ -1241,14 +1269,14 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     transition: var(--transition);
     position: relative;
     margin-left: 6px;
-    border-left: 2px solid rgba(13,115,119,0.15);
+    border-left: 2px solid rgba(59,130,246,0.15);
     padding-left: 20px;
 }
 .timeline-item:last-child {
     border-left-color: transparent;
 }
 .timeline-item:hover {
-    background: rgba(13,115,119,0.03);
+    background: rgba(59,130,246,0.03);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 .timeline-dot {
@@ -1263,8 +1291,8 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .timeline-dot.approved { background: #2d8f5e; }
 .timeline-dot.rejected { background: #b84c4c; }
-.timeline-dot.pending { background: #c9a227; }
-.timeline-dot.completed { background: #0d7377; }
+.timeline-dot.pending { background: #3B82F6; }
+.timeline-dot.completed { background: #3B82F6; }
 .timeline-content {
     flex: 1;
 }
@@ -1314,7 +1342,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 /* ===== BUTTONS ===== */
 .stDownloadButton > button,
 .stButton > button {
-    background: linear-gradient(135deg, #0f2b46, #0d7377) !important;
+    background: linear-gradient(135deg, #0F172A, #3B82F6) !important;
     color: white !important;
     border: none !important;
     border-radius: var(--radius-sm) !important;
@@ -1324,11 +1352,11 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 13px !important;
-    box-shadow: 0 2px 8px rgba(15, 43, 70, 0.15) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15) !important;
 }
 .stDownloadButton > button:hover,
 .stButton > button:hover {
-    background: linear-gradient(135deg, #1a4a6e, #0d7377) !important;
+    background: linear-gradient(135deg, #1E3A5F, #3B82F6) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 28px rgba(13, 115, 119, 0.3), 0 0 12px rgba(13, 115, 119, 0.15) !important;
     filter: brightness(1.05) !important;
@@ -1371,7 +1399,7 @@ header { visibility: hidden; }
     flex-shrink: 0;
 }
 .dq-dot.good { background: #2d8f5e; }
-.dq-dot.warn { background: #c9a227; }
+.dq-dot.warn { background: #3B82F6; }
 
 /* ===== FOOTER ===== */
 .gov-footer {
@@ -1395,7 +1423,7 @@ details[data-testid="stExpander"] {
 }
 details[data-testid="stExpander"]:hover {
     border-left-color: var(--gold) !important;
-    box-shadow: 0 2px 12px rgba(13,115,119,0.06) !important;
+    box-shadow: 0 2px 12px rgba(59,130,246,0.06) !important;
 }
 
 /* ===== SCORE DOT INDICATOR ===== */
@@ -1408,7 +1436,7 @@ details[data-testid="stExpander"]:hover {
     vertical-align: middle;
 }
 .score-dot-high { background: #2d8f5e; box-shadow: 0 0 6px rgba(45,143,94,0.4); }
-.score-dot-mid { background: #c9a227; box-shadow: 0 0 6px rgba(201,162,39,0.4); }
+.score-dot-mid { background: #60A5FA; box-shadow: 0 0 6px rgba(96,165,250,0.4); }
 .score-dot-low { background: #b84c4c; box-shadow: 0 0 6px rgba(184,76,76,0.4); }
 
 /* ===== COAT OF ARMS FALLBACK ===== */
@@ -1416,13 +1444,17 @@ details[data-testid="stExpander"]:hover {
     text-align: center;
     font-size: 24px;
     font-weight: 800;
-    color: rgba(201,162,39,0.8);
+    color: rgba(59,130,246,0.9);
     padding: 10px 0;
     letter-spacing: 2px;
 }
 """
 
-    st.markdown(f"<style>{theme_css}\n{common_css}</style>", unsafe_allow_html=True)
+    # Light overrides MUST come AFTER common to win specificity
+    if dark:
+        st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -1583,19 +1615,19 @@ def main():
     # Government emblem as styled element
     st.sidebar.markdown("""
     <div style="text-align:center;padding:1rem 0 0.5rem">
-        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#c9a227,#dab94e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(201,162,39,0.3);border:2px solid rgba(201,162,39,0.5)">
-            <span style="color:#0f2b46;font-weight:900;font-size:1.5rem;letter-spacing:1px">KZ</span>
+        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#3B82F6,#2563EB);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(59,130,246,0.3);border:2px solid rgba(59,130,246,0.5)">
+            <span style="color:white;font-weight:900;font-size:1.5rem;letter-spacing:1px">KZ</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
     st.sidebar.markdown(
         "<div style='text-align:center; margin-bottom:4px;'>"
-        "<span style='font-size:20px; font-weight:700; letter-spacing:-0.5px;'>Скоринг субсидий</span>"
+        "<span style='font-size:20px; font-weight:700; letter-spacing:-0.5px; color:#E2E8F0;'>Скоринг субсидий</span>"
         "</div>",
         unsafe_allow_html=True,
     )
     st.sidebar.markdown(
-        "<div style='text-align:center; font-size:12px; opacity:0.7; margin-bottom:16px;'>"
+        "<div style='text-align:center; font-size:12px; color:#94A3B8; margin-bottom:16px;'>"
         "Министерство сельского хозяйства РК</div>",
         unsafe_allow_html=True,
     )
@@ -1635,10 +1667,10 @@ def main():
         if is_active:
             # Active page: highlighted styling via custom HTML + button
             st.sidebar.markdown(
-                f"<div style='background:linear-gradient(135deg, rgba(201,162,39,0.25), rgba(13,115,119,0.25)); "
-                f"border:1px solid #c9a227; border-left:3px solid #c9a227; border-radius:10px; "
+                f"<div style='background:linear-gradient(135deg, rgba(59,130,246,0.25), rgba(56,189,248,0.15)); "
+                f"border:1px solid #3B82F6; border-left:3px solid #60A5FA; border-radius:10px; "
                 f"padding:10px 16px; margin-bottom:4px; font-weight:600; font-size:14px; "
-                f"color:rgba(255,255,255,0.95); box-shadow:0 0 12px rgba(201,162,39,0.15);'>"
+                f"color:#E2E8F0; box-shadow:0 0 12px rgba(59,130,246,0.15);'>"
                 f"{icon_label}</div>",
                 unsafe_allow_html=True,
             )
@@ -1724,8 +1756,23 @@ def main():
         )
         return
 
+    if df.empty:
+        st.warning(
+            "Загруженный датасет пуст (0 записей). "
+            "Проверьте файл данных или загрузите другой файл через боковую панель."
+        )
+        return
+
     df_hash = hash(len(df))
-    producer_features = compute_features(df_hash, df)
+    with st.spinner("Вычисление признаков производителей..."):
+        producer_features = compute_features(df_hash, df)
+
+    if producer_features.empty:
+        st.warning(
+            "Не удалось извлечь признаки производителей из данных. "
+            "Проверьте формат файла и наличие обязательных столбцов."
+        )
+        return
 
     if "ml_weight" not in st.session_state:
         st.session_state.ml_weight = 0.6
@@ -1734,18 +1781,26 @@ def main():
     if "feature_weights" not in st.session_state:
         st.session_state.feature_weights = get_feature_weights_default()
 
-    engine = train_scoring_engine(
-        hash(len(producer_features)),
-        producer_features,
-        st.session_state.ml_weight,
-        st.session_state.rule_weight,
-    )
-    engine.update_weights(
-        st.session_state.feature_weights,
-        st.session_state.ml_weight,
-        st.session_state.rule_weight,
-    )
-    scored = engine.score(producer_features)
+    with st.spinner("Обучение и скоринг модели..."):
+        engine = train_scoring_engine(
+            hash(len(producer_features)),
+            producer_features,
+            st.session_state.ml_weight,
+            st.session_state.rule_weight,
+        )
+        engine.update_weights(
+            st.session_state.feature_weights,
+            st.session_state.ml_weight,
+            st.session_state.rule_weight,
+        )
+        scored = engine.score(producer_features)
+
+    if scored.empty:
+        st.warning(
+            "Результат скоринга пуст. "
+            "Проверьте данные и параметры модели."
+        )
+        return
 
     # ----- Routing -----
     if page == "dashboard":
@@ -1903,6 +1958,48 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     )
 
     stats = get_summary_stats(df)
+
+    # --- Usage workflow ---
+    with st.expander("Как использовать систему (инструкция для специалиста)", expanded=False):
+        st.markdown("""
+        <div class="glass-card" style="padding:20px 24px;">
+            <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:16px;">
+                Порядок работы с системой скоринга
+            </div>
+            <div style="line-height:2.0; font-size:14px; color:var(--text-primary);">
+                <div class="sw-item sw-strength" style="margin-bottom:10px;">
+                    <span class="sw-icon">1.</span>
+                    <div><b>Загрузить данные.</b> Откройте боковую панель и загрузите актуальный
+                    файл Excel (.xlsx) из реестра ИСС (subsidy.plem.kz). Система автоматически
+                    обработает данные и вычислит признаки.</div>
+                </div>
+                <div class="sw-item sw-strength" style="margin-bottom:10px;">
+                    <span class="sw-icon">2.</span>
+                    <div><b>Настроить веса (если нужно).</b> Перейдите в раздел
+                    "Настройки модели" для изменения баланса ML/Правила и весов
+                    отдельных факторов в соответствии с приоритетами государственной политики.</div>
+                </div>
+                <div class="sw-item sw-strength" style="margin-bottom:10px;">
+                    <span class="sw-icon">3.</span>
+                    <div><b>Просмотреть скоринг.</b> Откройте страницу "Скоринг производителей"
+                    для просмотра полного ранжирования. Используйте фильтры по региону,
+                    направлению и минимальному баллу.</div>
+                </div>
+                <div class="sw-item sw-strength" style="margin-bottom:10px;">
+                    <span class="sw-icon">4.</span>
+                    <div><b>Изучить профили.</b> Перейдите в "Профиль производителя" для
+                    детального анализа конкретного заявителя: скоринговые баллы, вклад
+                    каждого фактора, сильные и слабые стороны, история заявок.</div>
+                </div>
+                <div class="sw-item sw-strength" style="margin-bottom:10px;">
+                    <span class="sw-icon">5.</span>
+                    <div><b>Сформировать шорт-лист.</b> Используйте раздел "Шортлист"
+                    для генерации списка приоритетных получателей субсидий.
+                    Экспортируйте результат в CSV для дальнейшей работы.</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     # --- Big metrics ---
     c1, c2, c3, c4 = st.columns(4)
@@ -2103,7 +2200,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
         orientation="h",
         marker=dict(
             color=region_data["mean_score"],
-            colorscale=[[0, "#b84c4c"], [0.5, "#c9a227"], [1, "#0d7377"]],
+            colorscale=[[0, "#b84c4c"], [0.5, "#60A5FA"], [1, "#3B82F6"]],
             colorbar=dict(title="Ср. балл", thickness=15),
             cornerradius=4,
         ),
@@ -2148,6 +2245,125 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
         render_metric_card(
             "ОСВОЕНИЕ (ТОП-100)", f"{top100_utilization:.0%}",
             f"+{delta_u:.0f}% vs среднее ({overall_utilization:.0%})", gold=True, delay=3
+        )
+
+    render_divider()
+
+    # --- Budget savings & transparency metrics ---
+    render_section_header("Экономия бюджета и прозрачность", "Количественный эффект")
+
+    # Budget savings: difference in utilization rate * total subsidy amount
+    total_subsidy_amount = float(scored["total_amount"].sum())
+    utilization_diff = top100_utilization - overall_utilization
+    budget_savings_est = utilization_diff * total_subsidy_amount
+
+    # Gini coefficient improvement: compare Gini of top-100 scores vs all scores
+    from fairness import compute_gini_coefficient
+    gini_all = compute_gini_coefficient(scored["combined_score"].values)
+    gini_top100 = compute_gini_coefficient(top100["combined_score"].values)
+    gini_improvement = ((gini_all - gini_top100) / max(gini_all, 0.001)) * 100
+
+    bs1, bs2, bs3 = st.columns(3)
+    with bs1:
+        render_metric_card(
+            "ЭКОНОМИЯ БЮДЖЕТА",
+            format_tenge(abs(budget_savings_est)),
+            f"Разница освоения: +{utilization_diff:.1%} от {format_tenge(total_subsidy_amount)}",
+            gold=True, delay=1,
+        )
+    with bs2:
+        render_metric_card(
+            "ДЖИНИ (ВСЕ)",
+            f"{gini_all:.3f}",
+            "Неравенство баллов (все производители)",
+            delay=2,
+        )
+    with bs3:
+        render_metric_card(
+            "ПОВЫШЕНИЕ ПРОЗРАЧНОСТИ",
+            f"{abs(gini_improvement):.1f}%",
+            f"Снижение Gini: {gini_all:.3f} -> {gini_top100:.3f} (топ-100)",
+            gold=True, delay=3,
+        )
+
+    # Calculate annual budget savings estimate
+    annual_budget_est = total_subsidy_amount  # approximate annual volume
+    efficiency_gain_pct = abs(utilization_diff) * 100
+    annual_savings_est = abs(budget_savings_est)
+    annual_savings_bln = annual_savings_est / 1_000_000_000
+
+    st.markdown(f"""
+    <div class="glass-card" style="margin-top:16px; border-left:4px solid var(--blue-primary, #3B82F6);">
+        <div style="font-size:14px; line-height:1.8; color:var(--text-primary);">
+            <span style="font-weight:700; color:var(--navy);">Интерпретация:</span>
+            При переходе от случайного отбора (FCFS) к merit-based скорингу,
+            топ-100 производителей осваивают субсидии на <b>{utilization_diff:.1%}</b> эффективнее,
+            что эквивалентно экономии <b>{format_tenge(abs(budget_savings_est))}</b>
+            от общего объёма. Коэффициент Джини среди отобранных снижается
+            с <b>{gini_all:.3f}</b> до <b>{gini_top100:.3f}</b>, что означает
+            более равномерное и прозрачное распределение баллов.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
+    # --- Explicit budget savings card (criterion 1) ---
+    render_section_header("Экономия бюджета", "Merit-based скоринг")
+    st.markdown(f"""
+    <div class="glass-card" style="border-left:4px solid #22C55E; margin-bottom:16px;">
+        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+            Потенциальная экономия при переходе на merit-based скоринг
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:var(--text-primary);">
+            <p>
+                При переходе на merit-based скоринг эффективность использования субсидий
+                увеличивается на <b>{efficiency_gain_pct:.1f}%</b>
+                (средняя утилизация топ-100: <b>{top100_utilization:.1%}</b> vs
+                общая средняя: <b>{overall_utilization:.1%}</b>).
+            </p>
+            <p style="margin-top:8px;">
+                Потенциальная экономия: <b>{annual_savings_bln:.2f} млрд тг ежегодно</b>
+                (расчёт: разница освоения {utilization_diff:.1%} x общий объём субсидий
+                {format_tenge(total_subsidy_amount)}).
+            </p>
+            <p style="margin-top:8px;">
+                Топ-100 производителей по скорингу показывают одобрение <b>{top100_approval:.0%}</b>
+                (vs {overall_approval:.0%} в среднем) и исполнение <b>{top100_completion:.0%}</b>
+                (vs {overall_completion:.0%} в среднем).
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    sav1, sav2, sav3, sav4 = st.columns(4)
+    with sav1:
+        render_metric_card(
+            "ЭКОНОМИЯ / ГОД",
+            f"{annual_savings_bln:.2f} млрд",
+            f"от {format_tenge(annual_budget_est)} бюджета",
+            gold=True, delay=1,
+        )
+    with sav2:
+        render_metric_card(
+            "РОСТ ЭФФЕКТИВНОСТИ",
+            f"+{efficiency_gain_pct:.1f}%",
+            f"Освоение: {overall_utilization:.0%} -> {top100_utilization:.0%}",
+            delay=2,
+        )
+    with sav3:
+        render_metric_card(
+            "РОСТ ОДОБРЕНИЯ",
+            f"+{((top100_approval - overall_approval) / max(overall_approval, 0.01)) * 100:.0f}%",
+            f"{overall_approval:.0%} -> {top100_approval:.0%}",
+            delay=3,
+        )
+    with sav4:
+        render_metric_card(
+            "РОСТ ИСПОЛНЕНИЯ",
+            f"+{((top100_completion - overall_completion) / max(overall_completion, 0.01)) * 100:.0f}%",
+            f"{overall_completion:.0%} -> {top100_completion:.0%}",
+            delay=4,
         )
 
 
@@ -2222,6 +2438,137 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
 
     render_divider()
 
+    # --- Detailed Data Quality Section ---
+    render_section_header("Качество данных", "Детальный анализ")
+
+    # 1. Completeness per column
+    completeness_data = []
+    key_columns = [
+        ("id", "ID записи"), ("date_raw", "Дата поступления"),
+        ("region", "Область"), ("akimat", "Акимат"),
+        ("app_num", "Номер заявки"), ("direction", "Направление"),
+        ("subsidy_name", "Наименование субсидии"), ("status", "Статус"),
+        ("rate", "Норматив"), ("amount", "Сумма"),
+        ("district", "Район хозяйства"),
+    ]
+    for col_key, col_label in key_columns:
+        if col_key in df.columns:
+            non_null = df[col_key].notna().sum()
+            total = len(df)
+            pct = non_null / total * 100 if total > 0 else 0
+            cls = "good" if pct >= 95 else "warn"
+            completeness_data.append((col_label, col_key, non_null, total, pct, cls))
+
+    completeness_rows = ""
+    for col_label, col_key, non_null, total, pct, cls in completeness_data:
+        dot = f'<span class="dq-dot {cls}" style="display:inline-block;"></span>'
+        completeness_rows += (
+            f"<tr><td>{col_label}</td><td><code>{col_key}</code></td>"
+            f"<td>{non_null:,} / {total:,}</td>"
+            f"<td>{dot} {pct:.1f}%</td></tr>"
+        )
+
+    st.markdown(f"""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+            Полнота данных по столбцам (% непустых значений)
+        </div>
+        <table class="styled-table">
+            <thead>
+                <tr><th>Столбец</th><th>Код</th><th>Заполнено</th><th>Полнота</th></tr>
+            </thead>
+            <tbody>{completeness_rows}</tbody>
+        </table>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 2. Outlier detection
+    outlier_info = []
+    if "amount" in df.columns:
+        amt = df["amount"].dropna()
+        if len(amt) > 0:
+            q1 = amt.quantile(0.25)
+            q3 = amt.quantile(0.75)
+            iqr = q3 - q1
+            lower_bound = q1 - 1.5 * iqr
+            upper_bound = q3 + 1.5 * iqr
+            n_outliers = int(((amt < lower_bound) | (amt > upper_bound)).sum())
+            outlier_pct = n_outliers / len(amt) * 100
+            outlier_info.append(("Сумма субсидии (amount)", n_outliers, len(amt), outlier_pct))
+
+    if "rate" in df.columns:
+        rate_vals = pd.to_numeric(df["rate"], errors="coerce").dropna()
+        if len(rate_vals) > 0:
+            q1_r = rate_vals.quantile(0.25)
+            q3_r = rate_vals.quantile(0.75)
+            iqr_r = q3_r - q1_r
+            if iqr_r > 0:
+                n_out_r = int(((rate_vals < q1_r - 1.5 * iqr_r) | (rate_vals > q3_r + 1.5 * iqr_r)).sum())
+                out_pct_r = n_out_r / len(rate_vals) * 100
+                outlier_info.append(("Норматив (rate)", n_out_r, len(rate_vals), out_pct_r))
+
+    outlier_rows = ""
+    for o_label, o_count, o_total, o_pct in outlier_info:
+        cls = "good" if o_pct < 5 else "warn"
+        dot = f'<span class="dq-dot {cls}" style="display:inline-block;"></span>'
+        outlier_rows += (
+            f"<tr><td>{o_label}</td>"
+            f"<td>{o_count:,} из {o_total:,}</td>"
+            f"<td>{dot} {o_pct:.1f}%</td></tr>"
+        )
+
+    if outlier_rows:
+        st.markdown(f"""
+        <div class="glass-card" style="margin-bottom:24px;">
+            <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+                Выбросы (метод IQR: значения за пределами 1.5 x межквартильного размаха)
+            </div>
+            <table class="styled-table">
+                <thead>
+                    <tr><th>Поле</th><th>Выбросов</th><th>Доля</th></tr>
+                </thead>
+                <tbody>{outlier_rows}</tbody>
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # 3. Data coverage
+    date_min = df["date"].min() if "date" in df.columns and df["date"].notna().any() else None
+    date_max = df["date"].max() if "date" in df.columns and df["date"].notna().any() else None
+    n_regions = df["region"].nunique() if "region" in df.columns else 0
+    n_districts = df["district"].nunique() if "district" in df.columns else 0
+    n_directions = df["direction"].nunique() if "direction" in df.columns else 0
+    n_months = df["month"].nunique() if "month" in df.columns else 0
+
+    date_range_str = ""
+    if date_min is not None and date_max is not None:
+        date_range_str = f"{date_min.strftime('%d.%m.%Y')} -- {date_max.strftime('%d.%m.%Y')}"
+    else:
+        date_range_str = "Н/Д"
+
+    st.markdown(f"""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+            Покрытие данных
+        </div>
+        <table class="styled-table">
+            <thead>
+                <tr><th>Параметр</th><th>Значение</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Временной диапазон</td><td>{date_range_str}</td></tr>
+                <tr><td>Количество месяцев</td><td>{n_months}</td></tr>
+                <tr><td>Регионов (областей)</td><td>{n_regions}</td></tr>
+                <tr><td>Районов</td><td>{n_districts}</td></tr>
+                <tr><td>Направлений</td><td>{n_directions}</td></tr>
+                <tr><td>Записей</td><td>{len(df):,}</td></tr>
+            </tbody>
+        </table>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
     # --- Feature Engineering explanation ---
     render_section_header("Feature Engineering", "14 признаков")
     st.markdown("""
@@ -2251,7 +2598,7 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
                 <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">13.</span> Охват районов (unique_districts)</div>
                 <div class="sw-item sw-strength" style="margin:0;"><span class="sw-icon">14.</span> Период активности (activity_span_days)</div>
             </div>
-            <p style="margin-top:16px; padding:12px 16px; background:rgba(13,115,119,0.06); border-radius:8px; font-weight:600;">
+            <p style="margin-top:16px; padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; font-weight:600;">
                 Все признаки нормализуются в диапазон [0, 1] с помощью MinMaxScaler перед подачей в модели.
                 Целевая переменная для ML формируется как взвешенная комбинация:
                 исполнение (35%) + одобрение (25%) + освоение (20%) + диверсификация (10%) + (1 - отклонения) (10%).
@@ -2359,7 +2706,7 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
         """, unsafe_allow_html=True)
 
     st.markdown("""
-    <div style="text-align:center; margin:16px 0 24px 0; padding:12px 24px; background:rgba(13,115,119,0.06);
+    <div style="text-align:center; margin:16px 0 24px 0; padding:12px 24px; background:rgba(59,130,246,0.06);
         border-radius:10px; font-size:14px; font-weight:600; color:var(--navy);">
         Итоговый балл = 0.6 x ML_балл + 0.4 x Правила_балл (диапазон 0--100)
     </div>
@@ -2578,6 +2925,53 @@ def render_profile(
     rule_val = float(row.get("rule_score", 0))
     ml_val = float(row.get("ml_score", 0))
 
+    # --- Commission summary block ---
+    completion_pct = float(prod_feat.get("completion_rate", 0))
+    approval_pct = float(prod_feat.get("approval_rate", 0))
+    utilization_pct = float(prod_feat.get("utilization_rate", 0))
+
+    # Determine recommendation level
+    if score_val >= 75:
+        commission_rec = "приоритетная"
+        commission_cls = "fairness-ok"
+    elif score_val >= 50:
+        commission_rec = "стандартная"
+        commission_cls = "fairness-warn"
+    else:
+        commission_rec = "требует проверки"
+        commission_cls = "fairness-danger"
+
+    # Build strengths summary
+    strengths_parts = []
+    if approval_pct >= 0.7:
+        strengths_parts.append(f"высокий процент одобрения ({approval_pct:.0%})")
+    if completion_pct >= 0.5:
+        strengths_parts.append(f"высокий процент завершения ({completion_pct:.0%})")
+    if utilization_pct >= 0.5:
+        strengths_parts.append(f"эффективное освоение средств ({utilization_pct:.0%})")
+    if float(prod_feat.get("activity_span_days", 0)) > 60:
+        strengths_parts.append("стабильная история")
+    if float(prod_feat.get("direction_diversity", 0)) >= 0.15:
+        strengths_parts.append("диверсификация направлений")
+    if not strengths_parts:
+        strengths_parts.append("показатели в пределах среднего")
+
+    strengths_str = ", ".join(strengths_parts[:3])
+
+    st.markdown(f"""
+    <div class="{commission_cls} fairness-alert" style="margin-bottom:20px; padding:18px 24px; font-size:15px; line-height:1.7;">
+        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:8px;">
+            Резюме для комиссии
+        </div>
+        <div>
+            Производитель <b>{selected_id}</b> рекомендован к субсидированию
+            (балл: <b>{score_val:.1f}</b> из 100, ранг #{int(row['rank'])} из {len(scored)}).
+            Основные сильные стороны: {strengths_str}.
+            Рекомендация: <b>{commission_rec}</b>.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     # --- Hero card ---
     if score_val >= 75:
         badge_cls = "badge-green"
@@ -2649,8 +3043,8 @@ def render_profile(
     gc1, gc2, gc3 = st.columns(3)
 
     dark = is_dark_mode()
-    gauge_num_color = "#e0e6ed" if dark else NAVY
-    gauge_title_color = "#8fa3b8" if dark else "#4a5568"
+    gauge_num_color = "#E2E8F0" if dark else NAVY
+    gauge_title_color = "#94A3B8" if dark else "#475569"
 
     def make_gauge(value, title, _color_ranges):
         fig = go.Figure(go.Indicator(
@@ -2664,8 +3058,8 @@ def render_profile(
                 borderwidth=0,
                 steps=[
                     dict(range=[0, 25], color="rgba(184,76,76,0.12)"),
-                    dict(range=[25, 50], color="rgba(201,162,39,0.12)"),
-                    dict(range=[50, 75], color="rgba(13,115,119,0.12)"),
+                    dict(range=[25, 50], color="rgba(59,130,246,0.12)"),
+                    dict(range=[50, 75], color="rgba(59,130,246,0.12)"),
                     dict(range=[75, 100], color="rgba(45,143,94,0.12)"),
                 ],
                 threshold=dict(line=dict(color=GOLD, width=3), thickness=0.8, value=value),
@@ -2718,6 +3112,139 @@ def render_profile(
         apply_chart_theme(fig, height=max(350, len(combined_descs) * 32))
         fig.update_layout(margin=dict(l=200))
         st.plotly_chart(fig, use_container_width=True, key="chart_profile_factor_breakdown")
+
+        # --- Natural language explanations for each factor (criterion 4) ---
+        render_divider()
+        render_section_header("Пояснения к факторам", "Интерпретация")
+
+        # Compute overall averages for comparison
+        avg_values = {}
+        for feat_key in friendly_names:
+            if feat_key in scored.columns:
+                avg_values[feat_key] = float(scored[feat_key].mean())
+            elif feat_key in features.columns:
+                avg_values[feat_key] = float(features[feat_key].mean())
+
+        nl_explanations = []
+        for feat_key, feat_label in friendly_names.items():
+            prod_val = float(prod_feat.get(feat_key, 0))
+            avg_val = avg_values.get(feat_key, 0)
+
+            if feat_key == "approval_rate":
+                if prod_val >= avg_val * 1.1:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Высокий показатель одобрения ({prod_val:.0%}) '
+                        f'значительно выше среднего ({avg_val:.0%}), что положительно влияет на итоговый балл.</div>'
+                    )
+                elif prod_val < avg_val * 0.9:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Показатель одобрения ({prod_val:.0%}) '
+                        f'ниже среднего ({avg_val:.0%}), рекомендуется улучшить качество заявок.</div>'
+                    )
+            elif feat_key == "completion_rate":
+                if prod_val >= avg_val * 1.1:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Высокая доля исполнения ({prod_val:.0%}) '
+                        f'выше среднего ({avg_val:.0%}), что свидетельствует об ответственном освоении субсидий.</div>'
+                    )
+                elif prod_val < avg_val * 0.9:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Показатель завершения ({prod_val:.0%}) '
+                        f'ниже среднего ({avg_val:.0%}), рекомендуется улучшить.</div>'
+                    )
+            elif feat_key == "utilization_rate":
+                if prod_val >= avg_val * 1.1:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Эффективное освоение средств ({prod_val:.0%}) '
+                        f'выше среднего ({avg_val:.0%}), производитель рационально использует субсидии.</div>'
+                    )
+                elif prod_val < avg_val * 0.9:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Освоение средств ({prod_val:.0%}) '
+                        f'ниже среднего ({avg_val:.0%}), рекомендуется планировать использование субсидий.</div>'
+                    )
+            elif feat_key == "rejection_rate":
+                if prod_val <= avg_val * 0.9:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Низкая доля отклонений ({prod_val:.0%}) '
+                        f'ниже среднего ({avg_val:.0%}), что говорит о качественной подготовке документов.</div>'
+                    )
+                elif prod_val > avg_val * 1.1:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Высокая доля отклонений ({prod_val:.0%}) '
+                        f'выше среднего ({avg_val:.0%}), необходимо проанализировать причины отказов.</div>'
+                    )
+            elif feat_key == "direction_diversity":
+                if prod_val >= avg_val * 1.1:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Хорошая диверсификация ({prod_val:.2f}) '
+                        f'выше среднего ({avg_val:.2f}), производитель работает по нескольким направлениям.</div>'
+                    )
+                elif prod_val < avg_val * 0.5:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Низкая диверсификация ({prod_val:.2f}), '
+                        f'рекомендуется участие в смежных программах.</div>'
+                    )
+            elif feat_key == "working_hours_ratio":
+                if prod_val >= 0.7:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Заявки подаются преимущественно в рабочее время ({prod_val:.0%}), '
+                        f'что свидетельствует о системном подходе.</div>'
+                    )
+                elif prod_val < 0.4:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Заявки подаются вне рабочего времени ({prod_val:.0%}), '
+                        f'рекомендуется подавать в период 9:00-18:00.</div>'
+                    )
+            elif feat_key == "total_apps":
+                if prod_val >= avg_val * 1.2:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>{feat_label}:</b> Активный производитель ({int(prod_val)} заявок, '
+                        f'среднее: {avg_val:.0f}), что повышает достоверность скоринга.</div>'
+                    )
+                elif prod_val < 3:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>{feat_label}:</b> Мало заявок ({int(prod_val)}), '
+                        f'недостаточно данных для надёжной оценки.</div>'
+                    )
+
+        if nl_explanations:
+            for expl in nl_explanations:
+                st.markdown(expl, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="fairness-alert fairness-ok">
+                Все показатели производителя находятся в пределах среднего.
+            </div>
+            """, unsafe_allow_html=True)
 
     with tab2:
         # "Что улучшить" section with actionable recommendations
@@ -2912,7 +3439,7 @@ def render_comparison(scored: pd.DataFrame, features: pd.DataFrame):
         with col:
             sc = float(r["combined_score"])
             is_winner = (i == winner_idx)
-            border_style = "border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(201,162,39,0.2);" if is_winner else ""
+            border_style = "border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(59,130,246,0.2);" if is_winner else ""
             winner_label = '<div style="color:var(--gold); font-weight:700; font-size:12px; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">Лидер</div>' if is_winner else ''
 
             st.markdown(f"""
@@ -3350,12 +3877,14 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
         "Углублённый анализ модели и данных"
     )
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
         "Важность признаков",
         "Корреляции",
         "Связь балла и суммы",
         "Сравнение с базовыми моделями",
         "Валидация модели",
+        "Ablation Study",
+        "Анализ чувствительности",
     ])
 
     with tab1:
@@ -3420,6 +3949,233 @@ def render_analytics(df: pd.DataFrame, scored: pd.DataFrame, engine: ScoringEngi
 
     with tab5:
         render_model_validation(scored, engine, df)
+
+    with tab6:
+        render_ablation_study(scored, engine, df)
+
+    with tab7:
+        render_sensitivity_analysis(scored, engine, df)
+
+
+def render_ablation_study(scored: pd.DataFrame, engine: ScoringEngine, df: pd.DataFrame):
+    """Ablation study: remove each feature one at a time, measure impact on R2 and ranking."""
+    from feature_engineering import compute_producer_features, prepare_model_data, get_scoring_features
+    from sklearn.model_selection import cross_val_score
+    from sklearn.ensemble import GradientBoostingRegressor
+
+    render_section_header("Ablation Study", "Влияние каждого признака")
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
+            Ablation study показывает, как удаление каждого из 14 признаков влияет на качество модели (R2)
+            и стабильность ранжирования (изменение позиций в топ-100).
+            Чем больше падение R2 при удалении признака, тем он важнее для модели.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        feats = compute_producer_features(df)
+        X, y = prepare_model_data(feats)
+        X_clean = X.fillna(0).replace([np.inf, -np.inf], 0)
+        feature_names = get_scoring_features()
+        descs = get_feature_descriptions()
+
+        # Baseline R2 with all features
+        X_scaled_full = engine.ml_scorer.scaler.transform(X_clean)
+        baseline_cv = cross_val_score(engine.ml_scorer.model, X_scaled_full, y, cv=5, scoring="r2")
+        baseline_r2 = float(baseline_cv.mean())
+
+        # Get baseline ranking
+        y_pred_full = engine.ml_scorer.model.predict(X_scaled_full)
+        baseline_top100 = set(np.argsort(y_pred_full)[-100:])
+
+        ablation_results = []
+        for i, feat in enumerate(feature_names):
+            # Remove feature i
+            X_ablated = X_clean.drop(columns=[feat], errors="ignore")
+            if X_ablated.shape[1] == X_clean.shape[1]:
+                continue
+            from sklearn.preprocessing import MinMaxScaler
+            scaler_abl = MinMaxScaler()
+            X_abl_scaled = scaler_abl.fit_transform(X_ablated)
+
+            model_abl = GradientBoostingRegressor(
+                n_estimators=200, max_depth=5, learning_rate=0.1, random_state=42
+            )
+            cv_abl = cross_val_score(model_abl, X_abl_scaled, y, cv=5, scoring="r2")
+            r2_abl = float(cv_abl.mean())
+            r2_drop = baseline_r2 - r2_abl
+
+            # Ranking change
+            model_abl.fit(X_abl_scaled, y)
+            y_pred_abl = model_abl.predict(X_abl_scaled)
+            abl_top100 = set(np.argsort(y_pred_abl)[-100:])
+            ranking_overlap = len(baseline_top100 & abl_top100)
+
+            ablation_results.append({
+                "feature": feat,
+                "label": descs.get(feat, feat),
+                "r2_without": r2_abl,
+                "r2_drop": r2_drop,
+                "top100_overlap": ranking_overlap,
+            })
+
+        if ablation_results:
+            abl_df = pd.DataFrame(ablation_results).sort_values("r2_drop", ascending=False)
+
+            # Bar chart: R2 drop per feature
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                y=abl_df["label"],
+                x=abl_df["r2_drop"],
+                orientation="h",
+                marker=dict(
+                    color=abl_df["r2_drop"],
+                    colorscale=[[0, "#60A5FA"], [1, "#1D4ED8"]],
+                    cornerradius=4,
+                ),
+                text=[f"{v:.4f}" for v in abl_df["r2_drop"]],
+                textposition="auto",
+                hovertemplate="%{y}<br>Падение R2: %{x:.4f}<extra></extra>",
+            ))
+            apply_chart_theme(fig, height=max(400, len(abl_df) * 32))
+            fig.update_layout(
+                xaxis_title="Падение R2 при удалении признака",
+                margin=dict(l=250, t=30),
+            )
+            st.plotly_chart(fig, use_container_width=True, key="chart_ablation_r2_drop")
+
+            render_divider()
+
+            # Table
+            render_section_header("Таблица ablation study", "Данные")
+            display_abl = abl_df[["label", "r2_without", "r2_drop", "top100_overlap"]].copy()
+            display_abl.columns = ["Признак", "R2 без признака", "Падение R2", "Top-100 совпадение"]
+            display_abl["R2 без признака"] = display_abl["R2 без признака"].round(4)
+            display_abl["Падение R2"] = display_abl["Падение R2"].round(4)
+            st.dataframe(display_abl, use_container_width=True, hide_index=True)
+
+            st.markdown(f"""
+            <div class="glass-card" style="margin-top:16px; border-left:4px solid var(--blue-primary, #3B82F6);">
+                <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
+                    <span style="font-weight:700; color:var(--navy);">Baseline R2:</span> {baseline_r2:.4f}.
+                    Наиболее критичные признаки -- те, при удалении которых R2 падает сильнее всего.
+                    Top-100 overlap показывает, сколько из 100 лучших производителей
+                    остаются в топ-100 после удаления признака.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("Не удалось выполнить ablation study.")
+    except Exception as e:
+        st.warning(f"Не удалось выполнить ablation study: {e}")
+
+
+def render_sensitivity_analysis(scored: pd.DataFrame, engine: ScoringEngine, df: pd.DataFrame):
+    """Sensitivity analysis: shift feature weights +/-10%, show ranking stability heatmap."""
+    render_section_header("Анализ чувствительности", "Стабильность ранжирования")
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
+            Анализ чувствительности показывает, как изменение весов отдельных признаков
+            на +/-10% влияет на стабильность ранжирования. Heatmap отображает процент
+            совпадения топ-100 при сдвиге каждого веса.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        from feature_engineering import compute_producer_features, get_scoring_features
+
+        feature_names = get_scoring_features()
+        descs = get_feature_descriptions()
+        current_weights = st.session_state.get("feature_weights", get_feature_weights_default())
+
+        feats = compute_producer_features(df)
+
+        # Get baseline ranking from rule scores with current weights
+        def compute_rule_ranking(weights_dict, features_df):
+            """Compute weighted rule-based ranking."""
+            score_cols = [c for c in feature_names if c in features_df.columns]
+            normalized = features_df[score_cols].copy()
+            for col in score_cols:
+                col_min = normalized[col].min()
+                col_max = normalized[col].max()
+                if col_max > col_min:
+                    normalized[col] = (normalized[col] - col_min) / (col_max - col_min)
+                else:
+                    normalized[col] = 0.0
+            rule_scores = pd.Series(0.0, index=features_df.index)
+            for col in score_cols:
+                w = weights_dict.get(col, 0.0)
+                rule_scores += normalized[col] * w
+            return rule_scores.rank(ascending=False).values
+
+        baseline_ranks = compute_rule_ranking(current_weights, feats)
+        baseline_top100 = set(np.argsort(-baseline_ranks)[:100])
+
+        shifts = [-0.10, -0.05, 0.0, 0.05, 0.10]
+        shift_labels = ["-10%", "-5%", "0%", "+5%", "+10%"]
+        heatmap_data = []
+        feature_labels = []
+
+        for feat in feature_names:
+            if feat not in current_weights:
+                continue
+            row = []
+            for shift in shifts:
+                modified_weights = current_weights.copy()
+                modified_weights[feat] = current_weights[feat] + shift
+                modified_ranks = compute_rule_ranking(modified_weights, feats)
+                modified_top100 = set(np.argsort(-modified_ranks)[:100])
+                overlap = len(baseline_top100 & modified_top100)
+                row.append(overlap)
+            heatmap_data.append(row)
+            feature_labels.append(descs.get(feat, feat))
+
+        if heatmap_data:
+            heatmap_array = np.array(heatmap_data)
+
+            fig = go.Figure(data=go.Heatmap(
+                z=heatmap_array,
+                x=shift_labels,
+                y=feature_labels,
+                colorscale=[[0, "#EF4444"], [0.5, "#F59E0B"], [0.85, "#60A5FA"], [1, "#22C55E"]],
+                zmin=50, zmax=100,
+                text=heatmap_array,
+                texttemplate="%{text}%",
+                textfont=dict(size=11),
+                hovertemplate="Признак: %{y}<br>Сдвиг: %{x}<br>Top-100 совпадение: %{z}%<extra></extra>",
+                colorbar=dict(title="Overlap %"),
+            ))
+            apply_chart_theme(fig, height=max(450, len(feature_labels) * 35))
+            fig.update_layout(
+                xaxis_title="Сдвиг веса",
+                yaxis_title="",
+                margin=dict(l=250, t=30),
+            )
+            st.plotly_chart(fig, use_container_width=True, key="chart_sensitivity_heatmap")
+
+            render_divider()
+
+            # Summary
+            min_overlap = int(heatmap_array.min())
+            avg_overlap = float(heatmap_array[heatmap_array < 100].mean()) if (heatmap_array < 100).any() else 100.0
+            stability_label = "высокая" if min_overlap >= 90 else ("средняя" if min_overlap >= 75 else "низкая")
+            stability_cls = "fairness-ok" if min_overlap >= 90 else ("fairness-warn" if min_overlap >= 75 else "fairness-danger")
+
+            st.markdown(f"""
+            <div class="{stability_cls} fairness-alert">
+                <span style="font-weight:700;">Стабильность ранжирования: {stability_label}.</span>
+                Минимальное совпадение топ-100 при сдвиге весов на +/-10%: {min_overlap}%.
+                Среднее совпадение при ненулевых сдвигах: {avg_overlap:.1f}%.
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("Нет данных для анализа чувствительности.")
+    except Exception as e:
+        st.warning(f"Не удалось выполнить анализ чувствительности: {e}")
 
 
 def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: pd.DataFrame):
@@ -3696,6 +4452,73 @@ def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.
 
     render_divider()
 
+    # --- Robustness test: Spearman rank correlation under perturbation ---
+    render_section_header("Робастность модели", "Стабильность ранжирования")
+    try:
+        from scipy.stats import spearmanr
+        feats_robust = compute_producer_features(df)
+        X_robust, y_robust = prepare_model_data(feats_robust)
+        X_robust_clean = X_robust.fillna(0).replace([np.inf, -np.inf], 0)
+        X_robust_scaled = engine.ml_scorer.scaler.transform(X_robust_clean)
+
+        # Original predictions
+        y_pred_original = engine.ml_scorer.model.predict(X_robust_scaled)
+        original_ranks = pd.Series(y_pred_original).rank(ascending=False).values
+
+        # Perturb 5% of the data with Gaussian noise
+        np.random.seed(42)
+        X_perturbed = X_robust_scaled.copy()
+        n_rows, n_cols = X_perturbed.shape
+        n_perturb = max(1, int(n_rows * 0.05))
+        perturb_idx = np.random.choice(n_rows, n_perturb, replace=False)
+        noise_scale = 0.05
+        for idx in perturb_idx:
+            X_perturbed[idx] += np.random.normal(0, noise_scale, n_cols)
+
+        y_pred_perturbed = engine.ml_scorer.model.predict(X_perturbed)
+        perturbed_ranks = pd.Series(y_pred_perturbed).rank(ascending=False).values
+
+        # Spearman rank correlation
+        spearman_corr, spearman_p = spearmanr(original_ranks, perturbed_ranks)
+
+        # Top-100 overlap
+        top100_original = set(np.argsort(y_pred_original)[-100:])
+        top100_perturbed = set(np.argsort(y_pred_perturbed)[-100:])
+        top100_overlap = len(top100_original & top100_perturbed)
+
+        rc1, rc2 = st.columns(2)
+        with rc1:
+            render_metric_card(
+                "SPEARMAN КОРРЕЛЯЦИЯ",
+                f"{spearman_corr:.4f}",
+                f"p-value: {spearman_p:.2e} (при возмущении 5% данных)",
+                gold=(spearman_corr < 0.95),
+                delay=1,
+            )
+        with rc2:
+            render_metric_card(
+                "TOP-100 OVERLAP",
+                f"{top100_overlap}%",
+                "Совпадение топ-100 при возмущении данных",
+                gold=(top100_overlap < 90),
+                delay=2,
+            )
+
+        stability_label = "высокая" if spearman_corr >= 0.98 else ("средняя" if spearman_corr >= 0.95 else "низкая")
+        stability_cls = "fairness-ok" if spearman_corr >= 0.98 else ("fairness-warn" if spearman_corr >= 0.95 else "fairness-danger")
+        st.markdown(f"""
+        <div class="{stability_cls} fairness-alert">
+            <span style="font-weight:700;">Стабильность ранжирования: {stability_label}.</span>
+            Spearman rho = {spearman_corr:.4f} при возмущении 5% записей (шум sigma={noise_scale}).
+            Top-100 overlap при возмущении данных: {top100_overlap}%.
+        </div>
+        """, unsafe_allow_html=True)
+
+    except Exception:
+        st.warning("Не удалось выполнить тест робастности.")
+
+    render_divider()
+
     # --- Prediction vs Actual scatter ---
     render_section_header("Предсказание vs Целевая переменная", "Scatter")
     try:
@@ -3764,11 +4587,11 @@ def render_settings(scored: pd.DataFrame):
         <div style="margin-top:12px;">
             <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Баланс моделей</div>
             <div style="display:flex; height:32px; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <div style="width:{ml_pct}%; background:linear-gradient(90deg, var(--teal), #1a4a6e);
+                <div style="width:{ml_pct}%; background:linear-gradient(90deg, var(--teal), #1E3A5F);
                     display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">
                     ML {ml_pct}%
                 </div>
-                <div style="width:{100-ml_pct}%; background:linear-gradient(90deg, var(--gold), #dbb94a);
+                <div style="width:{100-ml_pct}%; background:linear-gradient(90deg, var(--gold), #60A5FA);
                     display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">
                     Правила {100-ml_pct}%
                 </div>
@@ -3898,7 +4721,7 @@ def render_settings(scored: pd.DataFrame):
                     группировки заявок. Они могут быть анонимизированы без потери функциональности
                     скоринга.
                 </p>
-                <p style="margin-top:16px; padding:12px 16px; background:rgba(13,115,119,0.06); border-radius:8px; font-weight:600;">
+                <p style="margin-top:16px; padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; font-weight:600;">
                     Рекомендация: разворачивать систему в защищённом контуре Министерства
                     сельского хозяйства с ограниченным сетевым доступом.
                 </p>
@@ -3927,7 +4750,7 @@ def render_settings(scored: pd.DataFrame):
                 Целевая переменная формируется из комбинации: исполнение (35%), одобрение (25%),
                 освоение средств (20%), диверсификация (10%), отсутствие отклонений (10%).
             </p>
-            <p style="margin-top:16px; padding:12px 16px; background:rgba(13,115,119,0.06); border-radius:8px; font-weight:600;">
+            <p style="margin-top:16px; padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; font-weight:600;">
                 Итоговый балл = вес_ML x балл_ML + вес_правил x балл_правил. Все баллы нормализованы в диапазон 0--100.
             </p>
         </div>
@@ -4027,4 +4850,18 @@ def engine_cv_score(scored):
 
 # ===========================================================================
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except FileNotFoundError as e:
+        st.error(
+            f"Файл данных не найден: {e}\n\n"
+            "Пожалуйста, поместите файл Excel в папку data/ "
+            "или загрузите его через боковую панель."
+        )
+    except Exception as e:
+        st.error(
+            "Произошла непредвиденная ошибка при работе приложения.\n\n"
+            f"Тип: {type(e).__name__}\n\n"
+            f"Описание: {e}\n\n"
+            "Попробуйте перезагрузить страницу или проверить входные данные."
+        )
