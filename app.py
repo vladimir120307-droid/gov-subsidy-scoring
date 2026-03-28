@@ -88,7 +88,7 @@ DATA_FILE = os.environ.get(
 # Dark mode helper
 # ---------------------------------------------------------------------------
 def is_dark_mode() -> bool:
-    return st.session_state.get("dark_mode", False)
+    return True
 
 
 # ---------------------------------------------------------------------------
@@ -96,47 +96,24 @@ def is_dark_mode() -> bool:
 # ---------------------------------------------------------------------------
 def apply_chart_theme(fig, height=450, transparent=True):
     """Apply consistent government premium theme to plotly figures."""
-    dark = is_dark_mode()
-    if dark:
-        bg = "rgba(0,0,0,0)" if transparent else "#0B1220"
-        fig.update_layout(
-            template="plotly_dark",
-            height=height,
-            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#E2E8F0"),
-            paper_bgcolor=bg,
-            plot_bgcolor=bg,
-            title_font=dict(size=17, color="#E2E8F0", family="Inter, system-ui, sans-serif"),
-            legend=dict(
-                bgcolor="rgba(11,18,32,0.7)",
-                bordercolor="rgba(56,189,248,0.15)",
-                borderwidth=1,
-                font=dict(size=11, color="#E2E8F0"),
-            ),
-            margin=dict(t=55, b=40, l=40, r=20),
-            xaxis=dict(gridcolor="rgba(255,255,255,0.08)", zerolinecolor="rgba(255,255,255,0.12)"),
-            yaxis=dict(gridcolor="rgba(255,255,255,0.08)", zerolinecolor="rgba(255,255,255,0.12)"),
-        )
-    else:
-        bg = "rgba(0,0,0,0)" if transparent else WHITE
-        fig.update_layout(
-            template="plotly_white",
-            height=height,
-            font=dict(family="Inter, system-ui, sans-serif", size=13, color="#0F172A"),
-            paper_bgcolor=bg,
-            plot_bgcolor=bg,
-            title_font=dict(size=17, color="#0F172A", family="Inter, system-ui, sans-serif"),
-            legend=dict(
-                bgcolor="rgba(255,255,255,0.9)",
-                bordercolor="rgba(59,130,246,0.15)",
-                borderwidth=1,
-                font=dict(size=11, color="#0F172A"),
-            ),
-            margin=dict(t=55, b=40, l=40, r=20),
-            xaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
-                       tickfont=dict(color="#475569"), title_font=dict(color="#0F172A")),
-            yaxis=dict(gridcolor="rgba(0,0,0,0.06)", zerolinecolor="rgba(0,0,0,0.08)",
-                       tickfont=dict(color="#475569"), title_font=dict(color="#0F172A")),
-        )
+    bg = "rgba(0,0,0,0)" if transparent else "#0B1220"
+    fig.update_layout(
+        template="plotly_dark",
+        height=height,
+        font=dict(family="Inter, system-ui, sans-serif", size=13, color="#E2E8F0"),
+        paper_bgcolor=bg,
+        plot_bgcolor=bg,
+        title_font=dict(size=17, color="#E2E8F0", family="Inter, system-ui, sans-serif"),
+        legend=dict(
+            bgcolor="rgba(11,18,32,0.7)",
+            bordercolor="rgba(56,189,248,0.15)",
+            borderwidth=1,
+            font=dict(size=11, color="#E2E8F0"),
+        ),
+        margin=dict(t=55, b=40, l=40, r=20),
+        xaxis=dict(gridcolor="rgba(255,255,255,0.08)", zerolinecolor="rgba(255,255,255,0.12)"),
+        yaxis=dict(gridcolor="rgba(255,255,255,0.08)", zerolinecolor="rgba(255,255,255,0.12)"),
+    )
     return fig
 
 
@@ -144,357 +121,17 @@ def apply_chart_theme(fig, height=450, transparent=True):
 # Massive CSS injection
 # ---------------------------------------------------------------------------
 def inject_css():
-    dark = is_dark_mode()
-
-    # --- Light theme CSS ---
-    light_css = """
-/* ===== IMPORTS ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* ===== ROOT VARIABLES ===== */
-:root {
-    --navy: #0F172A;
-    --navy-light: #1E3A5F;
-    --teal: #3B82F6;
-    --gold: #3B82F6;
-    --gold-light: #60A5FA;
-    --white: #ffffff;
-    --bg-primary: #F0F9FF;
-    --bg-secondary: #ffffff;
-    --bg: #F0F9FF;
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --glass-bg: rgba(255, 255, 255, 0.92);
-    --glass-border: rgba(59, 130, 246, 0.15);
-    --glass-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
-    --radius: 16px;
-    --radius-sm: 10px;
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --blue-primary: #3B82F6;
-    --blue-hover: #2563EB;
-    --blue-accent: #60A5FA;
-    --border-color: rgba(59, 130, 246, 0.15);
-    --shadow-color: rgba(59, 130, 246, 0.08);
-    --bg-surface: #FFFFFF;
-    --bg-card: #FFFFFF;
-}
-
-/* ===== GLOBAL ===== */
-html, body, [data-testid="stAppViewContainer"] {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-    color: var(--text-primary);
-}
-
-[data-testid="stAppViewContainer"] {
-    background:
-        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233B82F6' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-        linear-gradient(160deg, #F0F9FF 0%, #f8fbff 35%, #F0F9FF 65%, #F0F9FF 100%);
-}
-
-/* ===== PAGE CONTENT FADE-IN ===== */
-[data-testid="stMainBlockContainer"] {
-    animation: pageContentFadeIn 0.5s ease-out;
-}
-
-@keyframes pageContentFadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Force all text dark in light mode ===== */
-.stApp, .stApp p, .stApp span, .stApp label, .stApp div, .stApp li, .stApp td, .stApp th {
-    color: #0F172A !important;
-}
-
-/* Streamlit markdown elements */
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] span,
-[data-testid="stMarkdownContainer"] li,
-[data-testid="stMarkdownContainer"] h1,
-[data-testid="stMarkdownContainer"] h2,
-[data-testid="stMarkdownContainer"] h3,
-[data-testid="stMarkdownContainer"] h4 {
-    color: #0F172A !important;
-}
-
-/* Expander headers */
-[data-testid="stExpander"] summary span {
-    color: #0F172A !important;
-}
-
-/* Selectbox, multiselect labels */
-[data-testid="stWidgetLabel"] label,
-[data-testid="stWidgetLabel"] p {
-    color: #0F172A !important;
-}
-
-/* Radio labels */
-[data-testid="stRadio"] label {
-    color: #0F172A !important;
-}
-
-/* Metric values and labels */
-[data-testid="stMetricValue"] {
-    color: #0F172A !important;
-}
-[data-testid="stMetricLabel"] {
-    color: #0F172A !important;
-}
-
-/* Dataframe/table text */
-[data-testid="stDataFrame"],
-[data-testid="stDataFrame"] td,
-[data-testid="stDataFrame"] th {
-    color: #0F172A !important;
-}
-
-/* Caption text */
-[data-testid="stCaption"] {
-    color: #475569 !important;
-}
-
-/* Toggle labels */
-.stToggle label span {
-    color: #0F172A !important;
-}
-
-/* Tabs labels */
-.stTabs [data-baseweb="tab"] {
-    color: #0F172A !important;
-}
-
-/* Info/Warning/Success/Error messages */
-[data-testid="stAlert"] p,
-[data-testid="stAlert"] span,
-.stAlert p, .stAlert span {
-    color: #0F172A !important;
-}
-
-/* Selectbox dropdown text and selected values */
-[data-testid="stSelectbox"] div[data-baseweb="select"] span,
-[data-testid="stSelectbox"] div[data-baseweb="select"] div,
-[data-testid="stMultiSelect"] div[data-baseweb="select"] span,
-[data-testid="stMultiSelect"] div[data-baseweb="select"] div {
-    color: #0F172A !important;
-}
-
-/* File uploader */
-[data-testid="stFileUploader"] {
-    color: #0F172A !important;
-}
-[data-testid="stFileUploader"] label {
-    color: #0F172A !important;
-}
-[data-testid="stFileUploader"] small {
-    color: #475569 !important;
-}
-
-/* Slider and input elements */
-[data-testid="stSlider"] label,
-[data-testid="stSlider"] [data-testid="stTickBarMin"],
-[data-testid="stSlider"] [data-testid="stTickBarMax"] {
-    color: #0F172A !important;
-}
-
-/* Number input */
-[data-testid="stNumberInput"] label {
-    color: #0F172A !important;
-}
-[data-testid="stNumberInput"] input {
-    color: #0F172A !important;
-}
-
-/* Text input */
-[data-testid="stTextInput"] input {
-    color: #0F172A !important;
-}
-
-/* Checkbox */
-[data-testid="stCheckbox"] label {
-    color: #0F172A !important;
-}
-
-/* ===== LIGHT MODE OVERRIDES FOR COMMON ELEMENTS ===== */
-
-/* Sidebar: government dark blue */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #1E3A5F 0%, #0F172A 100%) !important;
-}
-[data-testid="stSidebar"] * {
-    color: #E2E8F0 !important;
-}
-[data-testid="stSidebar"] .stButton > button {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-left: 3px solid transparent !important;
-    color: #E2E8F0 !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-}
-[data-testid="stSidebar"] .stButton > button:hover {
-    background: rgba(59, 130, 246, 0.15) !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-    border-left: 3px solid #3B82F6 !important;
-    color: #E2E8F0 !important;
-}
-[data-testid="stSidebar"] hr {
-    border-color: rgba(255, 255, 255, 0.12) !important;
-}
-[data-testid="stSidebar"] img {
-    filter: brightness(1.1) !important;
-}
-
-/* Header banner: government blue gradient */
-.gov-header {
-    background: linear-gradient(135deg, #1E3A5F 0%, #3B82F6 50%, #0EA5E9 100%) !important;
-    color: white !important;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08) !important;
-    border: 1px solid rgba(59, 130, 246, 0.15) !important;
-}
-.gov-header h1 {
-    color: white !important;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.15) !important;
-}
-.gov-header p {
-    color: rgba(255,255,255,0.85) !important;
-    opacity: 1 !important;
-    font-weight: 500 !important;
-}
-.gov-header::before {
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%) !important;
-}
-.gov-header-wrapper {
-    background: linear-gradient(90deg, #1E3A5F, #3B82F6, #0EA5E9, #3B82F6, #1E3A5F) !important;
-}
-
-/* Glass cards: white background */
-.glass-card {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(59, 130, 246, 0.15) !important;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08) !important;
-}
-.glass-card:hover {
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12) !important;
-    border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-/* Metric cards: white background */
-.metric-card {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(59, 130, 246, 0.15) !important;
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.08) !important;
-}
-.metric-card:hover {
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12) !important;
-}
-.metric-card .metric-icon {
-    color: #3B82F6 !important;
-}
-.metric-card .metric-value {
-    background: linear-gradient(135deg, #0F172A, #3B82F6) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-}
-.metric-card .metric-sub {
-    color: #475569 !important;
-}
-.metric-card .metric-label {
-    color: #0F172A !important;
-    font-weight: 700 !important;
-}
-
-/* Table: white bg, light alternating rows */
-.styled-table thead th {
-    background: linear-gradient(135deg, #1E3A5F, #3B82F6) !important;
-    color: white !important;
-}
-.styled-table tbody tr {
-    background: #ffffff !important;
-}
-.styled-table tbody tr:nth-child(even) {
-    background: #F0F9FF !important;
-}
-.styled-table tbody tr:hover {
-    background: rgba(59, 130, 246, 0.06) !important;
-}
-.styled-table tbody td {
-    color: #0F172A !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.08) !important;
-}
-
-/* Buttons: blue, white text */
-.stDownloadButton > button,
-.stButton > button {
-    background: #3B82F6 !important;
-    color: white !important;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
-}
-.stDownloadButton > button:hover,
-.stButton > button:hover {
-    background: #2563EB !important;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3) !important;
-}
-
-/* Filter panel: white */
-.filter-panel {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(59, 130, 246, 0.15) !important;
-}
-
-/* Expanders: white bg */
-details[data-testid="stExpander"] {
-    background: #ffffff !important;
-    border: 1px solid rgba(59, 130, 246, 0.15) !important;
-    border-left: 3px solid #3B82F6 !important;
-}
-
-/* Footer: medium gray text */
-.gov-footer {
-    color: #718096 !important;
-}
-
-/* Tabs: dark text */
-.stTabs [data-baseweb="tab"] {
-    color: #0F172A !important;
-}
-.stTabs [aria-selected="true"] {
-    background: rgba(59, 130, 246, 0.06) !important;
-}
-
-/* Streamlit default metrics */
-[data-testid="stMetricValue"] {
-    color: #0F172A !important;
-}
-[data-testid="stMetricLabel"] {
-    color: #0F172A !important;
-}
-
-/* Section headers */
-.section-header h2 {
-    color: #0F172A !important;
-}
-
-/* Breadcrumbs / navigation text */
-.stApp a {
-    color: #3B82F6 !important;
-}
-
-/* Score bar labels */
-.score-bar {
-    color: white !important;
-}
-
-/* Scrollbar light mode */
-::-webkit-scrollbar-track { background: rgba(0,0,0,0.03) !important; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3B82F6, #60A5FA) !important; }
-::-webkit-scrollbar-thumb:hover { background: #2563EB !important; }
-"""
-
+    # Light theme removed - dark only
+    light_css = ""
     # --- Dark theme CSS ---
     dark_css = """
 /* ===== IMPORTS ===== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ===== GLOBAL TEXT FIX ===== */
+b, strong { color: #E2E8F0 !important; }
+.stMarkdown b, .stMarkdown strong { color: #E2E8F0 !important; }
+div[data-testid="stMarkdownContainer"] b { color: #E2E8F0 !important; }
 
 /* ===== ROOT VARIABLES ===== */
 :root {
@@ -526,7 +163,7 @@ details[data-testid="stExpander"] {
 /* ===== GLOBAL ===== */
 html, body, [data-testid="stAppViewContainer"] {
     font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
-    color: var(--text-primary);
+    color: #E2E8F0;
 }
 
 [data-testid="stAppViewContainer"] {
@@ -549,18 +186,18 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stAppViewContainer"] span,
 [data-testid="stAppViewContainer"] label,
 [data-testid="stAppViewContainer"] div {
-    color: var(--text-primary);
+    color: #E2E8F0;
 }
 
 [data-testid="stAppViewContainer"] .stDataFrame,
 [data-testid="stAppViewContainer"] .stDataFrame td,
 [data-testid="stAppViewContainer"] .stDataFrame th {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* ===== Force all text light in dark mode ===== */
 .stApp, .stApp p, .stApp span, .stApp label, .stApp div, .stApp li, .stApp td, .stApp th {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Streamlit markdown elements */
@@ -571,46 +208,46 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stMarkdownContainer"] h2,
 [data-testid="stMarkdownContainer"] h3,
 [data-testid="stMarkdownContainer"] h4 {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Expander headers */
 [data-testid="stExpander"] summary span {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Selectbox, multiselect, text input labels */
 [data-testid="stWidgetLabel"] label,
 [data-testid="stWidgetLabel"] p {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Radio labels */
 [data-testid="stRadio"] label {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Metric values and labels */
 [data-testid="stMetricValue"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stMetricLabel"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Dataframe/table text */
 [data-testid="stDataFrame"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Caption text */
 [data-testid="stCaption"] {
-    color: var(--text-secondary) !important;
+    color: #94A3B8 !important;
 }
 
 /* Toggle labels */
 .stToggle label span {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* ===== Style ALL Streamlit buttons in dark mode ===== */
@@ -639,18 +276,18 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* File uploader */
 [data-testid="stFileUploader"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stFileUploader"] label {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stFileUploader"] small {
-    color: var(--text-secondary) !important;
+    color: #94A3B8 !important;
 }
 
 /* ===== Sidebar text in dark mode ===== */
 [data-testid="stSidebar"] * {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stSidebar"] .stButton > button {
     color: white !important;
@@ -660,39 +297,39 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSlider"] label,
 [data-testid="stSlider"] [data-testid="stTickBarMin"],
 [data-testid="stSlider"] [data-testid="stTickBarMax"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Number input */
 [data-testid="stNumberInput"] label {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stNumberInput"] input {
-    color: var(--text-primary) !important;
-    background: var(--glass-bg) !important;
+    color: #E2E8F0 !important;
+    background: rgba(17,24,39,0.85) !important;
 }
 
 /* Text input */
 [data-testid="stTextInput"] input {
-    color: var(--text-primary) !important;
-    background: var(--glass-bg) !important;
+    color: #E2E8F0 !important;
+    background: rgba(17,24,39,0.85) !important;
 }
 
 /* Checkbox */
 [data-testid="stCheckbox"] label {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Tabs labels */
 .stTabs [data-baseweb="tab"] {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Info/Warning/Success/Error messages */
 [data-testid="stAlert"] p,
 [data-testid="stAlert"] span,
 .stAlert p, .stAlert span {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* Selectbox dropdown text and selected values */
@@ -700,7 +337,7 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSelectbox"] div[data-baseweb="select"] div,
 [data-testid="stMultiSelect"] div[data-baseweb="select"] span,
 [data-testid="stMultiSelect"] div[data-baseweb="select"] div {
-    color: var(--text-primary) !important;
+    color: #E2E8F0 !important;
 }
 
 /* ===== DARK SIDEBAR ===== */
@@ -754,32 +391,32 @@ html, body, [data-testid="stAppViewContainer"] {
 }
 """
 
-    theme_css = dark_css if dark else light_css
+    theme_css = dark_css
 
     # --- Common CSS (independent of theme) ---
     common_css = """
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.04); border-radius: 4px; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--teal), var(--navy-light)); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #38BDF8, #94A3B8); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #E2E8F0; }
 
 /* ===== SIDEBAR (structural only) ===== */
 [data-testid="stSidebar"] .stButton > button {
-    border-radius: var(--radius-sm) !important;
+    border-radius: 10px !important;
     padding: 10px 16px !important;
     margin-bottom: 4px !important;
     text-align: left !important;
     text-transform: none !important;
     letter-spacing: 0 !important;
     box-shadow: none !important;
-    transition: var(--transition) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* ===== HEADER BANNER (structural only) ===== */
 .gov-header {
     padding: 28px 36px;
-    border-radius: var(--radius);
+    border-radius: 16px;
     margin-bottom: 28px;
     position: relative;
     overflow: hidden;
@@ -822,7 +459,7 @@ html, body, [data-testid="stAppViewContainer"] {
 /* Animated gradient border on header */
 .gov-header-wrapper {
     position: relative;
-    border-radius: var(--radius);
+    border-radius: 16px;
     padding: 2px;
     margin-bottom: 28px;
     background: linear-gradient(90deg, #1E3A5F, #3B82F6, #0EA5E9, #3B82F6, #1E3A5F);
@@ -851,14 +488,14 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* ===== GLASS CARDS ===== */
 .glass-card {
-    background: var(--glass-bg);
+    background: rgba(17,24,39,0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
+    border: 1px solid rgba(56,189,248,0.15);
+    border-radius: 16px;
     padding: 24px;
-    box-shadow: var(--glass-shadow);
-    transition: var(--transition);
+    box-shadow: 0 8px 32px rgba(56,189,248,0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
@@ -874,10 +511,10 @@ html, body, [data-testid="stAppViewContainer"] {
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
-    border-radius: var(--radius) var(--radius) 0 0;
+    background: linear-gradient(90deg, #38BDF8, #38BDF8);
+    border-radius: 16px 16px 0 0;
     opacity: 0;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-card:hover::before {
     opacity: 1;
@@ -885,15 +522,15 @@ html, body, [data-testid="stAppViewContainer"] {
 
 /* ===== METRIC CARDS ===== */
 .metric-card {
-    background: var(--glass-bg);
+    background: rgba(17,24,39,0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
+    border: 1px solid rgba(56,189,248,0.15);
+    border-radius: 16px;
     padding: 22px 24px;
     text-align: center;
-    box-shadow: var(--glass-shadow);
-    transition: var(--transition);
+    box-shadow: 0 8px 32px rgba(56,189,248,0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
@@ -902,7 +539,7 @@ html, body, [data-testid="stAppViewContainer"] {
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 3px;
-    border-radius: var(--radius) var(--radius) 0 0;
+    border-radius: 16px 16px 0 0;
 }
 div[data-testid="stHorizontalBlock"] > div:nth-child(1) .metric-card::before { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
 div[data-testid="stHorizontalBlock"] > div:nth-child(2) .metric-card::before { background: linear-gradient(90deg, #2563EB, #3B82F6); }
@@ -917,7 +554,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .metric-card .metric-icon {
     font-size: 14px;
     font-weight: 700;
-    color: var(--teal);
+    color: #38BDF8;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-bottom: 8px;
@@ -929,7 +566,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .metric-card .metric-value {
     font-size: 32px;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--navy), var(--teal));
+    background: linear-gradient(135deg, #60A5FA, #38BDF8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -937,18 +574,18 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     margin-bottom: 4px;
 }
 .metric-card .metric-value.gold {
-    background: linear-gradient(135deg, var(--gold), #2563EB);
+    background: linear-gradient(135deg, #38BDF8, #2563EB);
     -webkit-background-clip: text;
     background-clip: text;
 }
 .metric-card .metric-sub {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #94A3B8;
     font-weight: 500;
 }
 .metric-card .metric-bar {
     height: 3px;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
+    background: linear-gradient(90deg, #38BDF8, #38BDF8);
     border-radius: 2px;
     margin-top: 12px;
     width: 0%;
@@ -997,10 +634,10 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     margin: 0;
     font-size: 22px;
     font-weight: 700;
-    color: var(--navy);
+    color: #E2E8F0;
 }
 .section-header .section-badge {
-    background: linear-gradient(135deg, var(--teal), #1E3A5F);
+    background: linear-gradient(135deg, #38BDF8, #1E3A5F);
     color: white !important;
     padding: 4px 12px;
     border-radius: 20px;
@@ -1021,22 +658,22 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .badge-green {
     background: linear-gradient(135deg, rgba(45, 143, 94, 0.15), rgba(45, 143, 94, 0.08));
-    color: #1a7a4a !important;
+    color: #4ade80 !important;
     border: 1px solid rgba(45, 143, 94, 0.25);
 }
 .badge-yellow {
     background: linear-gradient(135deg, rgba(201, 162, 39, 0.15), rgba(201, 162, 39, 0.08));
-    color: #8a6d15 !important;
+    color: #fbbf24 !important;
     border: 1px solid rgba(201, 162, 39, 0.25);
 }
 .badge-red {
     background: linear-gradient(135deg, rgba(184, 76, 76, 0.15), rgba(184, 76, 76, 0.08));
-    color: #9a3030 !important;
+    color: #f87171 !important;
     border: 1px solid rgba(184, 76, 76, 0.25);
 }
 .badge-blue {
     background: linear-gradient(135deg, rgba(26, 74, 110, 0.15), rgba(26, 74, 110, 0.08));
-    color: #1E3A5F !important;
+    color: #60A5FA !important;
     border: 1px solid rgba(26, 74, 110, 0.25);
 }
 
@@ -1045,7 +682,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     overflow: hidden;
     font-size: 13px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
@@ -1064,10 +701,10 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .styled-table tbody tr {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    background: var(--glass-bg);
+    background: rgba(17,24,39,0.85);
 }
 .styled-table tbody tr:nth-child(odd) {
-    background: var(--glass-bg);
+    background: rgba(17,24,39,0.85);
 }
 .styled-table tbody tr:nth-child(even) {
     background: rgba(13, 115, 119, 0.04);
@@ -1080,7 +717,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     padding: 13px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.04);
     vertical-align: middle;
-    color: var(--text-primary);
+    color: #E2E8F0;
 }
 
 /* Score bar inside table */
@@ -1117,7 +754,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .gauge-label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: #94A3B8;
     margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -1131,14 +768,14 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 /* ===== STRENGTH / WEAKNESS ITEMS ===== */
 .sw-item {
     padding: 10px 16px;
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: 500;
     display: flex;
     align-items: center;
     gap: 10px;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .sw-item:hover {
     transform: translateX(4px);
@@ -1146,12 +783,12 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .sw-strength {
     background: rgba(45, 143, 94, 0.08);
     border-left: 3px solid #2d8f5e;
-    color: #1a6b3f !important;
+    color: #4ade80 !important;
 }
 .sw-weakness {
     background: rgba(184, 76, 76, 0.08);
     border-left: 3px solid #b84c4c;
-    color: #8a3030 !important;
+    color: #f87171 !important;
 }
 .sw-icon {
     font-weight: 800;
@@ -1162,18 +799,18 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 /* ===== COMPARISON WINNER ===== */
 .winner-highlight {
     background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(59,130,246,0.08));
-    border: 2px solid var(--gold);
-    border-radius: var(--radius);
+    border: 2px solid #38BDF8;
+    border-radius: 16px;
     padding: 4px;
     animation: winnerPulseGov 2.5s ease-in-out infinite;
 }
 
 /* ===== FILTER PANEL ===== */
 .filter-panel {
-    background: var(--glass-bg);
+    background: rgba(17,24,39,0.85);
     backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius);
+    border: 1px solid rgba(56,189,248,0.15);
+    border-radius: 16px;
     padding: 20px 24px;
     margin-bottom: 24px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.04);
@@ -1182,14 +819,14 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 /* ===== DIVIDER ===== */
 .divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(13, 115, 119, 0.2), var(--gold), rgba(13, 115, 119, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(13, 115, 119, 0.2), #38BDF8, rgba(13, 115, 119, 0.2), transparent);
     margin: 28px 0;
     border: none;
 }
 
 /* ===== BASELINE COMPARISON CARDS ===== */
 .baseline-card {
-    border-radius: var(--radius);
+    border-radius: 16px;
     padding: 24px;
     text-align: center;
     position: relative;
@@ -1201,7 +838,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .baseline-new {
     background: linear-gradient(135deg, rgba(45,143,94,0.08), rgba(59,130,246,0.05));
-    border: 2px solid var(--teal);
+    border: 2px solid #38BDF8;
     box-shadow: 0 8px 32px rgba(59,130,246,0.12);
 }
 .baseline-card h3 {
@@ -1216,14 +853,14 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .baseline-label {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #94A3B8;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 .improvement-arrow {
     font-size: 40px;
-    color: var(--teal);
+    color: #38BDF8;
     font-weight: 800;
     display: flex;
     align-items: center;
@@ -1232,7 +869,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 
 /* ===== FAIRNESS ALERT ===== */
 .fairness-alert {
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     padding: 14px 18px;
     margin-bottom: 8px;
     font-size: 14px;
@@ -1245,19 +882,19 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     background: rgba(45, 143, 94, 0.08);
     border: 1px solid rgba(45, 143, 94, 0.2);
     border-left: 3px solid #2d8f5e;
-    color: #1a6b3f !important;
+    color: #4ade80 !important;
 }
 .fairness-warn {
     background: rgba(201, 162, 39, 0.08);
     border: 1px solid rgba(201, 162, 39, 0.2);
     border-left: 3px solid #3B82F6;
-    color: #7a5f10 !important;
+    color: #fbbf24 !important;
 }
 .fairness-danger {
     background: rgba(184, 76, 76, 0.08);
     border: 1px solid rgba(184, 76, 76, 0.2);
     border-left: 3px solid #b84c4c;
-    color: #8a3030 !important;
+    color: #f87171 !important;
 }
 
 /* ===== TIMELINE ===== */
@@ -1266,7 +903,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     gap: 16px;
     padding: 14px 0;
     border-bottom: none;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     margin-left: 6px;
     border-left: 2px solid rgba(59,130,246,0.15);
@@ -1277,7 +914,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .timeline-item:hover {
     background: rgba(59,130,246,0.03);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-radius: 0 10px 10px 0;
 }
 .timeline-dot {
     width: 12px;
@@ -1298,24 +935,24 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 }
 .timeline-date {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #94A3B8;
     font-weight: 500;
 }
 .timeline-title {
     font-size: 14px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: #E2E8F0;
     margin: 2px 0;
 }
 .timeline-meta {
     font-size: 12px;
-    color: var(--text-secondary);
+    color: #94A3B8;
 }
 
 /* ===== OVERRIDE DEFAULT STREAMLIT METRICS ===== */
 [data-testid="stMetricValue"] {
     font-weight: 700 !important;
-    color: var(--navy) !important;
+    color: #E2E8F0 !important;
 }
 [data-testid="stMetricLabel"] {
     font-weight: 600 !important;
@@ -1329,14 +966,14 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     gap: 4px;
 }
 .stTabs [data-baseweb="tab"] {
-    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    border-radius: 10px 10px 0 0;
     padding: 10px 20px;
     font-weight: 600;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .stTabs [aria-selected="true"] {
     background: rgba(13, 115, 119, 0.08) !important;
-    border-bottom: 3px solid var(--teal) !important;
+    border-bottom: 3px solid #38BDF8 !important;
 }
 
 /* ===== BUTTONS ===== */
@@ -1345,7 +982,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
     background: linear-gradient(135deg, #0F172A, #3B82F6) !important;
     color: white !important;
     border: none !important;
-    border-radius: var(--radius-sm) !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
     padding: 10px 24px !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -1366,7 +1003,7 @@ div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { b
 .stSelectbox > div > div,
 .stSlider > div,
 .stNumberInput > div {
-    border-radius: var(--radius-sm) !important;
+    border-radius: 10px !important;
 }
 
 /* ===== HIDE STREAMLIT BRANDING ===== */
@@ -1380,17 +1017,17 @@ header { visibility: hidden; }
     align-items: center;
     gap: 8px;
     padding: 8px 14px;
-    border-radius: var(--radius-sm);
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 500;
 }
 .dq-good {
     background: rgba(45, 143, 94, 0.08);
-    color: #1a6b3f !important;
+    color: #4ade80 !important;
 }
 .dq-warn {
     background: rgba(201, 162, 39, 0.08);
-    color: #7a5f10 !important;
+    color: #fbbf24 !important;
 }
 .dq-dot {
     width: 8px;
@@ -1408,7 +1045,7 @@ header { visibility: hidden; }
     margin-top: 40px;
     border-top: 1px solid rgba(13, 115, 119, 0.1);
     font-size: 11px;
-    color: var(--text-secondary);
+    color: #94A3B8;
     letter-spacing: 0.5px;
     opacity: 0.6;
     font-weight: 300;
@@ -1416,13 +1053,13 @@ header { visibility: hidden; }
 
 /* ===== EXPANDERS ===== */
 details[data-testid="stExpander"] {
-    border: 1px solid var(--glass-border) !important;
-    border-left: 3px solid var(--teal) !important;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+    border: 1px solid rgba(56,189,248,0.15) !important;
+    border-left: 3px solid #38BDF8 !important;
+    border-radius: 0 10px 10px 0 !important;
     transition: all 0.25s ease !important;
 }
 details[data-testid="stExpander"]:hover {
-    border-left-color: var(--gold) !important;
+    border-left-color: #38BDF8 !important;
     box-shadow: 0 2px 12px rgba(59,130,246,0.06) !important;
 }
 
@@ -1450,11 +1087,7 @@ details[data-testid="stExpander"]:hover {
 }
 """
 
-    # Light overrides MUST come AFTER common to win specificity
-    if dark:
-        st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
-    else:
-        st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
+    st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -1535,10 +1168,10 @@ def nav_to(page_key: str):
 def render_breadcrumb(current_label: str):
     """Render breadcrumb: Главная > Текущая страница."""
     st.markdown(
-        f'<div style="font-size:13px; margin-bottom:16px; color:var(--text-secondary);">'
-        f'<a href="#" style="color:var(--teal); text-decoration:none; font-weight:600;" '
+        f'<div style="font-size:13px; margin-bottom:16px; color:#94A3B8;">'
+        f'<a href="#" style="color:#38BDF8; text-decoration:none; font-weight:600;" '
         f'onclick="return false;">Главная</a>'
-        f' &gt; <span style="font-weight:600; color:var(--text-primary);">{current_label}</span>'
+        f' &gt; <span style="font-weight:600; color:#E2E8F0;">{current_label}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -1633,10 +1266,6 @@ def main():
     )
     st.sidebar.markdown("---")
 
-    # Dark mode toggle
-    st.sidebar.toggle("Темная тема", value=False, key="dark_mode")
-
-    st.sidebar.markdown("---")
 
     # Navigation label
     st.sidebar.markdown(
@@ -1700,7 +1329,7 @@ def main():
         unsafe_allow_html=True,
     )
 
-    # Inject CSS after dark_mode toggle is set
+    # Inject dark theme CSS
     inject_css()
 
     page = current_page
@@ -1840,8 +1469,8 @@ def render_as_is_process():
 
     st.markdown("""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
-            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="line-height:1.8; font-size:14px; color:#E2E8F0;">
+            <p style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                 Принцип очередности (FCFS)
             </p>
             <p>
@@ -1917,7 +1546,7 @@ def render_as_is_process():
         st.markdown("""
         <div class="baseline-card baseline-old">
             <h3 style="color:#8a3030;">AS IS: Текущий процесс</h3>
-            <div style="text-align:left; font-size:14px; line-height:1.8; color:var(--text-primary);">
+            <div style="text-align:left; font-size:14px; line-height:1.8; color:#E2E8F0;">
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Принцип очередности (FCFS)</div>
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Нет объективной оценки</div>
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#b84c4c;">\u2717</span> Непрозрачное распределение</div>
@@ -1935,8 +1564,8 @@ def render_as_is_process():
     with cmp2:
         st.markdown("""
         <div class="baseline-card baseline-new">
-            <h3 style="color:var(--teal);">TO BE: Наше решение</h3>
-            <div style="text-align:left; font-size:14px; line-height:1.8; color:var(--text-primary);">
+            <h3 style="color:#38BDF8;">TO BE: Наше решение</h3>
+            <div style="text-align:left; font-size:14px; line-height:1.8; color:#E2E8F0;">
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Merit-based скоринг</div>
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> 14 объективных факторов</div>
                 <div style="margin-bottom:6px;"><span style="font-weight:700; color:#2d8f5e;">\u2713</span> Полная прозрачность (XAI)</div>
@@ -1963,10 +1592,10 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with st.expander("Как использовать систему (инструкция для специалиста)", expanded=False):
         st.markdown("""
         <div class="glass-card" style="padding:20px 24px;">
-            <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:16px;">
+            <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:16px;">
                 Порядок работы с системой скоринга
             </div>
-            <div style="line-height:2.0; font-size:14px; color:var(--text-primary);">
+            <div style="line-height:2.0; font-size:14px; color:#E2E8F0;">
                 <div class="sw-item sw-strength" style="margin-bottom:10px;">
                     <span class="sw-icon">1.</span>
                     <div><b>Загрузить данные.</b> Откройте боковую панель и загрузите актуальный
@@ -2032,9 +1661,9 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with ac1:
         st.markdown("""
         <div class="glass-card" style="text-align:center; cursor:pointer;">
-            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2605</div>
-            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Скоринг производителей</div>
-            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+            <div style="font-size:22px; font-weight:800; color:#38BDF8; margin-bottom:8px;">\u2605</div>
+            <div style="font-size:15px; font-weight:700; color:#E2E8F0; margin-bottom:6px;">Скоринг производителей</div>
+            <div style="font-size:12px; color:#94A3B8; line-height:1.5;">
                 Ранжирование всех производителей по комбинированному баллу
             </div>
         </div>
@@ -2045,9 +1674,9 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with ac2:
         st.markdown("""
         <div class="glass-card" style="text-align:center; cursor:pointer;">
-            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2302</div>
-            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Профиль производителя</div>
-            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+            <div style="font-size:22px; font-weight:800; color:#38BDF8; margin-bottom:8px;">\u2302</div>
+            <div style="font-size:15px; font-weight:700; color:#E2E8F0; margin-bottom:6px;">Профиль производителя</div>
+            <div style="font-size:12px; color:#94A3B8; line-height:1.5;">
                 Детальный анализ скорингового профиля конкретного производителя
             </div>
         </div>
@@ -2058,9 +1687,9 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with ac3:
         st.markdown("""
         <div class="glass-card" style="text-align:center; cursor:pointer;">
-            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2696</div>
-            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Справедливость</div>
-            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+            <div style="font-size:22px; font-weight:800; color:#38BDF8; margin-bottom:8px;">\u2696</div>
+            <div style="font-size:15px; font-weight:700; color:#E2E8F0; margin-bottom:6px;">Справедливость</div>
+            <div style="font-size:12px; color:#94A3B8; line-height:1.5;">
                 Проверка модели на предвзятость по регионам и направлениям
             </div>
         </div>
@@ -2071,9 +1700,9 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with ac4:
         st.markdown("""
         <div class="glass-card" style="text-align:center; cursor:pointer;">
-            <div style="font-size:22px; font-weight:800; color:var(--teal); margin-bottom:8px;">\u2318</div>
-            <div style="font-size:15px; font-weight:700; color:var(--navy); margin-bottom:6px;">Аналитика</div>
-            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
+            <div style="font-size:22px; font-weight:800; color:#38BDF8; margin-bottom:8px;">\u2318</div>
+            <div style="font-size:15px; font-weight:700; color:#E2E8F0; margin-bottom:6px;">Аналитика</div>
+            <div style="font-size:12px; color:#94A3B8; line-height:1.5;">
                 Корреляции, валидация модели, сравнение с базовыми подходами
             </div>
         </div>
@@ -2090,10 +1719,10 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with val1:
         st.markdown("""
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+            <div style="font-size:14px; font-weight:700; color:#38BDF8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
                 Вместо FCFS
             </div>
-            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+            <div style="font-size:14px; color:#E2E8F0; line-height:1.6;">
                 Текущая система: заявки по очереди (FCFS).
                 Наш подход: <b>ранжирование по заслугам</b> на основе 14 объективных факторов.
             </div>
@@ -2102,10 +1731,10 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with val2:
         st.markdown("""
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+            <div style="font-size:14px; font-weight:700; color:#38BDF8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
                 Гибридная модель
             </div>
-            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+            <div style="font-size:14px; color:#E2E8F0; line-height:1.6;">
                 <b>60% ML</b> (GradientBoosting, нелинейные зависимости) +
                 <b>40% правила</b> (экспертные веса, полная объяснимость).
             </div>
@@ -2114,10 +1743,10 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     with val3:
         st.markdown("""
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size:14px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
+            <div style="font-size:14px; font-weight:700; color:#38BDF8; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;">
                 Результат
             </div>
-            <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+            <div style="font-size:14px; color:#E2E8F0; line-height:1.6;">
                 Приоритет -- производителям с высоким исполнением, одобрением и освоением средств.
                 <b>Каждый балл объясним.</b>
             </div>
@@ -2139,7 +1768,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
             rec_badge = get_recommendation_badge(sc)
             table_rows += f"""
             <tr>
-                <td style="font-weight:700; color:var(--teal);">#{int(row['rank'])}</td>
+                <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
                 <td style="font-family:monospace; font-size:12px;">...{str(row['producer_id'])[-6:]}</td>
                 <td>{row['region']}</td>
                 <td>
@@ -2293,9 +1922,9 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     annual_savings_bln = annual_savings_est / 1_000_000_000
 
     st.markdown(f"""
-    <div class="glass-card" style="margin-top:16px; border-left:4px solid var(--blue-primary, #3B82F6);">
-        <div style="font-size:14px; line-height:1.8; color:var(--text-primary);">
-            <span style="font-weight:700; color:var(--navy);">Интерпретация:</span>
+    <div class="glass-card" style="margin-top:16px; border-left:4px solid #38BDF8;">
+        <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
+            <span style="font-weight:700; color:#E2E8F0;">Интерпретация:</span>
             При переходе от случайного отбора (FCFS) к merit-based скорингу,
             топ-100 производителей осваивают субсидии на <b>{utilization_diff:.1%}</b> эффективнее,
             что эквивалентно экономии <b>{format_tenge(abs(budget_savings_est))}</b>
@@ -2312,10 +1941,10 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
     render_section_header("Экономия бюджета", "Merit-based скоринг")
     st.markdown(f"""
     <div class="glass-card" style="border-left:4px solid #22C55E; margin-bottom:16px;">
-        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
             Потенциальная экономия при переходе на merit-based скоринг
         </div>
-        <div style="font-size:14px; line-height:1.8; color:var(--text-primary);">
+        <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
             <p>
                 При переходе на merit-based скоринг эффективность использования субсидий
                 увеличивается на <b>{efficiency_gain_pct:.1f}%</b>
@@ -2470,7 +2099,7 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
 
     st.markdown(f"""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
             Полнота данных по столбцам (% непустых значений)
         </div>
         <table class="styled-table">
@@ -2520,7 +2149,7 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
     if outlier_rows:
         st.markdown(f"""
         <div class="glass-card" style="margin-bottom:24px;">
-            <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+            <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                 Выбросы (метод IQR: значения за пределами 1.5 x межквартильного размаха)
             </div>
             <table class="styled-table">
@@ -2548,7 +2177,7 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
 
     st.markdown(f"""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
             Покрытие данных
         </div>
         <table class="styled-table">
@@ -2573,8 +2202,8 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
     render_section_header("Feature Engineering", "14 признаков")
     st.markdown("""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
-            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="line-height:1.8; font-size:14px; color:#E2E8F0;">
+            <p style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                 Извлечение признаков из сырых данных
             </p>
             <p>
@@ -2672,8 +2301,8 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
     with arch1:
         st.markdown("""
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size:15px; font-weight:700; color:var(--teal); margin-bottom:10px;">ML-модель (60%)</div>
-            <div style="font-size:13px; color:var(--text-primary); line-height:1.7;">
+            <div style="font-size:15px; font-weight:700; color:#38BDF8; margin-bottom:10px;">ML-модель (60%)</div>
+            <div style="font-size:13px; color:#E2E8F0; line-height:1.7;">
                 <b>GradientBoostingRegressor</b><br>
                 200 деревьев, глубина 5, learning_rate 0.1<br>
                 Обучение на 14 нормализованных признаках<br>
@@ -2686,16 +2315,16 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
         st.markdown("""
         <div style="display:flex; align-items:center; justify-content:center; height:100%;">
             <div style="text-align:center;">
-                <div style="font-size:28px; font-weight:800; color:var(--gold);">+</div>
-                <div style="font-size:11px; color:var(--text-secondary); font-weight:600; margin-top:4px;">КОМБИНАЦИЯ</div>
+                <div style="font-size:28px; font-weight:800; color:#38BDF8;">+</div>
+                <div style="font-size:11px; color:#94A3B8; font-weight:600; margin-top:4px;">КОМБИНАЦИЯ</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with arch3:
         st.markdown("""
         <div class="glass-card" style="text-align:center;">
-            <div style="font-size:15px; font-weight:700; color:var(--gold); margin-bottom:10px;">Правила (40%)</div>
-            <div style="font-size:13px; color:var(--text-primary); line-height:1.7;">
+            <div style="font-size:15px; font-weight:700; color:#38BDF8; margin-bottom:10px;">Правила (40%)</div>
+            <div style="font-size:13px; color:#E2E8F0; line-height:1.7;">
                 <b>Взвешенная сумма</b><br>
                 Экспертные веса для каждого фактора<br>
                 Одобрение (20%), Исполнение (15%)<br>
@@ -2707,7 +2336,7 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
 
     st.markdown("""
     <div style="text-align:center; margin:16px 0 24px 0; padding:12px 24px; background:rgba(59,130,246,0.06);
-        border-radius:10px; font-size:14px; font-weight:600; color:var(--navy);">
+        border-radius:10px; font-size:14px; font-weight:600; color:#E2E8F0;">
         Итоговый балл = 0.6 x ML_балл + 0.4 x Правила_балл (диапазон 0--100)
     </div>
     """, unsafe_allow_html=True)
@@ -2741,7 +2370,7 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
         filtered = filtered[filtered["producer_id"].str.contains(search_id, na=False)]
 
     st.markdown(
-        f'<div style="font-size:15px; font-weight:600; margin-bottom:16px; color:var(--navy);">'
+        f'<div style="font-size:15px; font-weight:600; margin-bottom:16px; color:#E2E8F0;">'
         f'Найдено: {len(filtered)} производителей</div>',
         unsafe_allow_html=True
     )
@@ -2766,7 +2395,7 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
         rec_badge = get_recommendation_badge(sc)
         table_rows += f"""
         <tr>
-            <td style="font-weight:700; color:var(--teal);">#{int(row['rank'])}</td>
+            <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
             <td style="font-family:monospace; font-size:12px;">{row['producer_id']}</td>
             <td>{row['region']}</td>
             <td>{row.get('main_direction', '')}</td>
@@ -2813,8 +2442,8 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
             st.rerun()
     with pcol3:
         st.markdown(
-            f'<div style="text-align:center; padding:10px; font-weight:700; font-size:16px; color:var(--navy); '
-            f'background:var(--glass-bg); border-radius:10px; border:1px solid var(--glass-border);">'
+            f'<div style="text-align:center; padding:10px; font-weight:700; font-size:16px; color:#E2E8F0; '
+            f'background:rgba(17,24,39,0.85); border-radius:10px; border:1px solid rgba(56,189,248,0.15);">'
             f'Страница {display_page} из {total_pages} &nbsp;|&nbsp; '
             f'Записи {start_idx+1}--{end_idx} из {len(filtered)}</div>',
             unsafe_allow_html=True
@@ -2960,7 +2589,7 @@ def render_profile(
 
     st.markdown(f"""
     <div class="{commission_cls} fairness-alert" style="margin-bottom:20px; padding:18px 24px; font-size:15px; line-height:1.7;">
-        <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:8px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:8px;">
             Резюме для комиссии
         </div>
         <div>
@@ -2987,10 +2616,10 @@ def render_profile(
     <div class="glass-card animate-in" style="margin-bottom:24px;">
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
             <div>
-                <div style="font-size:13px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; font-weight:600;">
+                <div style="font-size:13px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px; font-weight:600;">
                     ID Производителя
                 </div>
-                <div style="font-size:22px; font-weight:700; color:var(--navy); font-family:monospace; margin:4px 0;">
+                <div style="font-size:22px; font-weight:700; color:#E2E8F0; font-family:monospace; margin:4px 0;">
                     {selected_id}
                 </div>
                 <div style="margin-top:8px;">
@@ -3000,20 +2629,20 @@ def render_profile(
             </div>
             <div style="display:flex; gap:24px; flex-wrap:wrap;">
                 <div style="text-align:center;">
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Регион</div>
-                    <div style="font-size:16px; font-weight:700; color:var(--navy); margin-top:4px;">{row['region']}</div>
+                    <div style="font-size:11px; color:#94A3B8; font-weight:600; text-transform:uppercase;">Регион</div>
+                    <div style="font-size:16px; font-weight:700; color:#E2E8F0; margin-top:4px;">{row['region']}</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Направление</div>
-                    <div style="font-size:16px; font-weight:700; color:var(--navy); margin-top:4px;">{row['main_direction']}</div>
+                    <div style="font-size:11px; color:#94A3B8; font-weight:600; text-transform:uppercase;">Направление</div>
+                    <div style="font-size:16px; font-weight:700; color:#E2E8F0; margin-top:4px;">{row['main_direction']}</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Заявок</div>
-                    <div style="font-size:16px; font-weight:700; color:var(--navy); margin-top:4px;">{int(prod_feat['total_apps'])}</div>
+                    <div style="font-size:11px; color:#94A3B8; font-weight:600; text-transform:uppercase;">Заявок</div>
+                    <div style="font-size:16px; font-weight:700; color:#E2E8F0; margin-top:4px;">{int(prod_feat['total_apps'])}</div>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:11px; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Общая сумма</div>
-                    <div style="font-size:16px; font-weight:700; color:var(--gold); margin-top:4px;">{format_tenge(prod_feat['total_amount'])}</div>
+                    <div style="font-size:11px; color:#94A3B8; font-weight:600; text-transform:uppercase;">Общая сумма</div>
+                    <div style="font-size:16px; font-weight:700; color:#38BDF8; margin-top:4px;">{format_tenge(prod_feat['total_amount'])}</div>
                 </div>
             </div>
         </div>
@@ -3025,14 +2654,14 @@ def render_profile(
     percentile_top = max(1, 100 - percentile)
     st.markdown(f"""
     <div class="glass-card animate-in" style="margin-bottom:24px; text-align:center;">
-        <div style="font-size:14px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:8px;">
+        <div style="font-size:14px; color:#94A3B8; text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:8px;">
             Процентильный ранг
         </div>
-        <div style="font-size:36px; font-weight:800; background:linear-gradient(135deg, var(--teal), var(--gold));
+        <div style="font-size:36px; font-weight:800; background:linear-gradient(135deg, #38BDF8, #38BDF8);
             -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:4px;">
             Топ {percentile_top:.0f}%
         </div>
-        <div style="font-size:14px; color:var(--text-secondary);">
+        <div style="font-size:14px; color:#94A3B8;">
             среди всех {len(scored)} производителей
         </div>
     </div>
@@ -3042,9 +2671,8 @@ def render_profile(
     render_section_header("Скоринговые баллы", "Оценка")
     gc1, gc2, gc3 = st.columns(3)
 
-    dark = is_dark_mode()
-    gauge_num_color = "#E2E8F0" if dark else NAVY
-    gauge_title_color = "#94A3B8" if dark else "#475569"
+    gauge_num_color = "#E2E8F0"
+    gauge_title_color = "#94A3B8"
 
     def make_gauge(value, title, _color_ranges):
         fig = go.Figure(go.Indicator(
@@ -3439,26 +3067,26 @@ def render_comparison(scored: pd.DataFrame, features: pd.DataFrame):
         with col:
             sc = float(r["combined_score"])
             is_winner = (i == winner_idx)
-            border_style = "border: 2px solid var(--gold); box-shadow: 0 0 20px rgba(59,130,246,0.2);" if is_winner else ""
-            winner_label = '<div style="color:var(--gold); font-weight:700; font-size:12px; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">Лидер</div>' if is_winner else ''
+            border_style = "border: 2px solid #38BDF8; box-shadow: 0 0 20px rgba(59,130,246,0.2);" if is_winner else ""
+            winner_label = '<div style="color:#38BDF8; font-weight:700; font-size:12px; margin-bottom:4px; text-transform:uppercase; letter-spacing:1px;">Лидер</div>' if is_winner else ''
 
             st.markdown(f"""
             <div class="glass-card" style="text-align:center; {border_style}">
                 {winner_label}
-                <div style="font-family:monospace; font-size:13px; color:var(--text-secondary); margin-bottom:8px;">
+                <div style="font-family:monospace; font-size:13px; color:#94A3B8; margin-bottom:8px;">
                     ...{pid[-6:]}
                 </div>
-                <div style="font-size:42px; font-weight:800; background:linear-gradient(135deg, var(--navy), var(--teal));
+                <div style="font-size:42px; font-weight:800; background:linear-gradient(135deg, #60A5FA, #38BDF8);
                     -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:4px;">
                     {sc:.1f}
                 </div>
-                <div style="font-size:13px; color:var(--text-secondary); margin-bottom:8px;">
+                <div style="font-size:13px; color:#94A3B8; margin-bottom:8px;">
                     Ранг #{int(r['rank'])}
                 </div>
                 {get_recommendation_badge(sc)}
                 <div style="margin-top:12px; font-size:12px;">
-                    <span style="color:var(--text-secondary);">Правила:</span> <b>{float(r.get('rule_score',0)):.1f}</b> |
-                    <span style="color:var(--text-secondary);">ML:</span> <b>{float(r.get('ml_score',0)):.1f}</b>
+                    <span style="color:#94A3B8;">Правила:</span> <b>{float(r.get('rule_score',0)):.1f}</b> |
+                    <span style="color:#94A3B8;">ML:</span> <b>{float(r.get('ml_score',0)):.1f}</b>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -3580,7 +3208,7 @@ def render_shortlist(scored: pd.DataFrame):
         bar_class = get_score_bar_class(sc)
         table_rows += f"""
         <tr>
-            <td style="font-weight:700; color:var(--teal);">#{int(row['rank'])}</td>
+            <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
             <td style="font-family:monospace; font-size:12px;">{row['producer_id']}</td>
             <td>{row['region']}</td>
             <td>{row.get('main_direction', '')}</td>
@@ -3633,26 +3261,26 @@ def render_shortlist(scored: pd.DataFrame):
     budget_share = shortlist_budget_est / total_budget_est * 100 if total_budget_est > 0 else 0
     avg_score_shortlist = shortlist["combined_score"].mean() if len(shortlist) > 0 else 0
     st.markdown(f"""
-    <div class="glass-card" style="margin-bottom:24px; border-left:4px solid var(--gold);">
-        <div style="font-size:16px; font-weight:700; color:var(--navy); margin-bottom:12px;">
+    <div class="glass-card" style="margin-bottom:24px; border-left:4px solid #38BDF8;">
+        <div style="font-size:16px; font-weight:700; color:#E2E8F0; margin-bottom:12px;">
             Оценка бюджетного воздействия
         </div>
-        <div style="display:flex; gap:32px; flex-wrap:wrap; font-size:14px; line-height:1.7; color:var(--text-primary);">
+        <div style="display:flex; gap:32px; flex-wrap:wrap; font-size:14px; line-height:1.7; color:#E2E8F0;">
             <div>
-                <span style="font-weight:600; color:var(--text-secondary);">Производителей в шортлисте:</span>
+                <span style="font-weight:600; color:#94A3B8;">Производителей в шортлисте:</span>
                 <span style="font-weight:700;"> {len(shortlist)}</span>
             </div>
             <div>
-                <span style="font-weight:600; color:var(--text-secondary);">Объём субсидий:</span>
-                <span style="font-weight:700; color:var(--gold);"> {format_tenge(shortlist_budget_est)}</span>
+                <span style="font-weight:600; color:#94A3B8;">Объём субсидий:</span>
+                <span style="font-weight:700; color:#38BDF8;"> {format_tenge(shortlist_budget_est)}</span>
             </div>
             <div>
-                <span style="font-weight:600; color:var(--text-secondary);">Доля от общего бюджета:</span>
+                <span style="font-weight:600; color:#94A3B8;">Доля от общего бюджета:</span>
                 <span style="font-weight:700;"> {budget_share:.1f}%</span>
             </div>
             <div>
-                <span style="font-weight:600; color:var(--text-secondary);">Средний балл шортлиста:</span>
-                <span style="font-weight:700; color:var(--teal);"> {avg_score_shortlist:.1f}</span>
+                <span style="font-weight:600; color:#94A3B8;">Средний балл шортлиста:</span>
+                <span style="font-weight:700; color:#38BDF8;"> {avg_score_shortlist:.1f}</span>
             </div>
         </div>
     </div>
@@ -3854,7 +3482,7 @@ def render_fairness(scored: pd.DataFrame):
                 # section header with bullet points
                 st.markdown(f"""
                 <div class="glass-card" style="margin-top:16px;">
-                    <div style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+                    <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                         Рекомендации по обеспечению справедливости
                     </div>
                     <div style="white-space:pre-line; line-height:1.8; font-size:14px;">{clean}</div>
@@ -3966,7 +3594,7 @@ def render_ablation_study(scored: pd.DataFrame, engine: ScoringEngine, df: pd.Da
     render_section_header("Ablation Study", "Влияние каждого признака")
     st.markdown("""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
+        <div style="font-size:14px; line-height:1.7; color:#E2E8F0;">
             Ablation study показывает, как удаление каждого из 14 признаков влияет на качество модели (R2)
             и стабильность ранжирования (изменение позиций в топ-100).
             Чем больше падение R2 при удалении признака, тем он важнее для модели.
@@ -4057,9 +3685,9 @@ def render_ablation_study(scored: pd.DataFrame, engine: ScoringEngine, df: pd.Da
             st.dataframe(display_abl, use_container_width=True, hide_index=True)
 
             st.markdown(f"""
-            <div class="glass-card" style="margin-top:16px; border-left:4px solid var(--blue-primary, #3B82F6);">
-                <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
-                    <span style="font-weight:700; color:var(--navy);">Baseline R2:</span> {baseline_r2:.4f}.
+            <div class="glass-card" style="margin-top:16px; border-left:4px solid #38BDF8;">
+                <div style="font-size:14px; line-height:1.7; color:#E2E8F0;">
+                    <span style="font-weight:700; color:#E2E8F0;">Baseline R2:</span> {baseline_r2:.4f}.
                     Наиболее критичные признаки -- те, при удалении которых R2 падает сильнее всего.
                     Top-100 overlap показывает, сколько из 100 лучших производителей
                     остаются в топ-100 после удаления признака.
@@ -4077,7 +3705,7 @@ def render_sensitivity_analysis(scored: pd.DataFrame, engine: ScoringEngine, df:
     render_section_header("Анализ чувствительности", "Стабильность ранжирования")
     st.markdown("""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="font-size:14px; line-height:1.7; color:var(--text-primary);">
+        <div style="font-size:14px; line-height:1.7; color:#E2E8F0;">
             Анализ чувствительности показывает, как изменение весов отдельных признаков
             на +/-10% влияет на стабильность ранжирования. Heatmap отображает процент
             совпадения топ-100 при сдвиге каждого веса.
@@ -4187,7 +3815,7 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
 
     st.markdown("""
     <div class="glass-card" style="margin-bottom:24px;">
-        <div style="font-size:14px; line-height:1.7; color:var(--text-secondary);">
+        <div style="font-size:14px; line-height:1.7; color:#94A3B8;">
             Сравнение четырёх подходов к ранжированию: случайный отбор (FCFS),
             только правиловая модель (100% правила), только ML-модель (100% ML)
             и текущая гибридная модель (60% ML + 40% правила).
@@ -4330,11 +3958,11 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
     with col2:
         st.markdown(f"""
         <div class="baseline-card baseline-new">
-            <h3 style="color:var(--teal);">Гибридная модель (60/40)</h3>
+            <h3 style="color:#38BDF8;">Гибридная модель (60/40)</h3>
             <div class="baseline-label">Средний балл (топ-{n_top})</div>
-            <div class="baseline-metric" style="color:var(--teal);">{hybrid_avg_score:.1f}</div>
+            <div class="baseline-metric" style="color:#38BDF8;">{hybrid_avg_score:.1f}</div>
             <div class="baseline-label">Среднее одобрение</div>
-            <div class="baseline-metric" style="color:var(--teal); font-size:22px;">{hybrid_avg_approval:.1%}</div>
+            <div class="baseline-metric" style="color:#38BDF8; font-size:22px;">{hybrid_avg_approval:.1%}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -4585,13 +4213,13 @@ def render_settings(scored: pd.DataFrame):
         ml_pct = int(ml_w * 100)
         st.markdown(f"""
         <div style="margin-top:12px;">
-            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Баланс моделей</div>
+            <div style="font-size:12px; color:#94A3B8; margin-bottom:6px;">Баланс моделей</div>
             <div style="display:flex; height:32px; border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                <div style="width:{ml_pct}%; background:linear-gradient(90deg, var(--teal), #1E3A5F);
+                <div style="width:{ml_pct}%; background:linear-gradient(90deg, #38BDF8, #1E3A5F);
                     display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">
                     ML {ml_pct}%
                 </div>
-                <div style="width:{100-ml_pct}%; background:linear-gradient(90deg, var(--gold), #60A5FA);
+                <div style="width:{100-ml_pct}%; background:linear-gradient(90deg, #38BDF8, #60A5FA);
                     display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">
                     Правила {100-ml_pct}%
                 </div>
@@ -4608,7 +4236,7 @@ def render_settings(scored: pd.DataFrame):
     render_section_header("Веса факторов (правиловая модель)", "Настройка")
     st.markdown("""
     <div class="glass-card" style="margin-bottom:20px; padding:16px 20px;">
-        <div style="font-size:14px; color:var(--text-secondary); line-height:1.6;">
+        <div style="font-size:14px; color:#94A3B8; line-height:1.6;">
             Положительные веса увеличивают балл, отрицательные -- уменьшают.
             Комиссия может изменять приоритеты факторов в соответствии с государственной политикой.
         </div>
@@ -4641,7 +4269,7 @@ def render_settings(scored: pd.DataFrame):
         bar_class = get_score_bar_class(sc)
         preview_rows += f"""
         <tr>
-            <td style="font-weight:700; color:var(--teal);">#{int(row['rank'])}</td>
+            <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
             <td style="font-family:monospace; font-size:12px;">...{str(row['producer_id'])[-6:]}</td>
             <td>{row['region']}</td>
             <td>
@@ -4677,7 +4305,7 @@ def render_settings(scored: pd.DataFrame):
     render_section_header("Сброс настроек", "Действие")
     st.markdown("""
     <div class="glass-card" style="margin-bottom:16px; padding:16px 20px;">
-        <div style="font-size:14px; color:var(--text-secondary); line-height:1.6;">
+        <div style="font-size:14px; color:#94A3B8; line-height:1.6;">
             Сбросить все веса факторов и баланс моделей к значениям по умолчанию
             (ML 60% / Правила 40%, стандартные веса).
         </div>
@@ -4696,27 +4324,27 @@ def render_settings(scored: pd.DataFrame):
     with st.expander("Приватность и безопасность", expanded=False):
         st.markdown("""
         <div class="glass-card">
-            <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
-                <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+            <div style="line-height:1.8; font-size:14px; color:#E2E8F0;">
+                <p style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                     Меры защиты данных
                 </p>
                 <p>
-                    <span style="font-weight:700; color:var(--teal);">1. Локальная обработка:</span>
+                    <span style="font-weight:700; color:#38BDF8;">1. Локальная обработка:</span>
                     Все данные обрабатываются исключительно на сервере приложения.
                     Информация не передаётся во внешние API, облачные сервисы или третьим лицам.
                 </p>
                 <p>
-                    <span style="font-weight:700; color:var(--teal);">2. Отсутствие внешних вызовов:</span>
+                    <span style="font-weight:700; color:#38BDF8;">2. Отсутствие внешних вызовов:</span>
                     Система не использует внешние API для анализа данных.
                     Все вычисления (ML-модель, статистика, визуализация) выполняются локально.
                 </p>
                 <p>
-                    <span style="font-weight:700; color:var(--teal);">3. Сессионность данных:</span>
+                    <span style="font-weight:700; color:#38BDF8;">3. Сессионность данных:</span>
                     Данные сессии не сохраняются между запусками приложения.
                     Каждый сеанс работы начинается с чистого состояния.
                 </p>
                 <p>
-                    <span style="font-weight:700; color:var(--teal);">4. Анонимизация:</span>
+                    <span style="font-weight:700; color:#38BDF8;">4. Анонимизация:</span>
                     Идентификаторы производителей (producer_id) используются только для
                     группировки заявок. Они могут быть анонимизированы без потери функциональности
                     скоринга.
@@ -4735,17 +4363,17 @@ def render_settings(scored: pd.DataFrame):
     render_section_header("Методология скоринга", "Описание")
     st.markdown("""
     <div class="glass-card">
-        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
-            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="line-height:1.8; font-size:14px; color:#E2E8F0;">
+            <p style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                 Комбинированный скоринг объединяет два подхода:
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">1. Правиловая модель</span> --
+                <span style="font-weight:700; color:#38BDF8;">1. Правиловая модель</span> --
                 экспертные веса, прозрачная формула, полная объяснимость.
                 Каждый фактор нормализован [0, 1] и умножается на вес. Итоговый балл -- взвешенная сумма.
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">2. ML-модель (Gradient Boosting)</span> --
+                <span style="font-weight:700; color:#38BDF8;">2. ML-модель (Gradient Boosting)</span> --
                 обучена на исторических данных, выявляет нелинейные зависимости.
                 Целевая переменная формируется из комбинации: исполнение (35%), одобрение (25%),
                 освоение средств (20%), диверсификация (10%), отсутствие отклонений (10%).
@@ -4763,33 +4391,33 @@ def render_settings(scored: pd.DataFrame):
     render_section_header("Масштабируемая архитектура", "Scalability")
     st.markdown("""
     <div class="glass-card">
-        <div style="line-height:1.8; font-size:14px; color:var(--text-primary);">
-            <p style="font-weight:700; font-size:16px; color:var(--navy); margin-bottom:12px;">
+        <div style="line-height:1.8; font-size:14px; color:#E2E8F0;">
+            <p style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
                 Принципы масштабируемости
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">1. Модульная архитектура:</span>
+                <span style="font-weight:700; color:#38BDF8;">1. Модульная архитектура:</span>
                 Каждый компонент (загрузка данных, инженерия признаков, скоринг, аналитика,
                 справедливость) реализован как отдельный модуль Python с чётко определённым API.
                 Модули могут быть заменены или расширены независимо.
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">2. Кэширование:</span>
+                <span style="font-weight:700; color:#38BDF8;">2. Кэширование:</span>
                 Streamlit-кэш (@st.cache_data, @st.cache_resource) обеспечивает мгновенный
                 отклик при повторных обращениях. Данные загружаются и модель обучается один раз за сессию.
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">3. Горизонтальное масштабирование:</span>
+                <span style="font-weight:700; color:#38BDF8;">3. Горизонтальное масштабирование:</span>
                 Приложение не хранит состояние на сервере (stateless). Может быть развёрнуто
                 за балансировщиком нагрузки с несколькими экземплярами.
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">4. Поддержка больших данных:</span>
+                <span style="font-weight:700; color:#38BDF8;">4. Поддержка больших данных:</span>
                 Pandas-пайплайн оптимизирован для агрегации десятков тысяч заявок. При необходимости
                 может быть переведён на Dask/Spark для миллионов записей.
             </p>
             <p>
-                <span style="font-weight:700; color:var(--teal);">5. Расширяемость модели:</span>
+                <span style="font-weight:700; color:#38BDF8;">5. Расширяемость модели:</span>
                 Новые признаки добавляются в feature_engineering.py, новые модели -- в scoring_engine.py.
                 Структура позволяет добавить нейронные сети, ансамбли или онлайн-обучение.
             </p>
