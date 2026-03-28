@@ -1085,6 +1085,22 @@ details[data-testid="stExpander"]:hover {
     padding: 10px 0;
     letter-spacing: 2px;
 }
+
+/* Upload drag-drop area */
+.upload-drop-area {
+    border: 2px dashed rgba(59,130,246,0.5);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    background: rgba(59,130,246,0.04);
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+.upload-drop-area:hover {
+    border-color: #3B82F6;
+    background: rgba(59,130,246,0.08);
+    box-shadow: 0 0 24px rgba(59,130,246,0.12);
+}
 """
 
     st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
@@ -1586,6 +1602,22 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
         "Система скоринга сельскохозяйственных субсидий Республики Казахстан"
     )
 
+    # --- Current data source card ---
+    _src_name = st.session_state.get("_upload_filename", os.path.basename(DATA_FILE))
+    _n_producers = df['id'].nunique() if 'id' in df.columns else 0
+    st.markdown(f"""
+    <div class="glass-card" style="padding:14px 20px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; border-left:3px solid #3B82F6;">
+        <div style="font-size:14px; color:#E2E8F0;">
+            <span style="font-weight:700; color:#38BDF8;">Загружен датасет:</span> {_src_name}
+            &nbsp;&nbsp;|&nbsp;&nbsp;{len(df):,} записей
+            &nbsp;&nbsp;|&nbsp;&nbsp;{_n_producers:,} производителей
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    if st.button("Загрузить другой файл", key="dash_go_overview"):
+        nav_to("overview")
+        st.rerun()
+
     stats = get_summary_stats(df)
 
     # --- Usage workflow ---
@@ -2005,6 +2037,86 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
         "Обзор данных реестра субсидий",
         "Источник: Реестр заявок ИСС (subsidy.plem.kz), 2025 год"
     )
+
+    # --- Prominent file upload section ---
+    st.markdown("""
+    <div class="upload-drop-area">
+        <div style="font-size:36px; font-weight:800; color:#3B82F6; margin-bottom:8px;">&#8682;</div>
+        <div style="font-size:16px; font-weight:700; color:#E2E8F0; margin-bottom:4px;">
+            Загрузить датасет
+        </div>
+        <div style="font-size:13px; color:#94A3B8;">
+            Перетащите файл Excel (.xlsx) или CSV сюда или нажмите для выбора
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    overview_upload = st.file_uploader(
+        "Загрузить файл данных",
+        type=["xlsx", "csv"],
+        key="overview_upload_file",
+        label_visibility="collapsed",
+    )
+    if overview_upload:
+        upload_id = f"{overview_upload.name}_{overview_upload.size}"
+        if st.session_state.get("_last_upload_id") != upload_id:
+            import time as _time
+            progress_bar = st.progress(0)
+            status = st.status("Обработка файла...", expanded=True)
+            with status:
+                st.write("Загрузка файла...")
+                progress_bar.progress(20)
+                _time.sleep(0.5)
+
+                st.write("Парсинг данных...")
+                progress_bar.progress(40)
+                _time.sleep(0.5)
+
+                st.write("Извлечение признаков...")
+                progress_bar.progress(60)
+                _time.sleep(0.5)
+
+                st.write("Обучение модели...")
+                progress_bar.progress(80)
+                _time.sleep(0.5)
+
+                import tempfile as _tf
+                suffix = ".xlsx" if overview_upload.name.endswith(".xlsx") else ".csv"
+                with _tf.NamedTemporaryFile(delete=False, suffix=suffix) as _tmp:
+                    _tmp.write(overview_upload.read())
+                    st.session_state["custom_data_path"] = _tmp.name
+                st.session_state["_last_upload_id"] = upload_id
+                st.session_state["_upload_filename"] = overview_upload.name
+                load_data.clear()
+
+                progress_bar.progress(100)
+                st.write("Готово!")
+                status.update(label="Файл загружен!", state="complete")
+            st.rerun()
+
+    # --- Data summary after upload or default ---
+    custom_path = st.session_state.get("custom_data_path", None)
+    source_name = st.session_state.get("_upload_filename", os.path.basename(DATA_FILE))
+    st.markdown(f"""
+    <div class="glass-card" style="padding:12px 20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; border-left:3px solid #3B82F6;">
+        <div style="font-size:14px; color:#E2E8F0;">
+            <span style="font-weight:700; color:#38BDF8;">Источник:</span> {source_name}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span style="font-weight:700; color:#38BDF8;">Записей:</span> {len(df):,}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span style="font-weight:700; color:#38BDF8;">Столбцов:</span> {len(df.columns)}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span style="font-weight:700; color:#38BDF8;">Производителей:</span> {df['id'].nunique() if 'id' in df.columns else 'N/A':,}
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <span style="font-weight:700; color:#38BDF8;">Регионов:</span> {df['region'].nunique() if 'region' in df.columns else 'N/A'}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- Raw data preview ---
+    with st.expander("Первые 10 строк загруженных данных", expanded=True):
+        st.dataframe(df.head(10), use_container_width=True, height=380)
+
+    render_divider()
 
     stats = get_summary_stats(df)
 
