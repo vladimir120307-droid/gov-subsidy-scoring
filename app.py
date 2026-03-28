@@ -294,7 +294,11 @@ html, body, [data-testid="stAppViewContainer"] {
 [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label[aria-checked="true"] {
     background: linear-gradient(135deg, rgba(201,162,39,0.25), rgba(13,115,119,0.25)) !important;
     border-color: var(--gold) !important;
+    border-left: 3px solid var(--gold) !important;
     box-shadow: 0 0 12px rgba(201,162,39,0.15);
+}
+[data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
+    border-left: 3px solid transparent;
 }
 [data-testid="stSidebar"] hr {
     border-color: rgba(255,255,255,0.12) !important;
@@ -329,21 +333,22 @@ html, body, [data-testid="stAppViewContainer"] {
 .gov-header::after {
     content: '';
     position: absolute;
-    bottom: -30%;
-    left: -10%;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(13,115,119,0.15) 0%, transparent 70%);
-    border-radius: 50%;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201,162,39,0.04), transparent);
+    animation: headerShimmer 8s ease-in-out infinite;
 }
 .gov-header h1 {
     margin: 0;
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.5px;
     position: relative;
     z-index: 1;
     color: white !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 .gov-header p {
     margin: 6px 0 0 0;
@@ -380,6 +385,18 @@ html, body, [data-testid="stAppViewContainer"] {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
+@keyframes headerShimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+@keyframes winnerPulseGov {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,162,39,0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(201,162,39,0); }
+}
+@keyframes miniCardSlide {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
 
 /* ===== GLASS CARDS ===== */
 .glass-card {
@@ -395,8 +412,8 @@ html, body, [data-testid="stAppViewContainer"] {
     overflow: hidden;
 }
 .glass-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(15, 43, 70, 0.14), 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(13, 115, 119, 0.06);
     border-color: rgba(13, 115, 119, 0.3);
 }
 .glass-card::before {
@@ -429,8 +446,21 @@ html, body, [data-testid="stAppViewContainer"] {
     position: relative;
     overflow: hidden;
 }
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+div[data-testid="stHorizontalBlock"] > div:nth-child(1) .metric-card::before { background: linear-gradient(90deg, #0d7377, #3a9fbf); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(2) .metric-card::before { background: linear-gradient(90deg, #1a4a6e, #3a9fbf); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(3) .metric-card::before { background: linear-gradient(90deg, #c9a227, #dbb94a); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(4) .metric-card::before { background: linear-gradient(90deg, #2d8f5e, #5c8a4d); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(5) .metric-card::before { background: linear-gradient(90deg, #6b5fa5, #8b6caf); }
+div[data-testid="stHorizontalBlock"] > div:nth-child(6) .metric-card::before { background: linear-gradient(90deg, #b84c4c, #d4843e); }
 .metric-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px) scale(1.02);
     box-shadow: 0 16px 48px rgba(15, 43, 70, 0.18);
 }
 .metric-card .metric-icon {
@@ -579,20 +609,24 @@ html, body, [data-testid="stAppViewContainer"] {
     text-transform: uppercase;
     letter-spacing: 0.8px;
     white-space: nowrap;
+    border-bottom: 2px solid rgba(201,162,39,0.3);
 }
 .styled-table tbody tr {
-    transition: var(--transition);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--glass-bg);
+}
+.styled-table tbody tr:nth-child(odd) {
     background: var(--glass-bg);
 }
 .styled-table tbody tr:nth-child(even) {
-    background: rgba(13, 115, 119, 0.03);
+    background: rgba(13, 115, 119, 0.04);
 }
 .styled-table tbody tr:hover {
-    background: rgba(13, 115, 119, 0.08);
-    transform: scale(1.002);
+    background: rgba(13, 115, 119, 0.1);
+    transform: scale(1.003);
 }
 .styled-table tbody td {
-    padding: 12px 16px;
+    padding: 13px 16px;
     border-bottom: 1px solid rgba(0,0,0,0.04);
     vertical-align: middle;
     color: var(--text-primary);
@@ -680,6 +714,7 @@ html, body, [data-testid="stAppViewContainer"] {
     border: 2px solid var(--gold);
     border-radius: var(--radius);
     padding: 4px;
+    animation: winnerPulseGov 2.5s ease-in-out infinite;
 }
 
 /* ===== FILTER PANEL ===== */
@@ -758,16 +793,19 @@ html, body, [data-testid="stAppViewContainer"] {
 .fairness-ok {
     background: rgba(45, 143, 94, 0.08);
     border: 1px solid rgba(45, 143, 94, 0.2);
+    border-left: 3px solid #2d8f5e;
     color: #1a6b3f !important;
 }
 .fairness-warn {
     background: rgba(201, 162, 39, 0.08);
     border: 1px solid rgba(201, 162, 39, 0.2);
+    border-left: 3px solid #c9a227;
     color: #7a5f10 !important;
 }
 .fairness-danger {
     background: rgba(184, 76, 76, 0.08);
     border: 1px solid rgba(184, 76, 76, 0.2);
+    border-left: 3px solid #b84c4c;
     color: #8a3030 !important;
 }
 
@@ -775,13 +813,20 @@ html, body, [data-testid="stAppViewContainer"] {
 .timeline-item {
     display: flex;
     gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 14px 0;
+    border-bottom: none;
     transition: var(--transition);
+    position: relative;
+    margin-left: 6px;
+    border-left: 2px solid rgba(13,115,119,0.15);
+    padding-left: 20px;
+}
+.timeline-item:last-child {
+    border-left-color: transparent;
 }
 .timeline-item:hover {
     background: rgba(13,115,119,0.03);
-    padding-left: 8px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 .timeline-dot {
     width: 12px;
@@ -790,6 +835,8 @@ html, body, [data-testid="stAppViewContainer"] {
     flex-shrink: 0;
     margin-top: 4px;
     box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+    position: absolute;
+    left: -7px;
 }
 .timeline-dot.approved { background: #2d8f5e; }
 .timeline-dot.rejected { background: #b84c4c; }
@@ -844,22 +891,24 @@ html, body, [data-testid="stAppViewContainer"] {
 /* ===== BUTTONS ===== */
 .stDownloadButton > button,
 .stButton > button {
-    background: linear-gradient(135deg, #0f2b46, #1a4a6e) !important;
+    background: linear-gradient(135deg, #0f2b46, #0d7377) !important;
     color: white !important;
     border: none !important;
     border-radius: var(--radius-sm) !important;
     font-weight: 600 !important;
     padding: 10px 24px !important;
-    transition: var(--transition) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 13px !important;
+    box-shadow: 0 2px 8px rgba(15, 43, 70, 0.15) !important;
 }
 .stDownloadButton > button:hover,
 .stButton > button:hover {
     background: linear-gradient(135deg, #1a4a6e, #0d7377) !important;
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 24px rgba(15, 43, 70, 0.25) !important;
+    box-shadow: 0 8px 28px rgba(13, 115, 119, 0.3), 0 0 12px rgba(13, 115, 119, 0.15) !important;
+    filter: brightness(1.05) !important;
 }
 
 /* ===== INPUTS & SELECTS ===== */
@@ -904,13 +953,40 @@ header { visibility: hidden; }
 /* ===== FOOTER ===== */
 .gov-footer {
     text-align: center;
-    padding: 24px 0 12px 0;
+    padding: 20px 0 12px 0;
     margin-top: 40px;
-    border-top: 1px solid rgba(13, 115, 119, 0.15);
-    font-size: 12px;
+    border-top: 1px solid rgba(13, 115, 119, 0.1);
+    font-size: 11px;
     color: var(--text-secondary);
-    letter-spacing: 0.3px;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    font-weight: 300;
 }
+
+/* ===== EXPANDERS ===== */
+details[data-testid="stExpander"] {
+    border: 1px solid var(--glass-border) !important;
+    border-left: 3px solid var(--teal) !important;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+    transition: all 0.25s ease !important;
+}
+details[data-testid="stExpander"]:hover {
+    border-left-color: var(--gold) !important;
+    box-shadow: 0 2px 12px rgba(13,115,119,0.06) !important;
+}
+
+/* ===== SCORE DOT INDICATOR ===== */
+.score-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+.score-dot-high { background: #2d8f5e; box-shadow: 0 0 6px rgba(45,143,94,0.4); }
+.score-dot-mid { background: #c9a227; box-shadow: 0 0 6px rgba(201,162,39,0.4); }
+.score-dot-low { background: #b84c4c; box-shadow: 0 0 6px rgba(184,76,76,0.4); }
 
 /* ===== COAT OF ARMS FALLBACK ===== */
 .coat-of-arms-fallback {
@@ -1033,17 +1109,14 @@ def train_scoring_engine(
 # ===========================================================================
 def main():
     # ----- Sidebar -----
-    # Coat of arms image with fallback
-    try:
-        st.sidebar.image(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Coat_of_arms_of_Kazakhstan.svg/200px-Coat_of_arms_of_Kazakhstan.svg.png",
-            width=70,
-        )
-    except Exception:
-        st.sidebar.markdown(
-            '<div class="coat-of-arms-fallback">KZ</div>',
-            unsafe_allow_html=True,
-        )
+    # Government emblem as styled element
+    st.sidebar.markdown("""
+    <div style="text-align:center;padding:1rem 0 0.5rem">
+        <div style="width:64px;height:64px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#c9a227,#dab94e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(201,162,39,0.3);border:2px solid rgba(201,162,39,0.5)">
+            <span style="color:#0f2b46;font-weight:900;font-size:1.5rem;letter-spacing:1px">KZ</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     st.sidebar.markdown(
         "<div style='text-align:center; margin-bottom:4px;'>"
         "<span style='font-size:20px; font-weight:700; letter-spacing:-0.5px;'>Скоринг субсидий</span>"
@@ -1411,6 +1484,7 @@ def render_dashboard(df: pd.DataFrame, scored: pd.DataFrame):
             color=region_data["mean_score"],
             colorscale=[[0, "#b84c4c"], [0.5, "#c9a227"], [1, "#0d7377"]],
             colorbar=dict(title="Ср. балл", thickness=15),
+            cornerradius=4,
         ),
         text=region_data["count"],
         textposition="auto",
@@ -2364,7 +2438,7 @@ def render_shortlist(scored: pd.DataFrame):
             y=region_counts.sort_values("Количество", ascending=True)["Регион"],
             x=region_counts.sort_values("Количество", ascending=True)["Количество"],
             orientation="h",
-            marker=dict(color=TEAL),
+            marker=dict(color=TEAL, cornerradius=4),
             text=region_counts.sort_values("Количество", ascending=True)["Количество"],
             textposition="auto",
         ))
@@ -2718,11 +2792,11 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
 
     fig = go.Figure()
     fig.add_trace(go.Bar(name="Средний балл", x=metric_names, y=avg_scores,
-                         marker_color=TEAL, text=[f"{v:.1f}" for v in avg_scores], textposition="auto"))
+                         marker=dict(color=TEAL, cornerradius=4), text=[f"{v:.1f}" for v in avg_scores], textposition="auto"))
     fig.add_trace(go.Bar(name="Одобрение (%)", x=metric_names, y=avg_approvals,
-                         marker_color=GOLD, text=[f"{v:.1f}" for v in avg_approvals], textposition="auto"))
+                         marker=dict(color=GOLD, cornerradius=4), text=[f"{v:.1f}" for v in avg_approvals], textposition="auto"))
     fig.add_trace(go.Bar(name="Освоение (%)", x=metric_names, y=avg_utils,
-                         marker_color=NAVY_LIGHT, text=[f"{v:.1f}" for v in avg_utils], textposition="auto"))
+                         marker=dict(color=NAVY_LIGHT, cornerradius=4), text=[f"{v:.1f}" for v in avg_utils], textposition="auto"))
     apply_chart_theme(fig, height=450)
     fig.update_layout(barmode="group", legend=dict(orientation="h", y=1.05))
     st.plotly_chart(fig, use_container_width=True)
