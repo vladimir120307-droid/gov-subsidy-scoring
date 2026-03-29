@@ -7,6 +7,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
+import html as _html
 from pathlib import Path
 
 from data_loader import load_and_process, get_summary_stats, DATA_PATH
@@ -1101,6 +1102,36 @@ details[data-testid="stExpander"]:hover {
     background: rgba(59,130,246,0.08);
     box-shadow: 0 0 24px rgba(59,130,246,0.12);
 }
+
+/* ===== LOADING SKELETON ===== */
+.skeleton-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+}
+.skeleton-line {
+    height: 18px;
+    background: linear-gradient(90deg, rgba(56,189,248,0.06) 25%, rgba(56,189,248,0.12) 50%, rgba(56,189,248,0.06) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite ease-in-out;
+    border-radius: 8px;
+}
+.skeleton-line.short { width: 40%; }
+.skeleton-line.medium { width: 65%; }
+.skeleton-line.long { width: 90%; }
+.skeleton-card {
+    height: 120px;
+    background: linear-gradient(90deg, rgba(56,189,248,0.04) 25%, rgba(56,189,248,0.10) 50%, rgba(56,189,248,0.04) 75%);
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.5s infinite ease-in-out;
+    border-radius: 16px;
+    border: 1px solid rgba(56,189,248,0.08);
+}
+@keyframes skeletonShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
 """
 
     st.markdown(f"<style>{common_css}\n{theme_css}</style>", unsafe_allow_html=True)
@@ -1392,9 +1423,26 @@ def main():
     custom_path = st.session_state.get("custom_data_path", None)
     data_source = custom_path if custom_path else DATA_FILE
 
+    # --- Loading skeleton placeholder ---
+    loading_placeholder = st.empty()
+    loading_placeholder.markdown("""
+    <div class="skeleton-container">
+        <div style="display:flex; gap:16px;">
+            <div class="skeleton-card" style="flex:1;"></div>
+            <div class="skeleton-card" style="flex:1;"></div>
+            <div class="skeleton-card" style="flex:1;"></div>
+            <div class="skeleton-card" style="flex:1;"></div>
+        </div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
+        <div class="skeleton-line short"></div>
+    </div>
+    """, unsafe_allow_html=True)
+
     try:
         df = load_data(data_source)
     except FileNotFoundError:
+        loading_placeholder.empty()
         st.error(
             f"Файл данных не найден: `{DATA_FILE}`\n\n"
             "Загрузите файл через боковую панель или поместите в `data/subsidies_2025.xlsx`."
@@ -1402,12 +1450,14 @@ def main():
         return
 
     if df.empty:
+        loading_placeholder.empty()
         st.warning(
             "Загруженный датасет пуст (0 записей). "
             "Проверьте файл данных или загрузите другой файл через боковую панель."
         )
         return
 
+    loading_placeholder.empty()
     df_hash = hash(len(df))
     with st.spinner("Вычисление признаков производителей..."):
         producer_features = compute_features(df_hash, df)
@@ -1590,6 +1640,66 @@ def render_as_is_process():
             </div>
         </div>
         """, unsafe_allow_html=True)
+
+    render_divider()
+
+    # --- Stakeholders and economic impact ---
+    render_section_header("Стейкхолдеры и экономический эффект", "Влияние")
+
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:16px;">
+            Ключевые стейкхолдеры
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="sw-item sw-strength" style="margin:0;">
+                <span class="sw-icon">1.</span>
+                <div><b>Министерство сельского хозяйства РК</b> -- заказчик и оператор системы, отвечает за распределение бюджета субсидий</div>
+            </div>
+            <div class="sw-item sw-strength" style="margin:0;">
+                <span class="sw-icon">2.</span>
+                <div><b>Региональные акиматы</b> -- местные исполнительные органы, ответственные за приём и первичную проверку заявок</div>
+            </div>
+            <div class="sw-item sw-strength" style="margin:0;">
+                <span class="sw-icon">3.</span>
+                <div><b>Сельхозпроизводители</b> -- конечные получатели субсидий, заинтересованы в прозрачности и справедливости распределения</div>
+            </div>
+            <div class="sw-item sw-strength" style="margin:0;">
+                <span class="sw-icon">4.</span>
+                <div><b>Бюджетные аналитики</b> -- специалисты по оценке эффективности государственных программ и освоения бюджетных средств</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px; border-left:4px solid #22C55E;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
+            Экономический эффект
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
+            <p>
+                Бюджет субсидий на животноводство в Казахстане составляет порядка
+                <b>139 млрд тенге ежегодно</b>. Повышение эффективности распределения
+                даже на 5% эквивалентно <b>~7 млрд тенге дополнительной отдачи</b> от бюджетных средств.
+                При повышении на 10% -- <b>~14 млрд тенге</b>.
+            </p>
+            <p style="margin-top:12px;">
+                Международные аналоги подтверждают эффективность merit-based подходов:
+            </p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;">
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8; margin-bottom:4px;">EU Common Agricultural Policy (CAP)</div>
+                    <div style="font-size:13px; color:#94A3B8;">Использует балльную систему для приоритизации заявок на субсидии в рамках Pillar II (Rural Development)</div>
+                </div>
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8; margin-bottom:4px;">USDA Priority Scoring</div>
+                    <div style="font-size:13px; color:#94A3B8;">Применяет приоритетный скоринг при распределении грантов EQIP и CSP на основе экологических и производственных критериев</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ===========================================================================
@@ -2350,6 +2460,105 @@ def render_overview(df: pd.DataFrame, features: pd.DataFrame):
 
     render_divider()
 
+    # --- Text analysis of subsidy directions ---
+    render_section_header("Текстовый анализ направлений", "NLP")
+
+    if "direction" in df.columns:
+        import re as _re
+        from collections import Counter as _Counter
+
+        # Word frequency extraction from direction names
+        all_directions = df["direction"].dropna().astype(str).tolist()
+        stop_words = {"и", "в", "на", "по", "для", "от", "с", "за", "из", "к", "о", "об", "до", "при", "без"}
+        words = []
+        for d in all_directions:
+            tokens = _re.findall(r"[а-яА-ЯёЁa-zA-Z]+", d.lower())
+            words.extend([w for w in tokens if len(w) > 2 and w not in stop_words])
+        word_freq = _Counter(words).most_common(20)
+
+        wf_col1, wf_col2 = st.columns(2)
+        with wf_col1:
+            if word_freq:
+                wf_labels = [w for w, _ in word_freq]
+                wf_values = [c for _, c in word_freq]
+                fig_wf = go.Figure(go.Bar(
+                    y=wf_labels[::-1],
+                    x=wf_values[::-1],
+                    orientation="h",
+                    marker=dict(color=TEAL, cornerradius=4),
+                    text=wf_values[::-1],
+                    textposition="auto",
+                ))
+                apply_chart_theme(fig_wf, height=500)
+                fig_wf.update_layout(
+                    title="Топ-20 ключевых слов в наименованиях направлений",
+                    xaxis_title="Частота",
+                    margin=dict(l=180, t=50),
+                )
+                st.plotly_chart(fig_wf, use_container_width=True, key="chart_overview_word_freq")
+
+        with wf_col2:
+            # Category clustering: pie/treemap of unique direction_short categories
+            if "direction_short" in df.columns:
+                dir_counts = df["direction_short"].value_counts().head(12)
+            else:
+                dir_counts = df["direction"].value_counts().head(12)
+
+            fig_tree = go.Figure(go.Treemap(
+                labels=dir_counts.index.tolist(),
+                parents=[""] * len(dir_counts),
+                values=dir_counts.values.tolist(),
+                marker=dict(
+                    colors=CHART_COLORS[:len(dir_counts)],
+                    line=dict(width=1, color="rgba(0,0,0,0.3)"),
+                ),
+                textinfo="label+value+percent root",
+                textfont=dict(size=12, color="#E2E8F0"),
+                hovertemplate="%{label}<br>Заявок: %{value:,}<br>%{percentRoot:.1%}<extra></extra>",
+            ))
+            apply_chart_theme(fig_tree, height=500)
+            fig_tree.update_layout(
+                title="Кластеризация направлений по объёму заявок",
+                margin=dict(t=50, b=20, l=20, r=20),
+            )
+            st.plotly_chart(fig_tree, use_container_width=True, key="chart_overview_dir_treemap")
+
+    render_divider()
+
+    # --- External data enrichment sources ---
+    render_section_header("Потенциальные внешние источники данных", "Обогащение")
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px;">
+        <div style="font-weight:700; font-size:16px; color:#E2E8F0; margin-bottom:12px;">
+            Источники для дальнейшего обогащения модели
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
+            <p>Текущая модель использует только данные реестра ИСС. Для повышения предиктивной
+            точности в будущих версиях возможна интеграция с внешними источниками:</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;">
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8;">Метеоданные (Казгидромет)</div>
+                    <div style="font-size:13px; color:#94A3B8;">Погодные условия по регионам для учёта климатических рисков животноводства</div>
+                </div>
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8;">Рыночные цены на продукцию</div>
+                    <div style="font-size:13px; color:#94A3B8;">Данные товарных бирж (ЕТС, KASE) для оценки экономической целесообразности субсидирования</div>
+                </div>
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8;">Земельный кадастр (АИС ГЗК)</div>
+                    <div style="font-size:13px; color:#94A3B8;">Данные о земельных участках для верификации масштаба хозяйства и соответствия заявленным объёмам</div>
+                </div>
+                <div style="padding:12px 16px; background:rgba(59,130,246,0.06); border-radius:8px; border-left:3px solid #3B82F6;">
+                    <div style="font-weight:700; color:#38BDF8;">Ветеринарные данные</div>
+                    <div style="font-size:13px; color:#94A3B8;">Информация о поголовье и эпизоотической обстановке для оценки рисков и обоснованности запросов</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    render_divider()
+
     # --- Charts ---
     col_left, col_right = st.columns(2)
     with col_left:
@@ -2508,9 +2717,9 @@ def render_scoring(scored: pd.DataFrame, features: pd.DataFrame):
         table_rows += f"""
         <tr>
             <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
-            <td style="font-family:monospace; font-size:12px;">{row['producer_id']}</td>
-            <td>{row['region']}</td>
-            <td>{row.get('main_direction', '')}</td>
+            <td style="font-family:monospace; font-size:12px;">{_html.escape(str(row['producer_id']))}</td>
+            <td>{_html.escape(str(row['region']))}</td>
+            <td>{_html.escape(str(row.get('main_direction', '')))}</td>
             <td>
                 <div class="score-bar-container">
                     <div class="score-bar {bar_class}" style="width:{sc}%;">{sc:.1f}</div>
@@ -2641,6 +2850,7 @@ def render_profile(
     st.session_state["profile_idx"] = current_idx
 
     selected_id = selected_display.split(" (")[0]
+    selected_id_safe = _html.escape(str(selected_id))
 
     # Prev / Next producer navigation
     nav_c1, nav_c2, nav_c3 = st.columns([1, 6, 1])
@@ -2705,7 +2915,7 @@ def render_profile(
             Резюме для комиссии
         </div>
         <div>
-            Производитель <b>{selected_id}</b> рекомендован к субсидированию
+            Производитель <b>{selected_id_safe}</b> рекомендован к субсидированию
             (балл: <b>{score_val:.1f}</b> из 100, ранг #{int(row['rank'])} из {len(scored)}).
             Основные сильные стороны: {strengths_str}.
             Рекомендация: <b>{commission_rec}</b>.
@@ -2732,7 +2942,7 @@ def render_profile(
                     ID Производителя
                 </div>
                 <div style="font-size:22px; font-weight:700; color:#E2E8F0; font-family:monospace; margin:4px 0;">
-                    {selected_id}
+                    {selected_id_safe}
                 </div>
                 <div style="margin-top:8px;">
                     <span class="badge {badge_cls}">{badge_text}</span>
@@ -2975,6 +3185,80 @@ def render_profile(
                         f'<b>{feat_label}:</b> Мало заявок ({int(prod_val)}), '
                         f'недостаточно данных для надёжной оценки.</div>'
                     )
+            elif feat_key == "amount_cv":
+                if prod_val <= avg_val * 0.8:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-strength" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">+</span> '
+                        f'<b>Стабильность сумм:</b> производитель запрашивает стабильные суммы '
+                        f'(CV={prod_val:.2f}, среднее: {avg_val:.2f}), что говорит о предсказуемости потребностей.</div>'
+                    )
+                elif prod_val > avg_val * 1.3:
+                    nl_explanations.append(
+                        f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                        f'<span class="sw-icon">-</span> '
+                        f'<b>Стабильность сумм:</b> производитель запрашивает нестабильные суммы '
+                        f'(CV={prod_val:.2f}, среднее: {avg_val:.2f}), высокая вариативность снижает балл.</div>'
+                    )
+            elif feat_key == "subsidy_type_count":
+                type_level = "активный" if prod_val >= avg_val * 1.2 else ("умеренный" if prod_val >= avg_val * 0.8 else "узкий")
+                cls = "sw-strength" if prod_val >= avg_val * 0.8 else "sw-weakness"
+                icon = "+" if prod_val >= avg_val * 0.8 else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>Разнообразие типов:</b> производитель получал {int(prod_val)} видов субсидий '
+                    f'(среднее: {avg_val:.1f}) -- {type_level} участник программ.</div>'
+                )
+            elif feat_key == "apps_per_month":
+                activity_level = "активный" if prod_val >= avg_val * 1.3 else ("умеренный" if prod_val >= avg_val * 0.7 else "пассивный")
+                cls = "sw-strength" if activity_level != "пассивный" else "sw-weakness"
+                icon = "+" if activity_level != "пассивный" else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>Частота заявок:</b> {prod_val:.1f} заявок в месяц '
+                    f'(среднее: {avg_val:.1f}) -- {activity_level} заявитель.</div>'
+                )
+            elif feat_key == "month_regularity":
+                reg_label = "равномерно" if prod_val >= avg_val * 1.1 else "сезонно"
+                cls = "sw-strength" if prod_val >= avg_val else "sw-weakness"
+                icon = "+" if prod_val >= avg_val else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>Регулярность:</b> заявки подаются {reg_label} '
+                    f'(показатель: {prod_val:.2f}, среднее: {avg_val:.2f}).</div>'
+                )
+            elif feat_key == "avg_amount_log":
+                above_below = "выше" if prod_val >= avg_val else "ниже"
+                cls = "sw-strength" if prod_val >= avg_val * 0.8 else "sw-weakness"
+                icon = "+" if prod_val >= avg_val * 0.8 else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>Средний размер:</b> запрашиваемые суммы {above_below} медианы '
+                    f'(log-значение: {prod_val:.2f}, среднее: {avg_val:.2f}).</div>'
+                )
+            elif feat_key == "unique_districts":
+                cls = "sw-strength" if prod_val >= avg_val else "sw-weakness"
+                icon = "+" if prod_val >= avg_val else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>География:</b> производитель работает в {int(prod_val)} районах '
+                    f'(среднее: {avg_val:.1f}), {"широкий" if prod_val >= avg_val else "узкий"} географический охват.</div>'
+                )
+            elif feat_key == "activity_span_days":
+                exp_label = "опытный" if prod_val >= 90 else ("средний" if prod_val >= 30 else "новый")
+                cls = "sw-strength" if prod_val >= 30 else "sw-weakness"
+                icon = "+" if prod_val >= 30 else "-"
+                nl_explanations.append(
+                    f'<div class="sw-item {cls}" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">{icon}</span> '
+                    f'<b>Стаж в системе:</b> {int(prod_val)} дней -- {exp_label} участник '
+                    f'(среднее: {avg_val:.0f} дней).</div>'
+                )
 
         if nl_explanations:
             for expl in nl_explanations:
@@ -3321,9 +3605,9 @@ def render_shortlist(scored: pd.DataFrame):
         table_rows += f"""
         <tr>
             <td style="font-weight:700; color:#38BDF8;">#{int(row['rank'])}</td>
-            <td style="font-family:monospace; font-size:12px;">{row['producer_id']}</td>
-            <td>{row['region']}</td>
-            <td>{row.get('main_direction', '')}</td>
+            <td style="font-family:monospace; font-size:12px;">{_html.escape(str(row['producer_id']))}</td>
+            <td>{_html.escape(str(row['region']))}</td>
+            <td>{_html.escape(str(row.get('main_direction', '')))}</td>
             <td>
                 <div class="score-bar-container">
                     <div class="score-bar {bar_class}" style="width:{sc}%;">{sc:.1f}</div>
@@ -4081,11 +4365,220 @@ def render_baseline_comparison(scored: pd.DataFrame, engine: ScoringEngine, df: 
 
 def render_model_validation(scored: pd.DataFrame, engine: ScoringEngine, df: pd.DataFrame):
     """Раздел валидации модели: feature importance, CV, распределение, scatter."""
-    from sklearn.model_selection import cross_val_score
-    from sklearn.metrics import mean_absolute_error, mean_squared_error
-    from feature_engineering import compute_producer_features, prepare_model_data
+    from sklearn.model_selection import cross_val_score, train_test_split
+    from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+    from sklearn.ensemble import GradientBoostingRegressor
+    from feature_engineering import compute_producer_features, prepare_model_data, get_scoring_features
 
     render_section_header("Валидация модели", "Качество")
+
+    # --- PROMINENT disclaimer about synthetic target ---
+    st.markdown("""
+    <div class="glass-card" style="margin-bottom:24px; border-left:4px solid #F59E0B; background:rgba(245,158,11,0.06);">
+        <div style="font-weight:700; font-size:16px; color:#F59E0B; margin-bottom:8px;">
+            Важное методологическое замечание
+        </div>
+        <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
+            <p>
+                Целевая переменная ML-модели <b>сконструирована из входных признаков</b>
+                (completion_rate x 0.35 + approval_rate x 0.25 + utilization_rate x 0.20 +
+                direction_diversity x 0.10 + (1 - rejection_rate) x 0.10).
+            </p>
+            <p style="margin-top:8px;">
+                Высокий R2 ~ 0.999 <b>отражает высокую выразительность признаков</b>,
+                а не предиктивную точность на внешних данных. Для подтверждения
+                реальной предиктивной способности необходима валидация на независимом
+                наборе данных (например, результаты освоения субсидий следующего года).
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- Train/Test split evaluation ---
+    render_section_header("Валидация на тестовой выборке (70/30)", "Train/Test Split")
+
+    try:
+        feats_tt = compute_producer_features(df)
+        X_tt, y_tt = prepare_model_data(feats_tt)
+        X_tt_clean = X_tt.fillna(0).replace([np.inf, -np.inf], 0)
+
+        X_train, X_test, y_train, y_test = train_test_split(
+            X_tt_clean, y_tt, test_size=0.30, random_state=42
+        )
+
+        from sklearn.preprocessing import MinMaxScaler as _MMS
+        scaler_tt = _MMS()
+        X_train_scaled = scaler_tt.fit_transform(X_train)
+        X_test_scaled = scaler_tt.transform(X_test)
+
+        model_tt = GradientBoostingRegressor(
+            n_estimators=200, max_depth=5, learning_rate=0.1,
+            subsample=0.8, random_state=42
+        )
+        model_tt.fit(X_train_scaled, y_train)
+        y_test_pred = model_tt.predict(X_test_scaled)
+
+        r2_test = r2_score(y_test, y_test_pred)
+        mae_test = mean_absolute_error(y_test, y_test_pred)
+        rmse_test = float(np.sqrt(mean_squared_error(y_test, y_test_pred)))
+
+        tt1, tt2, tt3, tt4 = st.columns(4)
+        with tt1:
+            render_metric_card("R2 (TEST)", f"{r2_test:.4f}", f"На 30% данных ({len(y_test)} производителей)", gold=True, delay=1)
+        with tt2:
+            render_metric_card("MAE (TEST)", f"{mae_test:.4f}", "Средняя абс. ошибка (test)", delay=2)
+        with tt3:
+            render_metric_card("RMSE (TEST)", f"{rmse_test:.4f}", "Среднеквадр. ошибка (test)", delay=3)
+        with tt4:
+            render_metric_card("TRAIN SIZE", f"{len(y_train)}", f"Test: {len(y_test)}", delay=4)
+
+    except Exception as e:
+        st.warning(f"Не удалось выполнить train/test split: {e}")
+
+    render_divider()
+
+    # --- Feature correlation matrix & redundancy ---
+    render_section_header("Анализ мультиколлинеарности признаков", "Feature Selection")
+
+    try:
+        feat_cols = get_scoring_features()
+        corr_data = scored[feat_cols].corr()
+
+        # Find highly correlated pairs
+        high_corr_pairs = []
+        for i in range(len(feat_cols)):
+            for j in range(i + 1, len(feat_cols)):
+                c = abs(corr_data.iloc[i, j])
+                if c > 0.7:
+                    high_corr_pairs.append((feat_cols[i], feat_cols[j], corr_data.iloc[i, j]))
+
+        descs_fs = get_feature_descriptions()
+
+        if high_corr_pairs:
+            st.markdown("""
+            <div class="glass-card" style="margin-bottom:16px; border-left:4px solid #F59E0B;">
+                <div style="font-weight:700; font-size:15px; color:#E2E8F0; margin-bottom:8px;">
+                    Пары признаков с высокой корреляцией (|r| > 0.7)
+                </div>
+                <div style="font-size:14px; line-height:1.8; color:#E2E8F0;">
+            """, unsafe_allow_html=True)
+            for f1, f2, corr_val in sorted(high_corr_pairs, key=lambda x: -abs(x[2])):
+                label1 = descs_fs.get(f1, f1)
+                label2 = descs_fs.get(f2, f2)
+                st.markdown(
+                    f'<div class="sw-item sw-weakness" style="margin-bottom:6px;">'
+                    f'<span class="sw-icon">!</span> '
+                    f'<b>{label1}</b> -- <b>{label2}</b>: r = {corr_val:.3f}</div>',
+                    unsafe_allow_html=True,
+                )
+            st.markdown("</div></div>", unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="fairness-alert fairness-ok">
+                Высокой мультиколлинеарности (|r| > 0.7) между признаками не обнаружено.
+                Все 14 признаков несут уникальную информацию.
+            </div>
+            """, unsafe_allow_html=True)
+
+        # Correlation heatmap
+        fig_corr = go.Figure(data=go.Heatmap(
+            z=corr_data.values,
+            x=[descs_fs.get(c, c) for c in feat_cols],
+            y=[descs_fs.get(c, c) for c in feat_cols],
+            colorscale=[[0, "#1D4ED8"], [0.5, "#0B1220"], [1, "#EF4444"]],
+            zmin=-1, zmax=1,
+            text=np.round(corr_data.values, 2),
+            texttemplate="%{text}",
+            textfont=dict(size=9),
+            hovertemplate="%{x} -- %{y}<br>r = %{z:.3f}<extra></extra>",
+            colorbar=dict(title="r"),
+        ))
+        apply_chart_theme(fig_corr, height=550, transparent=False)
+        fig_corr.update_layout(
+            title="Корреляционная матрица признаков",
+            margin=dict(l=180, b=180, t=50),
+        )
+        st.plotly_chart(fig_corr, use_container_width=True, key="chart_validation_feat_corr")
+
+    except Exception as e:
+        st.warning(f"Не удалось построить анализ мультиколлинеарности: {e}")
+
+    render_divider()
+
+    # --- Bootstrap confidence intervals for top-10 ranking stability ---
+    render_section_header("Стабильность топ-10 (Bootstrap)", "Доверительные интервалы")
+
+    try:
+        feats_bs = compute_producer_features(df)
+        X_bs, y_bs = prepare_model_data(feats_bs)
+        X_bs_clean = X_bs.fillna(0).replace([np.inf, -np.inf], 0)
+        X_bs_scaled = engine.ml_scorer.scaler.transform(X_bs_clean)
+
+        from collections import Counter as _Counter_bs
+        n_bootstrap = 50
+        n_producers = len(X_bs_scaled)
+        producer_ids = feats_bs["producer_id"].values
+        top10_counts = _Counter_bs()
+
+        for b in range(n_bootstrap):
+            boot_idx = np.random.choice(n_producers, n_producers, replace=True)
+            X_boot = X_bs_scaled[boot_idx]
+            y_boot = y_bs.values[boot_idx]
+
+            model_boot = GradientBoostingRegressor(
+                n_estimators=100, max_depth=5, learning_rate=0.1, random_state=b
+            )
+            model_boot.fit(X_boot, y_boot)
+            y_pred_boot = model_boot.predict(X_bs_scaled)
+            top10_idx = np.argsort(y_pred_boot)[-10:]
+            for idx in top10_idx:
+                top10_counts[producer_ids[idx]] += 1
+
+        # Show producers that appear in top-10 most frequently
+        top_stable = top10_counts.most_common(10)
+        stable_rows = ""
+        for rank_i, (pid, count) in enumerate(top_stable, 1):
+            pct = count / n_bootstrap * 100
+            bar_w = int(pct)
+            stable_rows += (
+                f"<tr>"
+                f"<td style='font-weight:700; color:#38BDF8;'>#{rank_i}</td>"
+                f"<td style='font-family:monospace; font-size:12px;'>...{str(pid)[-6:]}</td>"
+                f"<td>{count}/{n_bootstrap}</td>"
+                f"<td>"
+                f"<div class='score-bar-container'>"
+                f"<div class='score-bar high' style='width:{bar_w}%;'>{pct:.0f}%</div>"
+                f"</div></td></tr>"
+            )
+
+        st.markdown(f"""
+        <div class="glass-card" style="margin-bottom:16px;">
+            <div style="font-weight:700; font-size:15px; color:#E2E8F0; margin-bottom:12px;">
+                Частота попадания в топ-10 по {n_bootstrap} bootstrap-выборкам
+            </div>
+            <table class="styled-table">
+                <thead><tr><th>#</th><th>Производитель</th><th>Частота</th><th>Стабильность</th></tr></thead>
+                <tbody>{stable_rows}</tbody>
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+        min_stability = top_stable[-1][1] / n_bootstrap * 100 if top_stable else 0
+        avg_stability = sum(c for _, c in top_stable) / len(top_stable) / n_bootstrap * 100 if top_stable else 0
+        stability_cls = "fairness-ok" if min_stability >= 60 else ("fairness-warn" if min_stability >= 30 else "fairness-danger")
+        st.markdown(f"""
+        <div class="{stability_cls} fairness-alert">
+            <span style="font-weight:700;">Стабильность топ-10:</span>
+            Средняя частота попадания: {avg_stability:.0f}%.
+            Минимальная: {min_stability:.0f}%.
+            При стабильности > 60% ранжирование считается надёжным.
+        </div>
+        """, unsafe_allow_html=True)
+
+    except Exception as e:
+        st.warning(f"Не удалось выполнить bootstrap-анализ: {e}")
+
+    render_divider()
 
     # --- Feature importance chart ---
     render_section_header("Важность признаков (GradientBoosting)", "Feature Importance")
